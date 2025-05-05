@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:traccar_client/status_screen.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -112,6 +113,18 @@ class MainScreen extends StatelessWidget {
                       child: OutlinedButton(
                         onPressed: () {},
                         child: const Text('Advanced settings'),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: OutlinedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const StatusScreen()),
+                          );
+                        },
+                        child: const Text('Show status'),
                       ),
                     ),
                   ],
