@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:traccar_client/status_screen.dart';
+
+import 'status_screen.dart';
+import 'settings_screen.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -111,7 +113,10 @@ class MainScreen extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerRight,
                       child: OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const SettingsScreen()),
+                        ),
                         child: const Text('Advanced settings'),
                       ),
                     ),
