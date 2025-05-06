@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'status_screen.dart';
 import 'settings_screen.dart';
@@ -10,7 +11,7 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Main Screen'),
+        title: Text(AppLocalizations.of(context)!.mainTitle),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
