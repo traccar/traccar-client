@@ -21,7 +21,10 @@ class Preferences {
     await preferences.setString(url, preferences.getString(url) ?? 'http://demo.traccar.org:5055');
     await preferences.setString(accuracy, preferences.getString(accuracy) ?? 'medium');
     await preferences.setInt(interval, preferences.getInt(interval) ?? 300);
-    await preferences.setInt(distance, preferences.getInt(distance) ?? 0);
+    final distanceValue = preferences.getInt(distance);
+    if (distanceValue == null || distanceValue <= 0) {
+      await preferences.setInt(distance, 50);
+    }
     await preferences.setBool(buffer, preferences.getBool(buffer) ?? true);
   }
 
