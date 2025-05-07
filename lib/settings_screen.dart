@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -9,91 +13,96 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  late SharedPreferences prefs;
-
-  final deviceIdController = TextEditingController();
-  final serverUrlController = TextEditingController();
-  final accuracyController = TextEditingController();
-  final distanceController = TextEditingController();
-  final frequencyController = TextEditingController();
-  bool offlineBuffering = false;
+  bool loading = true;
+  late SharedPreferences preferences;
+  bool buffering = true;
 
   @override
   void initState() {
     super.initState();
-    _loadSettings();
+    _initPreferences();
   }
 
-  Future<void> _loadSettings() async {
-    prefs = await SharedPreferences.getInstance();
-
+  void _initPreferences() async {
+    preferences = await SharedPreferences.getInstance();
     setState(() {
-      deviceIdController.text = prefs.getString('deviceId') ?? '';
-      serverUrlController.text = prefs.getString('serverUrl') ?? '';
-      accuracyController.text = prefs.getString('accuracy') ?? 'high';
-      distanceController.text = prefs.getString('distance') ?? '50';
-      frequencyController.text = prefs.getString('frequency') ?? '60';
-      offlineBuffering = prefs.getBool('offlineBuffering') ?? true;
+      loading = false;
+      buffering = preferences.getBool(Preferences.buffer) ?? true;
     });
   }
 
-  Future<void> _saveSettings() async {
-    await prefs.setString('deviceId', deviceIdController.text);
-    await prefs.setString('serverUrl', serverUrlController.text);
-    await prefs.setString('accuracy', accuracyController.text);
-    await prefs.setString('distance', distanceController.text);
-    await prefs.setString('frequency', frequencyController.text);
-    await prefs.setBool('offlineBuffering', offlineBuffering);
+  Future<void> _editSetting(String title, String key, bool isInt) async {
+    final initialValue = isInt
+        ? preferences.getInt(key)?.toString() ?? '0'
+        : preferences.getString(key) ?? '';
 
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Settings saved')),
-      );
+    final controller = TextEditingController(text: initialValue);
+
+    final result = await showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: TextField(
+          controller: controller,
+          keyboardType: isInt ? TextInputType.number : TextInputType.text,
+          inputFormatters: isInt ? [FilteringTextInputFormatter.digitsOnly] : [],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(AppLocalizations.of(context)!.cancelButton),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, controller.text),
+            child: Text(AppLocalizations.of(context)!.saveButton),
+          ),
+        ],
+      ),
+    );
+
+    if (result != null && result.isNotEmpty) {
+      if (isInt) {
+        final intValue = int.tryParse(result);
+        if (intValue != null) {
+          await preferences.setInt(key, intValue);
+        }
+      } else {
+        await preferences.setString(key, result);
+      }
+      setState(() {});
     }
   }
 
-  @override
-  void dispose() {
-    deviceIdController.dispose();
-    serverUrlController.dispose();
-    accuracyController.dispose();
-    distanceController.dispose();
-    frequencyController.dispose();
-    super.dispose();
-  }
-
-  Widget _buildTextField(String label, TextEditingController controller) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(labelText: label),
+  Widget _buildListTile(String title, String key, bool isInt) {
+    final value = isInt ? preferences.getInt(key)?.toString() : preferences.getString(key);
+    return ListTile(
+      title: Text(title),
+      subtitle: Text(value ?? ''),
+      onTap: () => _editSetting(title, key, isInt),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    if (loading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.save),
-            onPressed: _saveSettings,
-          ),
-        ],
-      ),
+      appBar: AppBar(title: const Text('Settings')),
       body: ListView(
-        padding: const EdgeInsets.all(16),
         children: [
-          _buildTextField('Device ID', deviceIdController),
-          _buildTextField('Server URL', serverUrlController),
-          _buildTextField('Location Accuracy', accuracyController),
-          _buildTextField('Distance (meters)', distanceController),
-          _buildTextField('Frequency (seconds)', frequencyController),
+          _buildListTile(AppLocalizations.of(context)!.idLabel, Preferences.id, false),
+          _buildListTile(AppLocalizations.of(context)!.urlLabel, Preferences.url, false),
+          _buildListTile(AppLocalizations.of(context)!.accuracyLabel, Preferences.accuracy, false),
+          _buildListTile(AppLocalizations.of(context)!.intervalLabel, Preferences.interval, true),
+          _buildListTile(AppLocalizations.of(context)!.distanceLabel, Preferences.distance, true),
           SwitchListTile(
-            title: const Text('Offline Buffering'),
-            value: offlineBuffering,
-            onChanged: (value) {
-              setState(() => offlineBuffering = value);
+            title: Text(AppLocalizations.of(context)!.bufferLabel),
+            value: buffering,
+            onChanged: (value) async {
+              await preferences.setBool(Preferences.buffer, value);
+              setState(() => buffering = value);
             },
           ),
         ],

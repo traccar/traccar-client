@@ -1,3 +1,11 @@
 {
-  "mainTitle": "Traccar Client"
+  "mainTitle": "Traccar Client",
+  "saveButton": "Save",
+  "cancelButton": "Cancel",
+  "idLabel": "Device identifier",
+  "urlLabel": "Server URL",
+  "accuracyLabel": "Location accuracy",
+  "intervalLabel": "Frequency",
+  "distanceLabel": "Distance",
+  "bufferLabel": "Offline buffering"
 }
