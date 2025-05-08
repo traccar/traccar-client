@@ -18,7 +18,7 @@ class Preferences {
     if (Platform.isIOS) {
       await _migrate(preferences);
     }
-    await preferences.setString(id, preferences.getString(id) ?? (Random().nextInt(900000) + 100000).toString());
+    await preferences.setString(id, preferences.getString(id) ?? (Random().nextInt(90000000) + 10000000).toString());
     await preferences.setString(url, preferences.getString(url) ?? 'http://demo.traccar.org:5055');
     await preferences.setString(accuracy, preferences.getString(accuracy) ?? 'medium');
     await preferences.setInt(interval, preferences.getInt(interval) ?? 300);
