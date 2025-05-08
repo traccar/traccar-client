@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 
 import 'preferences.dart';
 
@@ -69,6 +70,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       } else {
         await preferences.setString(key, result);
       }
+      await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig(preferences));
       setState(() {});
     }
   }
@@ -102,6 +104,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             value: buffering,
             onChanged: (value) async {
               await preferences.setBool(Preferences.buffer, value);
+              await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig(preferences));
               setState(() => buffering = value);
             },
           ),

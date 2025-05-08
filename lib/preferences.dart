@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Preferences {
@@ -26,6 +27,25 @@ class Preferences {
       await preferences.setInt(distance, 50);
     }
     await preferences.setBool(buffer, preferences.getBool(buffer) ?? true);
+  }
+
+  static bg.Config geolocationConfig(SharedPreferences preferences) {
+    return bg.Config(
+      stopOnTerminate: false,
+      startOnBoot: true,
+      desiredAccuracy: switch (preferences.getString(accuracy)) {
+        'high' => bg.Config.DESIRED_ACCURACY_HIGH,
+        'low' => bg.Config.DESIRED_ACCURACY_LOW,
+        _ => bg.Config.DESIRED_ACCURACY_MEDIUM,
+      },
+      url: preferences.getString(url),
+      params: {
+        "device_id": preferences.getString(id),
+      },
+      distanceFilter: preferences.getInt(distance)?.toDouble(),
+      locationUpdateInterval: preferences.getInt(interval),
+      maxRecordsToPersist: preferences.getBool(buffer) != false ? -1 : 0,
+    );
   }
 
   static Future<void> _migrate(SharedPreferences preferences) async {
