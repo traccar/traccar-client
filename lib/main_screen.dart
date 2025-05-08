@@ -116,7 +116,7 @@ class MainScreen extends StatelessWidget {
                       child: OutlinedButton(
                         onPressed: () => Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => const SettingsScreen(editDeviceId: true)),
+                          MaterialPageRoute(builder: (_) => const SettingsScreen()),
                         ),
                         child: const Text('Advanced settings'),
                       ),

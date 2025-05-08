@@ -7,9 +7,7 @@ import 'package:flutter_background_geolocation/flutter_background_geolocation.da
 import 'preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
-  final bool editDeviceId;
-
-  const SettingsScreen({super.key, this.editDeviceId = false});
+  const SettingsScreen({super.key});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -31,11 +29,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     setState(() {
       loading = false;
       buffering = preferences.getBool(Preferences.buffer) ?? true;
-    });
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.editDeviceId) {
-        _editSetting(AppLocalizations.of(context)!.idLabel, Preferences.id, false);
-      }
     });
   }
 
