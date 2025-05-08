@@ -21,10 +21,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
-    _initPreferences();
+    _initState();
   }
 
-  void _initPreferences() async {
+  void _initState() async {
     preferences = await SharedPreferences.getInstance();
     setState(() {
       loading = false;
@@ -91,7 +91,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.settingsTitle)),
       body: ListView(
         children: [
           _buildListTile(AppLocalizations.of(context)!.idLabel, Preferences.id, false),

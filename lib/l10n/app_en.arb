@@ -1,11 +1,16 @@
 {
   "mainTitle": "Traccar Client",
+  "trackingTitle": "Tracking",
+  "settingsTitle": "Settings",
   "saveButton": "Save",
   "cancelButton": "Cancel",
+  "statusButton": "Show status",
+  "settingsButton": "Change settings",
   "idLabel": "Device identifier",
   "urlLabel": "Server URL",
   "accuracyLabel": "Location accuracy",
   "intervalLabel": "Frequency",
   "distanceLabel": "Distance",
-  "bufferLabel": "Offline buffering"
+  "bufferLabel": "Offline buffering",
+  "trackingLabel": "Continuous tracking"
 }
