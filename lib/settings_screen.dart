@@ -32,6 +32,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
+  String _getAccuracyLabel(String? key) {
+    return switch (key) {
+      'high' => AppLocalizations.of(context)!.highAccuracyLabel,
+      'low' => AppLocalizations.of(context)!.lowAccuracyLabel,
+      _ => AppLocalizations.of(context)!.mediumAccuracyLabel,
+    };
+  }
+
   Future<void> _editSetting(String title, String key, bool isInt) async {
     final initialValue = isInt
         ? preferences.getInt(key)?.toString() ?? '0'
@@ -84,6 +92,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  Widget _buildAccuracyListTile() {
+    final accuracyOptions = ['high', 'medium', 'low'];
+    return ListTile(
+      title: Text(AppLocalizations.of(context)!.accuracyLabel),
+      subtitle: Text(_getAccuracyLabel(preferences.getString(Preferences.accuracy))),
+      onTap: () async {
+        final selectedAccuracy = await showDialog<String>(
+          context: context,
+          builder: (context) => SimpleDialog(
+            title: Text(AppLocalizations.of(context)!.accuracyLabel),
+            children: accuracyOptions.map((option) => SimpleDialogOption(
+              child: Text(_getAccuracyLabel(option)),
+              onPressed: () => Navigator.pop(context, option),
+            )).toList(),
+          ),
+        );
+        if (selectedAccuracy != null) {
+          await preferences.setString(Preferences.accuracy, selectedAccuracy);
+          await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig(preferences));
+          setState(() {});
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (loading) {
@@ -96,9 +129,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
         children: [
           _buildListTile(AppLocalizations.of(context)!.idLabel, Preferences.id, false),
           _buildListTile(AppLocalizations.of(context)!.urlLabel, Preferences.url, false),
-          _buildListTile(AppLocalizations.of(context)!.accuracyLabel, Preferences.accuracy, false),
-          _buildListTile(AppLocalizations.of(context)!.intervalLabel, Preferences.interval, true),
+          _buildAccuracyListTile(),
           _buildListTile(AppLocalizations.of(context)!.distanceLabel, Preferences.distance, true),
+          _buildListTile(AppLocalizations.of(context)!.intervalLabel, Preferences.interval, true),
           SwitchListTile(
             title: Text(AppLocalizations.of(context)!.bufferLabel),
             value: buffering,

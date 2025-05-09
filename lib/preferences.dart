@@ -24,7 +24,7 @@ class Preferences {
     await preferences.setInt(interval, preferences.getInt(interval) ?? 300);
     final distanceValue = preferences.getInt(distance);
     if (distanceValue == null || distanceValue <= 0) {
-      await preferences.setInt(distance, 50);
+      await preferences.setInt(distance, 75);
     }
     await preferences.setBool(buffer, preferences.getBool(buffer) ?? true);
   }
