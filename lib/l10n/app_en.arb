@@ -2,6 +2,7 @@
   "mainTitle": "Traccar Client",
   "trackingTitle": "Tracking",
   "settingsTitle": "Settings",
+  "statusTitle": "Logs",
   "saveButton": "Save",
   "cancelButton": "Cancel",
   "locationButton": "Send location",

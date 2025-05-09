@@ -43,8 +43,10 @@ class Preferences {
         "device_id": preferences.getString(id),
       },
       distanceFilter: preferences.getInt(distance)?.toDouble(),
-      locationUpdateInterval: preferences.getInt(interval),
+      locationUpdateInterval: (preferences.getInt(interval) ?? 0) * 1000,
       maxRecordsToPersist: preferences.getBool(buffer) != false ? -1 : 0,
+      logLevel: bg.Config.LOG_LEVEL_INFO,
+      logMaxDays: 1,
     );
   }
 

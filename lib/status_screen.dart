@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StatusScreen extends StatefulWidget {
   const StatusScreen({super.key});
@@ -14,14 +15,14 @@ class _StatusScreenState extends State<StatusScreen> {
   @override
   void initState() {
     super.initState();
-    _loadLogs();
+    _refreshLogs();
   }
 
-  Future<void> _loadLogs() async {
-    final logs = await bg.Logger.getLog(); // Fetch logs
+  Future<void> _refreshLogs() async {
+    final logs = await bg.Logger.getLog();
     setState(() {
       _logs.clear();
-      _logs.addAll(logs.split('\n').reversed); // Latest logs first
+      _logs.addAll(logs.split('\n'));
     });
   }
 
@@ -34,11 +35,11 @@ class _StatusScreenState extends State<StatusScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Background Geolocation Logs'),
+        title: Text(AppLocalizations.of(context)!.statusTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
-            onPressed: _loadLogs,
+            onPressed: _refreshLogs,
           ),
           IconButton(
             icon: const Icon(Icons.delete),
@@ -46,19 +47,14 @@ class _StatusScreenState extends State<StatusScreen> {
           ),
         ],
       ),
-      body: _logs.isEmpty
-          ? const Center(child: Text('No logs available.'))
-          : ListView.builder(
-              itemCount: _logs.length,
-              itemBuilder: (_, index) => Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 2.0, horizontal: 8.0),
-                child: Text(
-                  _logs[index],
-                  style: const TextStyle(fontSize: 12.0),
-                ),
-              ),
-            ),
+      body: ListView.builder(
+        reverse: true,
+        itemCount: _logs.length,
+        itemBuilder: (_, index) => Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Text(_logs[index]),
+        ),
+      ),
     );
   }
 }
