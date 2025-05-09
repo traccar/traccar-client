@@ -4,6 +4,7 @@
   "settingsTitle": "Settings",
   "saveButton": "Save",
   "cancelButton": "Cancel",
+  "locationButton": "Send location",
   "statusButton": "Show status",
   "settingsButton": "Change settings",
   "idLabel": "Device identifier",

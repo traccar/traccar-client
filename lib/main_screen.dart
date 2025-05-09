@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -72,11 +74,27 @@ class _MainScreenState extends State<MainScreen> {
               },
             ),
             const SizedBox(height: 8),
-            FilledButton.tonal(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => const StatusScreen()));
-              },
-              child: Text(AppLocalizations.of(context)!.statusButton),
+            OverflowBar(
+              spacing: 8,
+              children: [
+                FilledButton.tonal(
+                  onPressed: () async {
+                    try {
+                    await bg.BackgroundGeolocation.getCurrentPosition(samples: 1);
+                    await bg.BackgroundGeolocation.sync();
+                    } catch (error) {
+                      developer.log('Failed to fetch location', error: error);
+                    }
+                  },
+                  child: Text(AppLocalizations.of(context)!.locationButton),
+                ),
+                FilledButton.tonal(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => const StatusScreen()));
+                  },
+                  child: Text(AppLocalizations.of(context)!.statusButton),
+                ),
+              ],
             ),
           ],
         ),
@@ -103,11 +121,16 @@ class _MainScreenState extends State<MainScreen> {
               leadingAndTrailingTextStyle: Theme.of(context).textTheme.bodyLarge,
             ),
             const SizedBox(height: 8),
-            FilledButton.tonal(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen()));
-              },
-              child: Text(AppLocalizations.of(context)!.settingsButton),
+            OverflowBar(
+              spacing: 8,
+              children: [
+                FilledButton.tonal(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen()));
+                  },
+                  child: Text(AppLocalizations.of(context)!.settingsButton),
+                ),
+              ],
             ),
           ]
         ),
