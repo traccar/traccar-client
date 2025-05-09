@@ -22,7 +22,7 @@ class _StatusScreenState extends State<StatusScreen> {
     final logs = await bg.Logger.getLog();
     setState(() {
       _logs.clear();
-      _logs.addAll(logs.split('\n'));
+      _logs.addAll(logs.split('\n').reversed);
     });
   }
 
