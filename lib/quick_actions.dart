@@ -3,6 +3,7 @@ import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:quick_actions/quick_actions.dart';
+import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 
 class QuickActionsInitializer extends StatefulWidget {
   const QuickActionsInitializer({super.key});
@@ -17,15 +18,20 @@ class _QuickActionsInitializerState extends State<QuickActionsInitializer> {
   @override
   void initState() {
     super.initState();
-    quickActions.initialize((shortcutType) {
+    quickActions.initialize((shortcutType) async {
       developer.log('action $shortcutType');
       switch (shortcutType) {
         case 'start':
-          break;
+          bg.BackgroundGeolocation.start();
         case 'stop':
-          break;
+          bg.BackgroundGeolocation.stop();
         case 'sos':
-          break;
+          try {
+            await bg.BackgroundGeolocation.getCurrentPosition(samples: 1, extras: {'sos': true});
+            await bg.BackgroundGeolocation.sync();
+          } catch (error) {
+            developer.log('Failed to send alert', error: error);
+          }
       }
     });
   }
@@ -35,9 +41,9 @@ class _QuickActionsInitializerState extends State<QuickActionsInitializer> {
     super.didChangeDependencies();
     final localizations = AppLocalizations.of(context)!;
     quickActions.setShortcutItems(<ShortcutItem>[
-      ShortcutItem(type: 'sos', localizedTitle: localizations.sosAction, icon: 'exclamation'),
-      ShortcutItem(type: 'stop', localizedTitle: localizations.stopAction, icon: 'stop'),
       ShortcutItem(type: 'start', localizedTitle: localizations.startAction, icon: 'play'),
+      ShortcutItem(type: 'stop', localizedTitle: localizations.stopAction, icon: 'stop'),
+      ShortcutItem(type: 'sos', localizedTitle: localizations.sosAction, icon: 'exclamation'),
     ]);
   }
 
