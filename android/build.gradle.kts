@@ -1,7 +1,15 @@
 allprojects {
+    ext {
+        set("appCompatVersion", "1.7.0")
+        set("playServicesLocationVersion", "21.3.0")
+    }
     repositories {
         google()
         mavenCentral()
+        // [required] background_geolocation
+        maven(url = "${project(":flutter_background_geolocation").projectDir}/libs")
+        // [required] background_fetch
+        maven(url = "${project(":background_fetch").projectDir}/libs")
     }
 }
 
