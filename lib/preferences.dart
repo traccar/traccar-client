@@ -6,6 +6,7 @@ import 'package:flutter_background_geolocation/flutter_background_geolocation.da
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Preferences {
+  static late SharedPreferences instance;
   static const String id = 'id';
   static const String url = 'url';
   static const String accuracy = 'accuracy';
@@ -14,80 +15,80 @@ class Preferences {
   static const String buffer = 'buffer';
 
   static Future<void> init() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
+    instance = await SharedPreferences.getInstance();
     if (Platform.isIOS) {
-      await _migrate(preferences);
+      await _migrate();
     }
-    await preferences.setString(id, preferences.getString(id) ?? (Random().nextInt(90000000) + 10000000).toString());
-    await preferences.setString(url, preferences.getString(url) ?? 'http://demo.traccar.org:5055');
-    await preferences.setString(accuracy, preferences.getString(accuracy) ?? 'medium');
-    await preferences.setInt(interval, preferences.getInt(interval) ?? 300);
-    final distanceValue = preferences.getInt(distance);
+    await instance.setString(id, instance.getString(id) ?? (Random().nextInt(90000000) + 10000000).toString());
+    await instance.setString(url, instance.getString(url) ?? 'http://demo.traccar.org:5055');
+    await instance.setString(accuracy, instance.getString(accuracy) ?? 'medium');
+    await instance.setInt(interval, instance.getInt(interval) ?? 300);
+    final distanceValue = instance.getInt(distance);
     if (distanceValue == null || distanceValue <= 0) {
-      await preferences.setInt(distance, 75);
+      await instance.setInt(distance, 75);
     }
-    await preferences.setBool(buffer, preferences.getBool(buffer) ?? true);
+    await instance.setBool(buffer, instance.getBool(buffer) ?? true);
   }
 
-  static bg.Config geolocationConfig(SharedPreferences preferences) {
+  static bg.Config geolocationConfig() {
     return bg.Config(
       stopOnTerminate: false,
       startOnBoot: true,
-      desiredAccuracy: switch (preferences.getString(accuracy)) {
+      desiredAccuracy: switch (instance.getString(accuracy)) {
         'high' => bg.Config.DESIRED_ACCURACY_HIGH,
         'low' => bg.Config.DESIRED_ACCURACY_LOW,
         _ => bg.Config.DESIRED_ACCURACY_MEDIUM,
       },
-      url: preferences.getString(url),
+      url: instance.getString(url),
       params: {
-        "device_id": preferences.getString(id),
+        "device_id": instance.getString(id),
       },
-      distanceFilter: preferences.getInt(distance)?.toDouble(),
-      locationUpdateInterval: (preferences.getInt(interval) ?? 0) * 1000,
-      maxRecordsToPersist: preferences.getBool(buffer) != false ? -1 : 0,
+      distanceFilter: instance.getInt(distance)?.toDouble(),
+      locationUpdateInterval: (instance.getInt(interval) ?? 0) * 1000,
+      maxRecordsToPersist: instance.getBool(buffer) != false ? -1 : 0,
       logLevel: bg.Config.LOG_LEVEL_INFO,
       logMaxDays: 1,
     );
   }
 
-  static Future<void> _migrate(SharedPreferences preferences) async {
-    final oldId = preferences.getString('device_id_preference');
+  static Future<void> _migrate() async {
+    final oldId = instance.getString('device_id_preference');
     if (oldId != null) {
-      preferences.setString(id, oldId);
-      preferences.remove('device_id_preference');
+      instance.setString(id, oldId);
+      instance.remove('device_id_preference');
     }
-    final oldUrl = preferences.getString('server_url_preference');
+    final oldUrl = instance.getString('server_url_preference');
     if (oldUrl != null) {
-      preferences.setString(url, oldUrl);
-      preferences.remove('server_url_preference');
+      instance.setString(url, oldUrl);
+      instance.remove('server_url_preference');
     }
-    final oldAccuracy = preferences.getString('accuracy_preference');
+    final oldAccuracy = instance.getString('accuracy_preference');
     if (oldAccuracy != null) {
-      preferences.setString(accuracy, oldAccuracy);
-      preferences.remove('accuracy_preference');
+      instance.setString(accuracy, oldAccuracy);
+      instance.remove('accuracy_preference');
     }
-    final oldIntervalString = preferences.getString('frequency_preference');
+    final oldIntervalString = instance.getString('frequency_preference');
     final oldInterval = oldIntervalString != null ? int.tryParse(oldIntervalString) : null;
     if (oldInterval != null) {
-      preferences.setInt(interval, oldInterval);
-      preferences.remove('frequency_preference');
+      instance.setInt(interval, oldInterval);
+      instance.remove('frequency_preference');
     }
-    final oldDistanceString = preferences.getString('distance_preference');
+    final oldDistanceString = instance.getString('distance_preference');
     final oldDistance = oldDistanceString != null ? int.tryParse(oldDistanceString) : null;
     if (oldDistance != null) {
-      preferences.setInt(distance, oldDistance);
-      preferences.remove('distance_preference');
+      instance.setInt(distance, oldDistance);
+      instance.remove('distance_preference');
     }
-    final oldAngleString = preferences.getString('angle_preference');
+    final oldAngleString = instance.getString('angle_preference');
     final oldAngle = oldAngleString != null ? int.tryParse(oldAngleString) : null;
     if (oldAngle != null) {
-      preferences.setInt('angle', oldAngle);
-      preferences.remove('angle_preference');
+      instance.setInt('angle', oldAngle);
+      instance.remove('angle_preference');
     }
-    final oldBuffer = preferences.getBool('buffer_preference');
+    final oldBuffer = instance.getBool('buffer_preference');
     if (oldBuffer != null) {
-      preferences.setBool(buffer, oldBuffer);
-      preferences.remove('buffer_preference');
+      instance.setBool(buffer, oldBuffer);
+      instance.remove('buffer_preference');
     }
   }
 }

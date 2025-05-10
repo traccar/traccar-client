@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 
@@ -14,8 +13,6 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool loading = true;
-  late SharedPreferences preferences;
   bool buffering = true;
 
   @override
@@ -25,10 +22,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _initState() async {
-    preferences = await SharedPreferences.getInstance();
     setState(() {
-      loading = false;
-      buffering = preferences.getBool(Preferences.buffer) ?? true;
+      buffering = Preferences.instance.getBool(Preferences.buffer) ?? true;
     });
   }
 
@@ -42,8 +37,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _editSetting(String title, String key, bool isInt) async {
     final initialValue = isInt
-        ? preferences.getInt(key)?.toString() ?? '0'
-        : preferences.getString(key) ?? '';
+        ? Preferences.instance.getInt(key)?.toString() ?? '0'
+        : Preferences.instance.getString(key) ?? '';
 
     final controller = TextEditingController(text: initialValue);
 
@@ -73,18 +68,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
       if (isInt) {
         final intValue = int.tryParse(result);
         if (intValue != null) {
-          await preferences.setInt(key, intValue);
+          await Preferences.instance.setInt(key, intValue);
         }
       } else {
-        await preferences.setString(key, result);
+        await Preferences.instance.setString(key, result);
       }
-      await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig(preferences));
+      await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
       setState(() {});
     }
   }
 
   Widget _buildListTile(String title, String key, bool isInt) {
-    final value = isInt ? preferences.getInt(key)?.toString() : preferences.getString(key);
+    final value = isInt ? Preferences.instance.getInt(key)?.toString() : Preferences.instance.getString(key);
     return ListTile(
       title: Text(title),
       subtitle: Text(value ?? ''),
@@ -96,7 +91,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final accuracyOptions = ['high', 'medium', 'low'];
     return ListTile(
       title: Text(AppLocalizations.of(context)!.accuracyLabel),
-      subtitle: Text(_getAccuracyLabel(preferences.getString(Preferences.accuracy))),
+      subtitle: Text(_getAccuracyLabel(Preferences.instance.getString(Preferences.accuracy))),
       onTap: () async {
         final selectedAccuracy = await showDialog<String>(
           context: context,
@@ -109,8 +104,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         );
         if (selectedAccuracy != null) {
-          await preferences.setString(Preferences.accuracy, selectedAccuracy);
-          await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig(preferences));
+          await Preferences.instance.setString(Preferences.accuracy, selectedAccuracy);
+          await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
           setState(() {});
         }
       },
@@ -119,10 +114,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (loading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
     return Scaffold(
       appBar: AppBar(title: Text(AppLocalizations.of(context)!.settingsTitle)),
       body: ListView(
@@ -136,8 +127,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: Text(AppLocalizations.of(context)!.bufferLabel),
             value: buffering,
             onChanged: (value) async {
-              await preferences.setBool(Preferences.buffer, value);
-              await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig(preferences));
+              await Preferences.instance.setBool(Preferences.buffer, value);
+              await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
               setState(() => buffering = value);
             },
           ),

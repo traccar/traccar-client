@@ -2,7 +2,6 @@ import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:traccar_client/preferences.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 
@@ -17,8 +16,6 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  bool loading = true;
-  late SharedPreferences preferences;
   bool trackingEnabled = false;
 
   @override
@@ -28,12 +25,8 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _initState() async {
-    preferences = await SharedPreferences.getInstance();
-    final state = await bg.BackgroundGeolocation.ready(
-      Preferences.geolocationConfig(preferences),
-    );
+    final state = await bg.BackgroundGeolocation.state;
     setState(() {
-      loading = false;
       trackingEnabled = state.enabled;
     });
     bg.BackgroundGeolocation.onEnabledChange((bool enabled) {
@@ -58,7 +51,7 @@ class _MainScreenState extends State<MainScreen> {
             ListTile(
               contentPadding: EdgeInsets.zero,
               title: Text(AppLocalizations.of(context)!.idLabel),
-              trailing: Text(preferences.getString(Preferences.id) ?? ''),
+              trailing: Text(Preferences.instance.getString(Preferences.id) ?? ''),
               leadingAndTrailingTextStyle: Theme.of(context).textTheme.bodyLarge,
             ),
             SwitchListTile(
@@ -117,7 +110,7 @@ class _MainScreenState extends State<MainScreen> {
             ListTile(
               contentPadding: EdgeInsets.zero,
               title: Text(AppLocalizations.of(context)!.urlLabel),
-              trailing: Text(preferences.getString(Preferences.url) ?? ''),
+              trailing: Text(Preferences.instance.getString(Preferences.url) ?? ''),
               leadingAndTrailingTextStyle: Theme.of(context).textTheme.bodyLarge,
             ),
             const SizedBox(height: 8),
@@ -140,10 +133,6 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (loading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.mainTitle),
