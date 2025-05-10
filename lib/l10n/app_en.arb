@@ -17,5 +17,8 @@
   "intervalLabel": "Frequency",
   "distanceLabel": "Distance",
   "bufferLabel": "Offline buffering",
-  "trackingLabel": "Continuous tracking"
+  "trackingLabel": "Continuous tracking",
+  "startAction": "Start service",
+  "stopAction": "Stop service",
+  "sosAction": "Send SOS"
 }

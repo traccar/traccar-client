@@ -18,6 +18,7 @@ dependencies:
   firebase_messaging: ^15.2.5
   firebase_analytics: ^11.4.5
   firebase_crashlytics: ^4.3.5
+  quick_actions: ^1.1.0
 
 dev_dependencies:
   flutter_test:
