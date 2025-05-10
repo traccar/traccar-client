@@ -68,4 +68,5 @@ class DefaultFirebaseOptions {
     iosClientId: '39016471396-7mdutolor3h210bm9qmf60gp18lmmhnm.apps.googleusercontent.com',
     iosBundleId: 'org.traccar.client.TraccarClient',
   );
+
 }
