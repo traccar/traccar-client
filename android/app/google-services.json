@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "39016471396",
+    "firebase_url": "https://traccar-client-app.firebaseio.com",
+    "project_id": "traccar-client-app",
+    "storage_bucket": "traccar-client-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39016471396:android:b1c7194c699bfa25",
+        "android_client_info": {
+          "package_name": "org.traccar.client"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5uSOXpbWkR8C3fqdNKQcI7BJrPObpeP4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "39016471396-7mdutolor3h210bm9qmf60gp18lmmhnm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.traccar.client.TraccarClient"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

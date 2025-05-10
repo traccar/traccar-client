@@ -17,6 +17,7 @@
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		F301A0628B4B67129B4EF6BC /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF9CEA917E371A914E728FD9 /* Pods_Runner.framework */; };
 		F7404BADF18F0407F900F367 /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C29E374AB4C3F885DE083543 /* Pods_RunnerTests.framework */; };
+		F7C3033B72F10E5D400E8620 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 42DA49C4C866005273D03AF6 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		331C807B294A618700263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
 		331C8081294A63A400263BE5 /* RunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
+		42DA49C4C866005273D03AF6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Runner/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		50797FECAA48F3999E66543E /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 				331C8082294A63A400263BE5 /* RunnerTests */,
 				DC5B6CE5A1B7DC8E9FC89129 /* Pods */,
 				F91A8C14E37051DCD5210011 /* Frameworks */,
+				42DA49C4C866005273D03AF6 /* GoogleService-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -268,6 +271,7 @@
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				86ABD4FD2DCDB6B60041010B /* PrivacyInfo.xcprivacy in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
+				F7C3033B72F10E5D400E8620 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
