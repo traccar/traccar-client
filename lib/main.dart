@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
@@ -8,6 +10,8 @@ import 'preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   await Preferences.init();
   await bg.BackgroundGeolocation.ready(Preferences.geolocationConfig());
   runApp(const MainApp());
