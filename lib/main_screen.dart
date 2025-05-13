@@ -51,8 +51,7 @@ class _MainScreenState extends State<MainScreen> {
             ListTile(
               contentPadding: EdgeInsets.zero,
               title: Text(AppLocalizations.of(context)!.idLabel),
-              trailing: Text(Preferences.instance.getString(Preferences.id) ?? ''),
-              leadingAndTrailingTextStyle: Theme.of(context).textTheme.bodyLarge,
+              subtitle: Text(Preferences.instance.getString(Preferences.id) ?? ''),
             ),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
@@ -110,16 +109,16 @@ class _MainScreenState extends State<MainScreen> {
             ListTile(
               contentPadding: EdgeInsets.zero,
               title: Text(AppLocalizations.of(context)!.urlLabel),
-              trailing: Text(Preferences.instance.getString(Preferences.url) ?? ''),
-              leadingAndTrailingTextStyle: Theme.of(context).textTheme.bodyLarge,
+              subtitle: Text(Preferences.instance.getString(Preferences.url) ?? ''),
             ),
             const SizedBox(height: 8),
             OverflowBar(
               spacing: 8,
               children: [
                 FilledButton.tonal(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen()));
+                  onPressed: () async {
+                    await Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen()));
+                    setState(() {});
                   },
                   child: Text(AppLocalizations.of(context)!.settingsButton),
                 ),
