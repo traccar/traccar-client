@@ -2,6 +2,9 @@ allprojects {
     ext {
         set("appCompatVersion", "1.7.0")
         set("playServicesLocationVersion", "21.3.0")
+        // Test logging crash
+        set("logbackVersion", "1.3.0-3")
+        set("slf4jVersion", "1.7.25")
     }
     repositories {
         google()
