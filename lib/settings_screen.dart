@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -122,7 +124,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           _buildListTile(AppLocalizations.of(context)!.urlLabel, Preferences.url, false),
           _buildAccuracyListTile(),
           _buildListTile(AppLocalizations.of(context)!.distanceLabel, Preferences.distance, true),
-          _buildListTile(AppLocalizations.of(context)!.intervalLabel, Preferences.interval, true),
+          if (Platform.isAndroid && Preferences.instance.getInt(Preferences.distance) == 0)
+            _buildListTile(AppLocalizations.of(context)!.intervalLabel, Preferences.interval, true),
           SwitchListTile(
             title: Text(AppLocalizations.of(context)!.bufferLabel),
             value: buffering,

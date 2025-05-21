@@ -52,7 +52,13 @@ class _StatusScreenState extends State<StatusScreen> {
         itemCount: _logs.length,
         itemBuilder: (_, index) => Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Text(_logs[index]),
+          child: Text(
+            _logs[index],
+            style: TextStyle(
+              fontSize: 10,
+              fontFamily: 'monospace',
+            ),
+          ),
         ),
       ),
     );
