@@ -3,6 +3,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
+import 'package:rate_my_app/rate_my_app.dart';
 import 'package:traccar_client/quick_actions.dart';
 
 import 'main_screen.dart';
@@ -17,8 +18,26 @@ void main() async {
   runApp(const MainApp());
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
+
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  RateMyApp rateMyApp = RateMyApp(minDays: 0, minLaunches: 0);
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await rateMyApp.init();
+      if (mounted && rateMyApp.shouldOpenDialog) {  
+        rateMyApp.showRateDialog(context);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
