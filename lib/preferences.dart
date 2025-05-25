@@ -68,8 +68,7 @@ class Preferences {
         "activity": {
           "type": "<%= activity.type %>"
         },
-        "_": "&id=${instance.getString(id)}&lat=<%= latitude %>&lon=<%= longitude %>&timestamp=<%= timestamp %>&",
-        "extras": {}
+        "_": "&id=${instance.getString(id)}&lat=<%= latitude %>&lon=<%= longitude %>&timestamp=<%= timestamp %>&"
       }'''.split('\n').map((line) => line.trimLeft()).join(),
     );
   }
