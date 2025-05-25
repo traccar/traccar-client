@@ -48,6 +48,29 @@ class Preferences {
       maxRecordsToPersist: instance.getBool(buffer) != false ? -1 : 0,
       logLevel: bg.Config.LOG_LEVEL_INFO,
       logMaxDays: 1,
+      locationTemplate: '''{
+        "timestamp": "<%= timestamp %>",
+        "coords": {
+          "latitude": <%= latitude %>,
+          "longitude": <%= longitude %>,
+          "accuracy": <%= accuracy %>,
+          "speed": <%= speed %>,
+          "heading": <%= heading %>,
+          "altitude": <%= altitude %>
+        },
+        "is_moving": <%= is_moving %>,
+        "odometer": <%= odometer %>,
+        "event": "<%= event %>",
+        "battery": {
+          "level": <%= battery.level %>,
+          "is_charging": <%= battery.is_charging %>
+        },
+        "activity": {
+          "type": "<%= activity.type %>"
+        },
+        "_": "&id=${instance.getString(id)}&lat=<%= latitude %>&lon=<%= longitude %>&timestamp=<%= timestamp %>&",
+        "extras": {}
+      }'''.split('\n').map((line) => line.trimLeft()).join(),
     );
   }
 
