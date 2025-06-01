@@ -10,6 +10,7 @@
   "settingsButton": "Change settings",
   "idLabel": "Device identifier",
   "urlLabel": "Server URL",
+  "invalidUrlError": "Invalid URL",
   "accuracyLabel": "Location accuracy",
   "highAccuracyLabel": "High",
   "mediumAccuracyLabel": "Medium",

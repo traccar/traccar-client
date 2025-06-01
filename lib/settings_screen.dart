@@ -67,6 +67,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
 
     if (result != null && result.isNotEmpty) {
+      if (!isInt && key == Preferences.url) {
+        final uri = Uri.tryParse(result);
+        if (uri == null ||
+            uri.host.isEmpty ||
+            !(uri.scheme == 'http' || uri.scheme == 'https')) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content:
+                  Text(AppLocalizations.of(context)!.invalidUrlError),
+            ),
+          );
+          return;
+        }
+      }
       if (isInt) {
         final intValue = int.tryParse(result);
         if (intValue != null) {
