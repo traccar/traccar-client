@@ -43,6 +43,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         : Preferences.instance.getString(key) ?? '';
 
     final controller = TextEditingController(text: initialValue);
+    final scaffoldManager = ScaffoldMessenger.of(context);
+    final errorMessage = AppLocalizations.of(context)!.invalidValue;
 
     final result = await showDialog<String>(
       context: context,
@@ -67,6 +69,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
 
     if (result != null && result.isNotEmpty) {
+      if (key == Preferences.url) {
+        final uri = Uri.tryParse(result);
+        if (uri == null || uri.host.isEmpty || !(uri.scheme == 'http' || uri.scheme == 'https')) {
+          scaffoldManager.showSnackBar(SnackBar(content: Text(errorMessage)));
+          return;
+        }
+      }
       if (isInt) {
         final intValue = int.tryParse(result);
         if (intValue != null) {

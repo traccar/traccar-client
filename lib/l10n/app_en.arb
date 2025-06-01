@@ -8,6 +8,7 @@
   "locationButton": "Send location",
   "statusButton": "Show status",
   "settingsButton": "Change settings",
+  "invalidValue": "Invalid value",
   "idLabel": "Device identifier",
   "urlLabel": "Server URL",
   "accuracyLabel": "Location accuracy",
