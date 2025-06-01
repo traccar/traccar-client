@@ -39,7 +39,7 @@ class Preferences {
         'low' => bg.Config.DESIRED_ACCURACY_LOW,
         _ => bg.Config.DESIRED_ACCURACY_MEDIUM,
       },
-      url: instance.getString(url),
+      url: _formatUrl(instance.getString(url)),
       params: {
         "device_id": instance.getString(id),
       },
@@ -48,30 +48,41 @@ class Preferences {
       maxRecordsToPersist: instance.getBool(buffer) != false ? -1 : 0,
       logLevel: bg.Config.LOG_LEVEL_INFO,
       logMaxDays: 1,
-      locationTemplate: '''{
-        "timestamp": "<%= timestamp %>",
-        "coords": {
-          "latitude": <%= latitude %>,
-          "longitude": <%= longitude %>,
-          "accuracy": <%= accuracy %>,
-          "speed": <%= speed %>,
-          "heading": <%= heading %>,
-          "altitude": <%= altitude %>
-        },
-        "is_moving": <%= is_moving %>,
-        "odometer": <%= odometer %>,
-        "event": "<%= event %>",
-        "battery": {
-          "level": <%= battery.level %>,
-          "is_charging": <%= battery.is_charging %>
-        },
-        "activity": {
-          "type": "<%= activity.type %>"
-        },
-        "extras": {},
-        "_": "&id=${instance.getString(id)}&lat=<%= latitude %>&lon=<%= longitude %>&timestamp=<%= timestamp %>&"
-      }'''.split('\n').map((line) => line.trimLeft()).join(),
+      locationTemplate: _locationTemplate(),
     );
+  }
+
+  static String? _formatUrl(String? url) {
+    if (url == null) return null;
+    final uri = Uri.parse(url);
+    if ((uri.path.isEmpty || uri.path == '') && !url.endsWith('/')) return '$url/';
+    return url;
+  }
+
+  static String _locationTemplate() {
+    return '''{
+      "timestamp": "<%= timestamp %>",
+      "coords": {
+        "latitude": <%= latitude %>,
+        "longitude": <%= longitude %>,
+        "accuracy": <%= accuracy %>,
+        "speed": <%= speed %>,
+        "heading": <%= heading %>,
+        "altitude": <%= altitude %>
+      },
+      "is_moving": <%= is_moving %>,
+      "odometer": <%= odometer %>,
+      "event": "<%= event %>",
+      "battery": {
+        "level": <%= battery.level %>,
+        "is_charging": <%= battery.is_charging %>
+      },
+      "activity": {
+        "type": "<%= activity.type %>"
+      },
+      "extras": {},
+      "_": "&id=${instance.getString(id)}&lat=<%= latitude %>&lon=<%= longitude %>&timestamp=<%= timestamp %>&"
+    }'''.split('\n').map((line) => line.trimLeft()).join();
   }
 
   static Future<void> _migrate() async {
