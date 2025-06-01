@@ -72,7 +72,7 @@ class _MainScreenState extends State<MainScreen> {
                 FilledButton.tonal(
                   onPressed: () async {
                     try {
-                      await bg.BackgroundGeolocation.getCurrentPosition(samples: 1);
+                      await bg.BackgroundGeolocation.getCurrentPosition(samples: 1, persist: true);
                       await bg.BackgroundGeolocation.sync();
                     } catch (error) {
                       developer.log('Failed to fetch location', error: error);

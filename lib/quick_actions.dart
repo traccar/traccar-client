@@ -27,7 +27,7 @@ class _QuickActionsInitializerState extends State<QuickActionsInitializer> {
           bg.BackgroundGeolocation.stop();
         case 'sos':
           try {
-            await bg.BackgroundGeolocation.getCurrentPosition(samples: 1, extras: {'alarm': 'sos'});
+            await bg.BackgroundGeolocation.getCurrentPosition(samples: 1, persist: true, extras: {'alarm': 'sos'});
             await bg.BackgroundGeolocation.sync();
           } catch (error) {
             developer.log('Failed to send alert', error: error);
