@@ -4,9 +4,10 @@ import 'dart:math';
 
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences_android/shared_preferences_android.dart';
 
 class Preferences {
-  static late SharedPreferences instance;
+  static late SharedPreferencesWithCache instance;
   static const String id = 'id';
   static const String url = 'url';
   static const String accuracy = 'accuracy';
@@ -15,7 +16,18 @@ class Preferences {
   static const String buffer = 'buffer';
 
   static Future<void> init() async {
-    instance = await SharedPreferences.getInstance();
+    instance = await SharedPreferencesWithCache.create(
+      sharedPreferencesOptions: Platform.isAndroid
+        ? SharedPreferencesAsyncAndroidOptions(backend: SharedPreferencesAndroidBackendLibrary.SharedPreferences)
+        : SharedPreferencesOptions(),
+      cacheOptions: SharedPreferencesWithCacheOptions(
+        allowList: {
+          'id', 'url', 'accuracy', 'interval', 'distance', 'buffer',
+          'device_id_preference', 'server_url_preference', 'accuracy_preference',
+          'frequency_preference', 'distance_preference', 'buffer_preference',
+        },
+      ),
+    );
     if (Platform.isIOS) {
       await _migrate();
     }
@@ -112,12 +124,6 @@ class Preferences {
     if (oldDistance != null) {
       instance.setInt(distance, oldDistance);
       instance.remove('distance_preference');
-    }
-    final oldAngleString = instance.getString('angle_preference');
-    final oldAngle = oldAngleString != null ? int.tryParse(oldAngleString) : null;
-    if (oldAngle != null) {
-      instance.setInt('angle', oldAngle);
-      instance.remove('angle_preference');
     }
     final oldBuffer = instance.getBool('buffer_preference');
     if (oldBuffer != null) {
