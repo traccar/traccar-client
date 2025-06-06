@@ -11,10 +11,7 @@ jobs:
       - run: git config --global user.email "actions@github.com" && git config --global user.name "actions"
       - run: pip install transifex-client
       - run: echo -e "[https://www.transifex.com]\ntoken = ${{ secrets.TRANSIFEX_TOKEN }}" > ~/.transifexrc
-      - run: |
-          tx init
-          tx set --auto-local -r traccar.client "lib/l10n/<lang>.arb" --source-lang en --type KEYVALUEJSON
-          tx pull -a
+      - run: tx pull -a
       - run: |
           git config --global user.name "Traccar Bot"
           git config --global user.email "support@traccar.org"
