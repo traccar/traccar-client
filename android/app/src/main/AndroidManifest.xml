@@ -35,7 +35,9 @@
             android:name="flutterEmbedding"
             android:value="2" />
         <!-- flutter_background_geolocation license -->
-        <meta-data android:name="com.transistorsoft.locationmanager.license" android:value="ddc599599cddaa61dfe5bb25c2b46f549c6d749fae5d0273297b304753e2e5e3" />
+        <meta-data
+            android:name="com.transistorsoft.locationmanager.license"
+            android:value="ddc599599cddaa61dfe5bb25c2b46f549c6d749fae5d0273297b304753e2e5e3" />
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and
