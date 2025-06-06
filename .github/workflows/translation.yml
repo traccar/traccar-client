@@ -12,7 +12,7 @@ jobs:
       - run: pip install transifex-client
       - run: echo -e "[https://www.transifex.com]\ntoken = ${{ secrets.TRANSIFEX_TOKEN }}" > ~/.transifexrc
       - run: |
-          tx init --no-interactive
+          tx init
           tx set --auto-local -r traccar.client "lib/l10n/<lang>.arb" --source-lang en --type KEYVALUEJSON
           tx pull -a
       - run: |
