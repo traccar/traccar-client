@@ -1,10 +1,10 @@
 import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:traccar_client/preferences.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 
+import 'l10n/app_localizations.dart';
 import 'status_screen.dart';
 import 'settings_screen.dart';
 

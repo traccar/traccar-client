@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 
+import 'l10n/app_localizations.dart';
 import 'preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
