@@ -1,8 +1,8 @@
 [main]
-hostname = https://www.transifex.com
+host = https://www.transifex.com
 
-[traccar.client]
-file_filter = lib/l10n/<lang>.arb
+[o:traccar:p:traccar:r:client]
 source_file = lib/l10n/app_en.arb
-source_lang = en
+file_filter = lib/l10n/<lang>.arb
 type = KEYVALUEJSON
+source_lang = en
