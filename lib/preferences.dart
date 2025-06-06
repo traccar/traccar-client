@@ -28,7 +28,16 @@ class Preferences {
         },
       ),
     );
-    if (Platform.isIOS) {
+    if (Platform.isAndroid) {
+      if (instance.get(interval) is String) {
+        final stringValue = instance.getString(interval);
+        await instance.setInt(interval, int.tryParse(stringValue ?? '') ?? 300);
+      }
+      if (instance.get(distance) is String) {
+        final stringValue = instance.getString(distance);
+        await instance.setInt(distance, int.tryParse(stringValue ?? '') ?? 75);
+      }
+    } else {
       await _migrate();
     }
     await instance.setString(id, instance.getString(id) ?? (Random().nextInt(90000000) + 10000000).toString());
