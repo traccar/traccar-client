@@ -5,4 +5,4 @@ host = https://www.transifex.com
 source_file = lib/l10n/app_en.arb
 file_filter = lib/l10n/<lang>.arb
 type = ARB
-source_lang = en
+resource_name = client
