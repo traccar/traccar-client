@@ -3,6 +3,6 @@ host = https://www.transifex.com
 
 [o:traccar:p:traccar:r:client]
 source_file = lib/l10n/app_en.arb
-file_filter = lib/l10n/<lang>.arb
+file_filter = lib/l10n/app_<lang>.arb
 type = ARB
 resource_name = client
