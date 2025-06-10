@@ -64,7 +64,7 @@ class Preferences {
       },
       distanceFilter: instance.getInt(distance)?.toDouble(),
       locationUpdateInterval: (instance.getInt(interval) ?? 0) * 1000,
-      maxRecordsToPersist: instance.getBool(buffer) != false ? -1 : 0,
+      maxRecordsToPersist: instance.getBool(buffer) != false ? -1 : 1,
       logLevel: bg.Config.LOG_LEVEL_INFO,
       logMaxDays: 1,
       locationTemplate: _locationTemplate(),
