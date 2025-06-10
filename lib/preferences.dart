@@ -35,7 +35,8 @@ class Preferences {
       }
       if (instance.get(distance) is String) {
         final stringValue = instance.getString(distance);
-        await instance.setInt(distance, int.tryParse(stringValue ?? '') ?? 75);
+        final intValue = int.tryParse(stringValue ?? '') ?? 75;
+        await instance.setInt(distance, intValue > 0 ? intValue : 75);
       }
     } else {
       await _migrate();
@@ -44,10 +45,7 @@ class Preferences {
     await instance.setString(url, instance.getString(url) ?? 'http://demo.traccar.org:5055');
     await instance.setString(accuracy, instance.getString(accuracy) ?? 'medium');
     await instance.setInt(interval, instance.getInt(interval) ?? 300);
-    final distanceValue = instance.getInt(distance);
-    if (distanceValue == null || distanceValue <= 0) {
-      await instance.setInt(distance, 75);
-    }
+    await instance.setInt(distance, instance.getInt(distance) ?? 75);
     await instance.setBool(buffer, instance.getBool(buffer) ?? true);
   }
 
@@ -131,7 +129,7 @@ class Preferences {
     final oldDistanceString = instance.getString('distance_preference');
     final oldDistance = oldDistanceString != null ? int.tryParse(oldDistanceString) : null;
     if (oldDistance != null) {
-      instance.setInt(distance, oldDistance);
+      instance.setInt(distance, oldDistance > 0 ? oldDistance : 75);
       instance.remove('distance_preference');
     }
     final oldBuffer = instance.getBool('buffer_preference');
