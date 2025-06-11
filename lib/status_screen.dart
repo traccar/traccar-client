@@ -27,6 +27,10 @@ class _StatusScreenState extends State<StatusScreen> {
     });
   }
 
+  Future<void> _emailLogs() async {
+    await bg.Logger.emailLog("support@traccar.org");
+  }
+
   Future<void> _clearLogs() async {
     await bg.Logger.destroyLog();
     setState(() => _logs.clear());
@@ -41,6 +45,10 @@ class _StatusScreenState extends State<StatusScreen> {
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: _refreshLogs,
+          ),
+          IconButton(
+            icon: const Icon(Icons.share),
+            onPressed: _emailLogs,
           ),
           IconButton(
             icon: const Icon(Icons.delete),
