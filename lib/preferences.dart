@@ -15,6 +15,9 @@ class Preferences {
   static const String distance = 'distance';
   static const String heartbeat = 'heartbeat';
   static const String buffer = 'buffer';
+  static const String preventSuspend = 'prevent_suspend';
+  static const String disableElasticity = 'disable_elasticity';
+  static const String stopDetection = 'stop_detection';
 
   static Future<void> init() async {
     instance = await SharedPreferencesWithCache.create(
@@ -24,6 +27,7 @@ class Preferences {
       cacheOptions: SharedPreferencesWithCacheOptions(
         allowList: {
           id, url, accuracy, interval, distance, buffer, heartbeat,
+          preventSuspend, disableElasticity, stopDetection,
           'device_id_preference', 'server_url_preference', 'accuracy_preference',
           'frequency_preference', 'distance_preference', 'buffer_preference',
         },
@@ -47,12 +51,12 @@ class Preferences {
     await instance.setString(accuracy, instance.getString(accuracy) ?? 'medium');
     await instance.setInt(interval, instance.getInt(interval) ?? 300);
     await instance.setInt(distance, instance.getInt(distance) ?? 75);
-    await instance.setInt(heartbeat, instance.getInt(heartbeat) ?? 0);
     await instance.setBool(buffer, instance.getBool(buffer) ?? true);
+    await instance.setBool(stopDetection, instance.getBool(stopDetection) ?? true);
   }
 
   static bg.Config geolocationConfig() {
-    final heartbeatInterval = instance.getInt(interval) ?? 0;
+    final heartbeatInterval = instance.getInt(heartbeat) ?? 0;
     return bg.Config(
       stopOnTerminate: false,
       startOnBoot: true,
@@ -73,6 +77,10 @@ class Preferences {
       logMaxDays: 1,
       locationTemplate: _locationTemplate(),
       showsBackgroundLocationIndicator: false,
+      preventSuspend: instance.getBool(preventSuspend),
+      disableElasticity: instance.getBool(disableElasticity),
+      disableStopDetection: instance.getBool(stopDetection) == false,
+      pausesLocationUpdatesAutomatically: instance.getBool(stopDetection) == false,
     );
   }
 
