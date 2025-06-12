@@ -135,6 +135,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           _buildListTile(AppLocalizations.of(context)!.distanceLabel, Preferences.distance, true),
           if (Platform.isAndroid && Preferences.instance.getInt(Preferences.distance) == 0)
             _buildListTile(AppLocalizations.of(context)!.intervalLabel, Preferences.interval, true),
+          _buildListTile(AppLocalizations.of(context)!.heartbeatLabel, Preferences.heartbeat, true),
           SwitchListTile(
             title: Text(AppLocalizations.of(context)!.bufferLabel),
             value: buffering,

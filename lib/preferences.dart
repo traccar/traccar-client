@@ -13,6 +13,7 @@ class Preferences {
   static const String accuracy = 'accuracy';
   static const String interval = 'interval';
   static const String distance = 'distance';
+  static const String heartbeat = 'heartbeat';
   static const String buffer = 'buffer';
 
   static Future<void> init() async {
@@ -22,7 +23,7 @@ class Preferences {
         : SharedPreferencesOptions(),
       cacheOptions: SharedPreferencesWithCacheOptions(
         allowList: {
-          'id', 'url', 'accuracy', 'interval', 'distance', 'buffer',
+          id, url, accuracy, interval, distance, buffer, heartbeat,
           'device_id_preference', 'server_url_preference', 'accuracy_preference',
           'frequency_preference', 'distance_preference', 'buffer_preference',
         },
@@ -46,10 +47,12 @@ class Preferences {
     await instance.setString(accuracy, instance.getString(accuracy) ?? 'medium');
     await instance.setInt(interval, instance.getInt(interval) ?? 300);
     await instance.setInt(distance, instance.getInt(distance) ?? 75);
+    await instance.setInt(heartbeat, instance.getInt(heartbeat) ?? 0);
     await instance.setBool(buffer, instance.getBool(buffer) ?? true);
   }
 
   static bg.Config geolocationConfig() {
+    final heartbeatInterval = instance.getInt(interval) ?? 0;
     return bg.Config(
       stopOnTerminate: false,
       startOnBoot: true,
@@ -64,10 +67,12 @@ class Preferences {
       },
       distanceFilter: instance.getInt(distance)?.toDouble(),
       locationUpdateInterval: (instance.getInt(interval) ?? 0) * 1000,
+      heartbeatInterval: heartbeatInterval > 0 ? heartbeatInterval : null,
       maxRecordsToPersist: instance.getBool(buffer) != false ? -1 : 1,
       logLevel: bg.Config.LOG_LEVEL_INFO,
       logMaxDays: 1,
       locationTemplate: _locationTemplate(),
+      showsBackgroundLocationIndicator: false,
     );
   }
 

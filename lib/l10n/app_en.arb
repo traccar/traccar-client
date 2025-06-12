@@ -16,6 +16,7 @@
   "lowAccuracyLabel": "Low",
   "intervalLabel": "Interval (seconds)",
   "distanceLabel": "Distance (meters)",
+  "heartbeatLabel": "Heartbeat (seconds)",
   "bufferLabel": "Offline buffering",
   "trackingLabel": "Continuous tracking",
   "startAction": "Start service",
