@@ -96,7 +96,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _buildListTile(String title, String key, bool isInt) {
-    final value = isInt ? Preferences.instance.getInt(key)?.toString() : Preferences.instance.getString(key);
+    String? value;
+    if (isInt) {
+      final intValue = Preferences.instance.getInt(key);
+      if (intValue != null && intValue > 0) {
+        value = intValue.toString();
+      } else {
+        value = AppLocalizations.of(context)!.disabledValue;
+      }
+    } else {
+      value = Preferences.instance.getString(key);
+    }
     return ListTile(
       title: Text(title),
       subtitle: Text(value ?? ''),
