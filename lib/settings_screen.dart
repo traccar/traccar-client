@@ -17,7 +17,6 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   bool buffering = true;
   bool preventSuspend = false;
-  bool disableElasticity = false;
   bool stopDetection = false;
   bool advanced = false;
 
@@ -31,7 +30,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     setState(() {
       buffering = Preferences.instance.getBool(Preferences.buffer) ?? true;
       preventSuspend = Preferences.instance.getBool(Preferences.preventSuspend) ?? false;
-      disableElasticity = Preferences.instance.getBool(Preferences.disableElasticity) ?? false;
       stopDetection = Preferences.instance.getBool(Preferences.stopDetection) ?? true;
     });
   }
@@ -158,16 +156,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 await Preferences.instance.setBool(Preferences.buffer, value);
                 await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
                 setState(() => buffering = value);
-              },
-            ),
-          if (advanced)
-            SwitchListTile(
-              title: Text(AppLocalizations.of(context)!.disableElasticityLabel),
-              value: disableElasticity,
-              onChanged: (value) async {
-                await Preferences.instance.setBool(Preferences.disableElasticity, value);
-                await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
-                setState(() => disableElasticity = value);
               },
             ),
           if (advanced)
