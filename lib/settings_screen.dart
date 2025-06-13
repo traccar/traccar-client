@@ -19,6 +19,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool preventSuspend = false;
   bool disableElasticity = false;
   bool stopDetection = false;
+  bool advanced = false;
 
   @override
   void initState() {
@@ -132,7 +133,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.settingsTitle)),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.settingsTitle),
+        actions: [
+          Row(
+            children: [
+              Text(AppLocalizations.of(context)!.advancedLabel),
+              Switch(
+                value: advanced,
+                onChanged: (value) => setState(() => advanced = value),
+              ),
+            ],
+          ),
+        ],
+      ),
       body: ListView(
         children: [
           _buildListTile(AppLocalizations.of(context)!.idLabel, Preferences.id, false),
@@ -151,25 +165,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
               setState(() => buffering = value);
             },
           ),
-          SwitchListTile(
-            title: Text(AppLocalizations.of(context)!.disableElasticityLabel),
-            value: disableElasticity,
-            onChanged: (value) async {
-              await Preferences.instance.setBool(Preferences.disableElasticity, value);
-              await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
-              setState(() => disableElasticity = value);
-            },
-          ),
-          SwitchListTile(
-            title: Text(AppLocalizations.of(context)!.stopDetectionLabel),
-            value: stopDetection,
-            onChanged: (value) async {
-              await Preferences.instance.setBool(Preferences.stopDetection, value);
-              await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
-              setState(() => stopDetection = value);
-            },
-          ),
-          if (Platform.isIOS)
+          if (advanced)
+            SwitchListTile(
+              title: Text(AppLocalizations.of(context)!.disableElasticityLabel),
+              value: disableElasticity,
+              onChanged: (value) async {
+                await Preferences.instance.setBool(Preferences.disableElasticity, value);
+                await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
+                setState(() => disableElasticity = value);
+              },
+            ),
+          if (advanced)
+            SwitchListTile(
+              title: Text(AppLocalizations.of(context)!.stopDetectionLabel),
+              value: stopDetection,
+              onChanged: (value) async {
+                await Preferences.instance.setBool(Preferences.stopDetection, value);
+                await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
+                setState(() => stopDetection = value);
+              },
+            ),
+          if (advanced && Platform.isIOS)
             SwitchListTile(
               title: Text(AppLocalizations.of(context)!.preventSuspendLabel),
               value: preventSuspend,
