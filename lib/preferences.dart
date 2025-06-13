@@ -53,6 +53,7 @@ class Preferences {
   }
 
   static bg.Config geolocationConfig() {
+    final locationUpdateInterval = (instance.getInt(interval) ?? 0) * 1000;
     final heartbeatInterval = instance.getInt(heartbeat) ?? 0;
     return bg.Config(
       enableHeadless: true,
@@ -68,7 +69,7 @@ class Preferences {
         "device_id": instance.getString(id),
       },
       distanceFilter: instance.getInt(distance)?.toDouble(),
-      locationUpdateInterval: (instance.getInt(interval) ?? 0) * 1000,
+      locationUpdateInterval: locationUpdateInterval > 0 ? locationUpdateInterval : null,
       heartbeatInterval: heartbeatInterval > 0 ? heartbeatInterval : null,
       maxRecordsToPersist: instance.getBool(buffer) != false ? -1 : 1,
       logLevel: bg.Config.LOG_LEVEL_VERBOSE,
