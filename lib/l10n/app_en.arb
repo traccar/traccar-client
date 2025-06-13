@@ -15,6 +15,7 @@
   "mediumAccuracyLabel": "Medium",
   "lowAccuracyLabel": "Low",
   "intervalLabel": "Interval (seconds)",
+  "fastestIntervalLabel": "Fastest interval (seconds)",
   "distanceLabel": "Distance (meters)",
   "heartbeatLabel": "Heartbeat (seconds)",
   "bufferLabel": "Offline buffering",

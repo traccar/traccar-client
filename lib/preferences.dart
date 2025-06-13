@@ -16,6 +16,7 @@ class Preferences {
   static const String heartbeat = 'heartbeat';
   static const String buffer = 'buffer';
   static const String stopDetection = 'stop_detection';
+  static const String fastestInterval = 'fastest_interval';
 
   static Future<void> init() async {
     instance = await SharedPreferencesWithCache.create(
@@ -24,7 +25,7 @@ class Preferences {
         : SharedPreferencesOptions(),
       cacheOptions: SharedPreferencesWithCacheOptions(
         allowList: {
-          id, url, accuracy, interval, distance, buffer, heartbeat, stopDetection,
+          id, url, accuracy, interval, distance, buffer, heartbeat, stopDetection, fastestInterval,
           'device_id_preference', 'server_url_preference', 'accuracy_preference',
           'frequency_preference', 'distance_preference', 'buffer_preference',
         },
@@ -50,10 +51,12 @@ class Preferences {
     await instance.setInt(distance, instance.getInt(distance) ?? 75);
     await instance.setBool(buffer, instance.getBool(buffer) ?? true);
     await instance.setBool(stopDetection, instance.getBool(stopDetection) ?? true);
+    await instance.setInt(fastestInterval, instance.getInt(fastestInterval) ?? 30);
   }
 
   static bg.Config geolocationConfig() {
     final locationUpdateInterval = (instance.getInt(interval) ?? 0) * 1000;
+    final fastestLocationUpdateInterval = (instance.getInt(fastestInterval) ?? 30) * 1000;
     final heartbeatInterval = instance.getInt(heartbeat) ?? 0;
     return bg.Config(
       enableHeadless: true,
@@ -80,6 +83,7 @@ class Preferences {
       disableElasticity: true,
       disableStopDetection: instance.getBool(stopDetection) == false,
       pausesLocationUpdatesAutomatically: instance.getBool(stopDetection) == false,
+      fastestLocationUpdateInterval: fastestLocationUpdateInterval > 0 ? fastestLocationUpdateInterval : null,
     );
   }
 

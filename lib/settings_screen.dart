@@ -149,6 +149,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               setState(() => advanced = value);
             },
           ),
+          if (Platform.isAndroid && advanced)
+            _buildListTile(AppLocalizations.of(context)!.fastestIntervalLabel, Preferences.fastestInterval, true),
           if (advanced)
             SwitchListTile(
               title: Text(AppLocalizations.of(context)!.bufferLabel),
