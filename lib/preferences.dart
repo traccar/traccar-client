@@ -55,6 +55,7 @@ class Preferences {
   static bg.Config geolocationConfig() {
     final heartbeatInterval = instance.getInt(heartbeat) ?? 0;
     return bg.Config(
+      enableHeadless: true,
       stopOnTerminate: false,
       startOnBoot: true,
       desiredAccuracy: switch (instance.getString(accuracy)) {
