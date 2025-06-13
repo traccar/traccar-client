@@ -82,8 +82,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
         }
       }
       if (isInt) {
-        final intValue = int.tryParse(result);
+        int? intValue = int.tryParse(result);
         if (intValue != null) {
+          if (key == Preferences.heartbeat && intValue > 0 && intValue < 60) {
+            intValue = 60; // minimum heartbeat is 60 seconds
+          }
           await Preferences.instance.setInt(key, intValue);
         }
       } else {
