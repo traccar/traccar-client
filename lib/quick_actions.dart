@@ -1,6 +1,7 @@
 import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 
@@ -33,6 +34,9 @@ class _QuickActionsInitializerState extends State<QuickActionsInitializer> {
           } catch (error) {
             developer.log('Failed to send alert', error: error);
           }
+      }
+      if (mounted) {
+        SystemNavigator.pop();
       }
     });
   }
