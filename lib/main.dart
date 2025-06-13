@@ -15,7 +15,18 @@ void main() async {
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   await Preferences.init();
   await bg.BackgroundGeolocation.ready(Preferences.geolocationConfig());
+  await bg.BackgroundGeolocation.registerHeadlessTask(headlessTask);
+  bg.BackgroundGeolocation.onHeartbeat((bg.HeartbeatEvent event) async {
+    await bg.BackgroundGeolocation.getCurrentPosition(samples: 1, persist: true);
+  });
   runApp(const MainApp());
+}
+
+@pragma('vm:entry-point')
+void headlessTask(bg.HeadlessEvent headlessEvent) async {
+  if (headlessEvent.name == bg.Event.HEARTBEAT) {
+    await bg.BackgroundGeolocation.getCurrentPosition(samples: 1, persist: true);
+  }
 }
 
 class MainApp extends StatefulWidget {
