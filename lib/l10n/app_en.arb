@@ -18,7 +18,6 @@
   "distanceLabel": "Distance (meters)",
   "heartbeatLabel": "Heartbeat (seconds)",
   "bufferLabel": "Offline buffering",
-  "preventSuspendLabel": "Prevent suspend",
   "disableElasticityLabel": "Disable elasticity",
   "stopDetectionLabel": "Stop detection",
   "trackingLabel": "Continuous tracking",

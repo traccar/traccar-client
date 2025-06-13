@@ -16,7 +16,6 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool buffering = true;
-  bool preventSuspend = false;
   bool stopDetection = false;
   bool advanced = false;
 
@@ -29,7 +28,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void _initState() async {
     setState(() {
       buffering = Preferences.instance.getBool(Preferences.buffer) ?? true;
-      preventSuspend = Preferences.instance.getBool(Preferences.preventSuspend) ?? false;
       stopDetection = Preferences.instance.getBool(Preferences.stopDetection) ?? true;
     });
   }
@@ -169,16 +167,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 await Preferences.instance.setBool(Preferences.stopDetection, value);
                 await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
                 setState(() => stopDetection = value);
-              },
-            ),
-          if (advanced && Platform.isIOS)
-            SwitchListTile(
-              title: Text(AppLocalizations.of(context)!.preventSuspendLabel),
-              value: preventSuspend,
-              onChanged: (value) async {
-                await Preferences.instance.setBool(Preferences.preventSuspend, value);
-                await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
-                setState(() => preventSuspend = value);
               },
             ),
         ],

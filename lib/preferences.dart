@@ -15,7 +15,6 @@ class Preferences {
   static const String distance = 'distance';
   static const String heartbeat = 'heartbeat';
   static const String buffer = 'buffer';
-  static const String preventSuspend = 'prevent_suspend';
   static const String stopDetection = 'stop_detection';
 
   static Future<void> init() async {
@@ -25,7 +24,7 @@ class Preferences {
         : SharedPreferencesOptions(),
       cacheOptions: SharedPreferencesWithCacheOptions(
         allowList: {
-          id, url, accuracy, interval, distance, buffer, heartbeat, preventSuspend, stopDetection,
+          id, url, accuracy, interval, distance, buffer, heartbeat, stopDetection,
           'device_id_preference', 'server_url_preference', 'accuracy_preference',
           'frequency_preference', 'distance_preference', 'buffer_preference',
         },
@@ -75,7 +74,7 @@ class Preferences {
       logMaxDays: 1,
       locationTemplate: _locationTemplate(),
       showsBackgroundLocationIndicator: false,
-      preventSuspend: instance.getBool(preventSuspend),
+      preventSuspend: heartbeatInterval > 0,
       disableElasticity: true,
       disableStopDetection: instance.getBool(stopDetection) == false,
       pausesLocationUpdatesAutomatically: instance.getBool(stopDetection) == false,
