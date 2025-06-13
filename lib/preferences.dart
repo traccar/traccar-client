@@ -71,7 +71,7 @@ class Preferences {
       locationUpdateInterval: (instance.getInt(interval) ?? 0) * 1000,
       heartbeatInterval: heartbeatInterval > 0 ? heartbeatInterval : null,
       maxRecordsToPersist: instance.getBool(buffer) != false ? -1 : 1,
-      logLevel: bg.Config.LOG_LEVEL_INFO,
+      logLevel: bg.Config.LOG_LEVEL_VERBOSE,
       logMaxDays: 1,
       locationTemplate: _locationTemplate(),
       showsBackgroundLocationIndicator: false,
