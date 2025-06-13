@@ -21,8 +21,8 @@
   "preventSuspendLabel": "Prevent suspend",
   "disableElasticityLabel": "Disable elasticity",
   "stopDetectionLabel": "Stop detection",
-  "advancedLabel": "Show advanced settings",
   "trackingLabel": "Continuous tracking",
+  "advancedLabel": "Advanced settings",
   "startAction": "Start service",
   "stopAction": "Stop service",
   "sosAction": "Send SOS"

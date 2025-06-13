@@ -133,20 +133,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.settingsTitle),
-        actions: [
-          Row(
-            children: [
-              Text(AppLocalizations.of(context)!.advancedLabel),
-              Switch(
-                value: advanced,
-                onChanged: (value) => setState(() => advanced = value),
-              ),
-            ],
-          ),
-        ],
-      ),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.settingsTitle)),
       body: ListView(
         children: [
           _buildListTile(AppLocalizations.of(context)!.idLabel, Preferences.id, false),
@@ -157,14 +144,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
             _buildListTile(AppLocalizations.of(context)!.intervalLabel, Preferences.interval, true),
           _buildListTile(AppLocalizations.of(context)!.heartbeatLabel, Preferences.heartbeat, true),
           SwitchListTile(
-            title: Text(AppLocalizations.of(context)!.bufferLabel),
-            value: buffering,
-            onChanged: (value) async {
-              await Preferences.instance.setBool(Preferences.buffer, value);
-              await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
-              setState(() => buffering = value);
+            title: Text(AppLocalizations.of(context)!.advancedLabel),
+            value: advanced,
+            onChanged: (value) {
+              setState(() => advanced = value);
             },
           ),
+          if (advanced)
+            SwitchListTile(
+              title: Text(AppLocalizations.of(context)!.bufferLabel),
+              value: buffering,
+              onChanged: (value) async {
+                await Preferences.instance.setBool(Preferences.buffer, value);
+                await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
+                setState(() => buffering = value);
+              },
+            ),
           if (advanced)
             SwitchListTile(
               title: Text(AppLocalizations.of(context)!.disableElasticityLabel),
