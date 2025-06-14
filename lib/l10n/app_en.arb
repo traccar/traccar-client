@@ -20,7 +20,7 @@
   "distanceLabel": "Distance (meters)",
   "heartbeatLabel": "Stationary heartbeat (seconds)",
   "bufferLabel": "Offline buffering",
-  "disableElasticityLabel": "Disable elasticity",
+  "wakelockLabel": "Wake lock",
   "stopDetectionLabel": "Stop detection",
   "trackingLabel": "Continuous tracking",
   "motionLabel": "Active movement",

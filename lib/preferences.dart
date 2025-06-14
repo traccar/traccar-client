@@ -15,6 +15,7 @@ class Preferences {
   static const String distance = 'distance';
   static const String heartbeat = 'heartbeat';
   static const String buffer = 'buffer';
+  static const String wakelock = 'wakelock';
   static const String stopDetection = 'stop_detection';
   static const String fastestInterval = 'fastest_interval';
 
@@ -25,7 +26,7 @@ class Preferences {
         : SharedPreferencesOptions(),
       cacheOptions: SharedPreferencesWithCacheOptions(
         allowList: {
-          id, url, accuracy, interval, distance, buffer, heartbeat, stopDetection, fastestInterval,
+          id, url, accuracy, interval, distance, buffer, heartbeat, wakelock, stopDetection, fastestInterval,
           'device_id_preference', 'server_url_preference', 'accuracy_preference',
           'frequency_preference', 'distance_preference', 'buffer_preference',
         },

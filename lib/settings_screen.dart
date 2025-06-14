@@ -15,9 +15,10 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool buffering = true;
-  bool stopDetection = false;
   bool advanced = false;
+  bool buffering = true;
+  bool wakelock = false;
+  bool stopDetection = true;
 
   @override
   void initState() {
@@ -28,6 +29,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void _initState() async {
     setState(() {
       buffering = Preferences.instance.getBool(Preferences.buffer) ?? true;
+      wakelock = Preferences.instance.getBool(Preferences.wakelock) ?? false;
       stopDetection = Preferences.instance.getBool(Preferences.stopDetection) ?? true;
     });
   }
@@ -169,6 +171,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 await Preferences.instance.setBool(Preferences.buffer, value);
                 await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
                 setState(() => buffering = value);
+              },
+            ),
+          if (advanced && Platform.isAndroid)
+            SwitchListTile(
+              title: Text(AppLocalizations.of(context)!.wakelockLabel),
+              value: wakelock,
+              onChanged: (value) async {
+                await Preferences.instance.setBool(Preferences.wakelock, value);
+                setState(() => wakelock = value);
               },
             ),
           if (advanced)
