@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +17,9 @@ void main() async {
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   await Preferences.init();
   await bg.BackgroundGeolocation.ready(Preferences.geolocationConfig());
-  await bg.BackgroundGeolocation.registerHeadlessTask(headlessTask);
+  if (Platform.isAndroid) {
+    await bg.BackgroundGeolocation.registerHeadlessTask(headlessTask);
+  }
   bg.BackgroundGeolocation.onHeartbeat((bg.HeartbeatEvent event) async {
     await bg.BackgroundGeolocation.getCurrentPosition(samples: 1, persist: true);
   });
