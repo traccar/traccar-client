@@ -17,6 +17,8 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   bool trackingEnabled = false;
+  bool? stopDetection;
+  bool? isMoving;
 
   @override
   void initState() {
@@ -28,10 +30,17 @@ class _MainScreenState extends State<MainScreen> {
     final state = await bg.BackgroundGeolocation.state;
     setState(() {
       trackingEnabled = state.enabled;
+      stopDetection = Preferences.instance.getBool(Preferences.stopDetection);
+      isMoving = state.isMoving;
     });
     bg.BackgroundGeolocation.onEnabledChange((bool enabled) {
       setState(() {
         trackingEnabled = enabled;
+      });
+    });
+    bg.BackgroundGeolocation.onMotionChange((bg.Location location) {
+      setState(() {
+        isMoving = location.isMoving;
       });
     });
   }
@@ -65,6 +74,19 @@ class _MainScreenState extends State<MainScreen> {
                 }
               },
             ),
+            if (stopDetection == false)
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(AppLocalizations.of(context)!.motionLabel),
+                value: isMoving == true,
+                onChanged: (bool value) {
+                  if (value) {
+                    bg.BackgroundGeolocation.changePace(true);
+                  } else {
+                    bg.BackgroundGeolocation.changePace(false);
+                  }
+                },
+              ),
             const SizedBox(height: 8),
             OverflowBar(
               spacing: 8,
@@ -118,7 +140,9 @@ class _MainScreenState extends State<MainScreen> {
                 FilledButton.tonal(
                   onPressed: () async {
                     await Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen()));
-                    setState(() {});
+                    setState(() {
+                      stopDetection = Preferences.instance.getBool(Preferences.stopDetection);
+                    });
                   },
                   child: Text(AppLocalizations.of(context)!.settingsButton),
                 ),

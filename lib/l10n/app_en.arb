@@ -23,6 +23,7 @@
   "disableElasticityLabel": "Disable elasticity",
   "stopDetectionLabel": "Stop detection",
   "trackingLabel": "Continuous tracking",
+  "motionLabel": "Active movement",
   "advancedLabel": "Advanced settings",
   "startAction": "Start service",
   "stopAction": "Stop service",
