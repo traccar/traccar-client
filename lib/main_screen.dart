@@ -45,6 +45,30 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  Future<void> _checkBatteryOptimizations(BuildContext context) async {
+    try {
+      if (!await bg.DeviceSettings.isIgnoringBatteryOptimizations) {
+        final request = await bg.DeviceSettings.showIgnoreBatteryOptimizations();
+        if (!request.seen && context.mounted) {
+          showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              content: Text(AppLocalizations.of(context)!.optimizationMessage),
+              actions: [
+                TextButton(
+                  onPressed: () => bg.DeviceSettings.show(request),
+                  child: Text(AppLocalizations.of(context)!.okButton),
+                ),
+              ],
+            ),
+          );
+        }
+      }
+    } catch (error) {
+      debugPrint(error.toString());
+    }
+  }
+
   Widget _buildTrackingCard() {
     return Card(
       child: Padding(
@@ -69,6 +93,7 @@ class _MainScreenState extends State<MainScreen> {
               onChanged: (bool value) {
                 if (value) {
                   bg.BackgroundGeolocation.start();
+                  _checkBatteryOptimizations(context);
                 } else {
                   bg.BackgroundGeolocation.stop();
                 }

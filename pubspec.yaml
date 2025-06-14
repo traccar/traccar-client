@@ -21,6 +21,7 @@ dependencies:
   quick_actions: ^1.1.0
   rate_my_app: ^2.3.1
   shared_preferences_android: ^2.4.10
+  wakelock_partial_android: ^1.0.0
 
 dev_dependencies:
   flutter_test:

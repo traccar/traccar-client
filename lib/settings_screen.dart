@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
+import 'package:wakelock_partial_android/wakelock_partial_android.dart';
 
 import 'l10n/app_localizations.dart';
 import 'preferences.dart';
@@ -179,6 +180,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
               value: wakelock,
               onChanged: (value) async {
                 await Preferences.instance.setBool(Preferences.wakelock, value);
+                if (value) {
+                  final state = await bg.BackgroundGeolocation.state;
+                  if (state.isMoving == true) {
+                    WakelockPartialAndroid.acquire();
+                  }
+                } else {
+                  WakelockPartialAndroid.release();
+                }
                 setState(() => wakelock = value);
               },
             ),

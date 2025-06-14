@@ -4,6 +4,7 @@
   "statusTitle": "Logs",
   "saveButton": "Save",
   "cancelButton": "Cancel",
+  "okButton": "OK",
   "locationButton": "Send location",
   "statusButton": "Show status",
   "settingsButton": "Change settings",
@@ -25,6 +26,7 @@
   "trackingLabel": "Continuous tracking",
   "motionLabel": "Active movement",
   "advancedLabel": "Advanced settings",
+  "optimizationMessage": "To ensure reliable tracking, please disable battery optimization for this app.",
   "startAction": "Start service",
   "stopAction": "Stop service",
   "sosAction": "Send SOS"

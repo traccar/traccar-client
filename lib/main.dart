@@ -1,10 +1,8 @@
-import 'dart:io';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 import 'package:rate_my_app/rate_my_app.dart';
+import 'package:traccar_client/geolocation_service.dart';
 import 'package:traccar_client/quick_actions.dart';
 
 import 'l10n/app_localizations.dart';
@@ -16,21 +14,9 @@ void main() async {
   await Firebase.initializeApp();
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   await Preferences.init();
-  await bg.BackgroundGeolocation.ready(Preferences.geolocationConfig());
-  if (Platform.isAndroid) {
-    await bg.BackgroundGeolocation.registerHeadlessTask(headlessTask);
-  }
-  bg.BackgroundGeolocation.onHeartbeat((bg.HeartbeatEvent event) async {
-    await bg.BackgroundGeolocation.getCurrentPosition(samples: 1, persist: true);
-  });
+  await Preferences.migrate();
+  await GeolocationService.init();
   runApp(const MainApp());
-}
-
-@pragma('vm:entry-point')
-void headlessTask(bg.HeadlessEvent headlessEvent) async {
-  if (headlessEvent.name == bg.Event.HEARTBEAT) {
-    await bg.BackgroundGeolocation.getCurrentPosition(samples: 1, persist: true);
-  }
 }
 
 class MainApp extends StatefulWidget {

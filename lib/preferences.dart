@@ -32,6 +32,9 @@ class Preferences {
         },
       ),
     );
+  }
+
+  static Future<void> migrate() async {
     if (Platform.isAndroid) {
       if (instance.get(interval) is String) {
         final stringValue = instance.getString(interval);
