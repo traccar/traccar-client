@@ -88,6 +88,12 @@ class Preferences {
       disableStopDetection: instance.getBool(stopDetection) == false,
       pausesLocationUpdatesAutomatically: instance.getBool(stopDetection) == false,
       fastestLocationUpdateInterval: fastestLocationUpdateInterval > 0 ? fastestLocationUpdateInterval : null,
+      backgroundPermissionRationale: bg.PermissionRationale(
+        title: "Allow {applicationName} to access this device's location in the background",
+        message: "For reliable tracking, please enable {backgroundPermissionOptionLabel} location access.",
+        positiveAction: "Change to {backgroundPermissionOptionLabel}",
+        negativeAction: "Cancel"
+      ),
     );
   }
 
