@@ -15,10 +15,7 @@ jobs:
       - run: |
           git config --global user.name "Traccar Bot"
           git config --global user.email "support@traccar.org"
-          for f in lib/l10n/*.arb; do
-            [[ $f == *"_en.arb" ]] && continue
-            diff -q "$f" lib/l10n/app_en.arb || git add "$f"
-          done
+          git add lib/l10n/*.arb ':!lib/l10n/app_en.arb'
           git diff --cached --quiet || git commit -m "Update translations"
           git push
         env:
