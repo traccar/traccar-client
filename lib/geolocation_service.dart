@@ -62,17 +62,18 @@ class GeolocationService {
     final lastLocation = LocationCache.get();
     if (lastLocation == null) return false;
 
+    final isHighestAccuracy = Preferences.instance.getString(Preferences.accuracy) == 'highest';
     final duration = DateTime.parse(location.timestamp).difference(DateTime.parse(lastLocation.timestamp)).inSeconds;
 
-    final fastestInterval = Preferences.instance.getInt(Preferences.fastestInterval);
-    if (fastestInterval != null && duration < fastestInterval) return true;
+    if (!isHighestAccuracy) {
+      final fastestInterval = Preferences.instance.getInt(Preferences.fastestInterval);
+      if (fastestInterval != null && duration < fastestInterval) return true;
+    }
 
     final distance = _distance(lastLocation, location);
 
     final distanceFilter = Preferences.instance.getInt(Preferences.distance) ?? 0;
     if (distanceFilter > 0 && distance >= distanceFilter) return false;
-
-    final isHighestAccuracy = Preferences.instance.getString(Preferences.accuracy) == 'highest';
 
     if (distanceFilter == 0 || isHighestAccuracy) {
       final intervalFilter = Preferences.instance.getInt(Preferences.interval) ?? 0;

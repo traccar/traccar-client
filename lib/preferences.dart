@@ -104,7 +104,7 @@ class Preferences {
       disableElasticity: true,
       disableStopDetection: instance.getBool(stopDetection) == false,
       pausesLocationUpdatesAutomatically: instance.getBool(stopDetection) == false,
-      fastestLocationUpdateInterval: fastestLocationUpdateInterval > 0 ? fastestLocationUpdateInterval : null,
+      fastestLocationUpdateInterval: isHighestAccuracy ? 0 : fastestLocationUpdateInterval,
       backgroundPermissionRationale: bg.PermissionRationale(
         title: 'Allow {applicationName} to access this device\'s location in the background',
         message: 'For reliable tracking, please enable {backgroundPermissionOptionLabel} location access.',
