@@ -3,7 +3,6 @@ import 'dart:developer' as developer;
 import 'dart:io';
 import 'dart:math';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 import 'package:traccar_client/location_cache.dart';
 import 'package:traccar_client/preferences.dart';
