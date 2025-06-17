@@ -8,6 +8,7 @@ import 'package:shared_preferences_android/shared_preferences_android.dart';
 
 class Preferences {
   static late SharedPreferencesWithCache instance;
+
   static const String id = 'id';
   static const String url = 'url';
   static const String accuracy = 'accuracy';
@@ -20,6 +21,11 @@ class Preferences {
   static const String wakelock = 'wakelock';
   static const String stopDetection = 'stop_detection';
 
+  static const String lastTimestamp = 'lastTimestamp';
+  static const String lastLatitude = 'lastLatitude';
+  static const String lastLongitude = 'lastLongitude';
+  static const String lastHeading = 'lastHeading';
+
   static Future<void> init() async {
     instance = await SharedPreferencesWithCache.create(
       sharedPreferencesOptions: Platform.isAndroid
@@ -29,6 +35,7 @@ class Preferences {
         allowList: {
           id, url, accuracy, distance, interval, angle, heartbeat,
           fastestInterval, buffer,  wakelock, stopDetection,
+          lastTimestamp, lastLatitude, lastLongitude, lastHeading,
           'device_id_preference', 'server_url_preference', 'accuracy_preference',
           'frequency_preference', 'distance_preference', 'buffer_preference',
         },
@@ -66,6 +73,7 @@ class Preferences {
   }
 
   static bg.Config geolocationConfig() {
+    final isHighestAccuracy = instance.getString(accuracy) == 'highest';
     final locationUpdateInterval = (instance.getInt(interval) ?? 0) * 1000;
     final fastestLocationUpdateInterval = (instance.getInt(fastestInterval) ?? 30) * 1000;
     final heartbeatInterval = instance.getInt(heartbeat) ?? 0;
@@ -79,12 +87,13 @@ class Preferences {
         'low' => bg.Config.DESIRED_ACCURACY_LOW,
         _ => bg.Config.DESIRED_ACCURACY_MEDIUM,
       },
+      autoSync: false,
       url: _formatUrl(instance.getString(url)),
       params: {
-        "device_id": instance.getString(id),
+        'device_id': instance.getString(id),
       },
-      distanceFilter: instance.getInt(distance)?.toDouble(),
-      locationUpdateInterval: locationUpdateInterval > 0 ? locationUpdateInterval : null,
+      distanceFilter: isHighestAccuracy ? 0 : instance.getInt(distance)?.toDouble(),
+      locationUpdateInterval: isHighestAccuracy ? 0 : (locationUpdateInterval > 0 ? locationUpdateInterval : null),
       heartbeatInterval: heartbeatInterval > 0 ? heartbeatInterval : null,
       maxRecordsToPersist: instance.getBool(buffer) != false ? -1 : 1,
       logLevel: bg.Config.LOG_LEVEL_VERBOSE,
@@ -97,10 +106,10 @@ class Preferences {
       pausesLocationUpdatesAutomatically: instance.getBool(stopDetection) == false,
       fastestLocationUpdateInterval: fastestLocationUpdateInterval > 0 ? fastestLocationUpdateInterval : null,
       backgroundPermissionRationale: bg.PermissionRationale(
-        title: "Allow {applicationName} to access this device's location in the background",
-        message: "For reliable tracking, please enable {backgroundPermissionOptionLabel} location access.",
-        positiveAction: "Change to {backgroundPermissionOptionLabel}",
-        negativeAction: "Cancel"
+        title: 'Allow {applicationName} to access this device\'s location in the background',
+        message: 'For reliable tracking, please enable {backgroundPermissionOptionLabel} location access.',
+        positiveAction: 'Change to {backgroundPermissionOptionLabel}',
+        negativeAction: 'Cancel'
       ),
     );
   }
