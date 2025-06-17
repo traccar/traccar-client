@@ -11,13 +11,14 @@ class Preferences {
   static const String id = 'id';
   static const String url = 'url';
   static const String accuracy = 'accuracy';
-  static const String interval = 'interval';
   static const String distance = 'distance';
+  static const String interval = 'interval';
+  static const String angle = 'angle';
   static const String heartbeat = 'heartbeat';
+  static const String fastestInterval = 'fastest_interval';
   static const String buffer = 'buffer';
   static const String wakelock = 'wakelock';
   static const String stopDetection = 'stop_detection';
-  static const String fastestInterval = 'fastest_interval';
 
   static Future<void> init() async {
     instance = await SharedPreferencesWithCache.create(
@@ -26,7 +27,8 @@ class Preferences {
         : SharedPreferencesOptions(),
       cacheOptions: SharedPreferencesWithCacheOptions(
         allowList: {
-          id, url, accuracy, interval, distance, buffer, heartbeat, wakelock, stopDetection, fastestInterval,
+          id, url, accuracy, distance, interval, angle, heartbeat,
+          fastestInterval, buffer,  wakelock, stopDetection,
           'device_id_preference', 'server_url_preference', 'accuracy_preference',
           'frequency_preference', 'distance_preference', 'buffer_preference',
         },
@@ -44,6 +46,11 @@ class Preferences {
         final stringValue = instance.getString(distance);
         final intValue = int.tryParse(stringValue ?? '') ?? 75;
         await instance.setInt(distance, intValue > 0 ? intValue : 75);
+      }
+      if (instance.get(angle) is String) {
+        final stringValue = instance.getString(angle);
+        final intValue = int.tryParse(stringValue ?? '') ?? 0;
+        await instance.setInt(angle, intValue);
       }
     } else {
       await _migrate();
@@ -67,6 +74,7 @@ class Preferences {
       stopOnTerminate: false,
       startOnBoot: true,
       desiredAccuracy: switch (instance.getString(accuracy)) {
+        'highest' => Platform.isIOS ? bg.Config.DESIRED_ACCURACY_NAVIGATION : bg.Config.DESIRED_ACCURACY_HIGH,
         'high' => bg.Config.DESIRED_ACCURACY_HIGH,
         'low' => bg.Config.DESIRED_ACCURACY_LOW,
         _ => bg.Config.DESIRED_ACCURACY_MEDIUM,

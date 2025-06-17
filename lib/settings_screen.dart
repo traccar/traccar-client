@@ -37,6 +37,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   String _getAccuracyLabel(String? key) {
     return switch (key) {
+      'highest' => AppLocalizations.of(context)!.highestAccuracyLabel,
       'high' => AppLocalizations.of(context)!.highAccuracyLabel,
       'low' => AppLocalizations.of(context)!.lowAccuracyLabel,
       _ => AppLocalizations.of(context)!.mediumAccuracyLabel,
@@ -118,7 +119,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _buildAccuracyListTile() {
-    final accuracyOptions = ['high', 'medium', 'low'];
+    final accuracyOptions = ['highest', 'high', 'medium', 'low'];
     return ListTile(
       title: Text(AppLocalizations.of(context)!.accuracyLabel),
       subtitle: Text(_getAccuracyLabel(Preferences.instance.getString(Preferences.accuracy))),
@@ -144,6 +145,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isHighestAccuracy = Preferences.instance.getString(Preferences.accuracy) == 'highest';
+    final distance = Preferences.instance.getInt(Preferences.distance);
     return Scaffold(
       appBar: AppBar(title: Text(AppLocalizations.of(context)!.settingsTitle)),
       body: ListView(
@@ -152,8 +155,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           _buildListTile(AppLocalizations.of(context)!.urlLabel, Preferences.url, false),
           _buildAccuracyListTile(),
           _buildListTile(AppLocalizations.of(context)!.distanceLabel, Preferences.distance, true),
-          if (Platform.isAndroid && Preferences.instance.getInt(Preferences.distance) == 0)
+          if (isHighestAccuracy || Platform.isAndroid && distance == 0)
             _buildListTile(AppLocalizations.of(context)!.intervalLabel, Preferences.interval, true),
+          if (isHighestAccuracy)
+            _buildListTile(AppLocalizations.of(context)!.angleLabel, Preferences.angle, true),
           _buildListTile(AppLocalizations.of(context)!.heartbeatLabel, Preferences.heartbeat, true),
           SwitchListTile(
             title: Text(AppLocalizations.of(context)!.advancedLabel),
@@ -162,7 +167,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               setState(() => advanced = value);
             },
           ),
-          if (Platform.isAndroid && advanced)
+          if (advanced)
             _buildListTile(AppLocalizations.of(context)!.fastestIntervalLabel, Preferences.fastestInterval, true),
           if (advanced)
             SwitchListTile(
