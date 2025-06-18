@@ -90,7 +90,7 @@ class GeolocationService {
   }
 
   static double _distance(Location from, bg.Location to) {
-    const earthRadius = 6371000; // meters
+    const earthRadius = 6371008.8; // meters
     final dLat = _degToRad(to.coords.latitude - from.latitude);
     final dLon = _degToRad(to.coords.longitude - from.longitude);
     final a = sin(dLat / 2) * sin(dLat / 2) +
