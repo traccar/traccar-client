@@ -103,7 +103,6 @@ class Preferences {
       preventSuspend: heartbeatInterval > 0,
       disableElasticity: true,
       disableStopDetection: instance.getBool(stopDetection) == false,
-      pausesLocationUpdatesAutomatically: instance.getBool(stopDetection) == false,
       fastestLocationUpdateInterval: isHighestAccuracy ? 0 : fastestLocationUpdateInterval,
       backgroundPermissionRationale: bg.PermissionRationale(
         title: 'Allow {applicationName} to access this device\'s location in the background',
