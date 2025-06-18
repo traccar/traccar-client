@@ -93,8 +93,9 @@ class GeolocationService {
     const earthRadius = 6371008.8; // meters
     final dLat = _degToRad(to.coords.latitude - from.latitude);
     final dLon = _degToRad(to.coords.longitude - from.longitude);
-    final a = sin(dLat / 2) * sin(dLat / 2) +
-        cos(_degToRad(from.latitude)) * cos(_degToRad(to.coords.latitude)) * sin(dLon / 2) * sin(dLon / 2);
+    final sinLat = sin(dLat / 2);
+    final sinLon = sin(dLon / 2);
+    final a = sinLat * sinLat + cos(_degToRad(from.latitude)) * cos(_degToRad(to.coords.latitude)) * sinLon * sinLon;
     final c = 2 * atan2(sqrt(a), sqrt(1 - a));
     return earthRadius * c;
   }
