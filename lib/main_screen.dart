@@ -56,7 +56,10 @@ class _MainScreenState extends State<MainScreen> {
               content: Text(AppLocalizations.of(context)!.optimizationMessage),
               actions: [
                 TextButton(
-                  onPressed: () => bg.DeviceSettings.show(request),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    bg.DeviceSettings.show(request);
+                  },
                   child: Text(AppLocalizations.of(context)!.okButton),
                 ),
               ],
