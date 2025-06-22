@@ -99,7 +99,6 @@ class Preferences {
       logLevel: bg.Config.LOG_LEVEL_VERBOSE,
       logMaxDays: 1,
       locationTemplate: _locationTemplate(),
-      showsBackgroundLocationIndicator: false,
       preventSuspend: heartbeatInterval > 0,
       disableElasticity: true,
       disableStopDetection: instance.getBool(stopDetection) == false,
