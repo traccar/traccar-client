@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
+import 'package:traccar_client/qr_code_screen.dart';
 import 'package:wakelock_partial_android/wakelock_partial_android.dart';
 
 import 'l10n/app_localizations.dart';
@@ -17,23 +18,6 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool advanced = false;
-  bool buffering = true;
-  bool wakelock = false;
-  bool stopDetection = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _initState();
-  }
-
-  void _initState() async {
-    setState(() {
-      buffering = Preferences.instance.getBool(Preferences.buffer) ?? true;
-      wakelock = Preferences.instance.getBool(Preferences.wakelock) ?? false;
-      stopDetection = Preferences.instance.getBool(Preferences.stopDetection) ?? true;
-    });
-  }
 
   String _getAccuracyLabel(String? key) {
     return switch (key) {
@@ -148,7 +132,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final isHighestAccuracy = Preferences.instance.getString(Preferences.accuracy) == 'highest';
     final distance = Preferences.instance.getInt(Preferences.distance);
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.settingsTitle)),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.settingsTitle),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.qr_code_scanner),
+            onPressed: () async {
+              await Navigator.push(context, MaterialPageRoute(builder: (_) => const QrCodeScreen()));
+              setState(() {});
+            },
+          ),
+        ],
+      ),
       body: ListView(
         children: [
           _buildListTile(AppLocalizations.of(context)!.idLabel, Preferences.id, false),
@@ -172,17 +167,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
           if (advanced)
             SwitchListTile(
               title: Text(AppLocalizations.of(context)!.bufferLabel),
-              value: buffering,
+              value: Preferences.instance.getBool(Preferences.buffer) ?? true,
               onChanged: (value) async {
                 await Preferences.instance.setBool(Preferences.buffer, value);
                 await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
-                setState(() => buffering = value);
+                setState(() {});
               },
             ),
           if (advanced && Platform.isAndroid)
             SwitchListTile(
               title: Text(AppLocalizations.of(context)!.wakelockLabel),
-              value: wakelock,
+              value: Preferences.instance.getBool(Preferences.wakelock) ?? false,
               onChanged: (value) async {
                 await Preferences.instance.setBool(Preferences.wakelock, value);
                 if (value) {
@@ -193,17 +188,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 } else {
                   WakelockPartialAndroid.release();
                 }
-                setState(() => wakelock = value);
+                setState(() {});
               },
             ),
           if (advanced)
             SwitchListTile(
               title: Text(AppLocalizations.of(context)!.stopDetectionLabel),
-              value: stopDetection,
+              value: Preferences.instance.getBool(Preferences.stopDetection) ?? true,
               onChanged: (value) async {
                 await Preferences.instance.setBool(Preferences.stopDetection, value);
                 await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
-                setState(() => stopDetection = value);
+                setState(() {});
               },
             ),
         ],

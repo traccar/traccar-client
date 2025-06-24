@@ -41,6 +41,8 @@
 	<string>Location required when app is in use</string>
 	<key>NSMotionUsageDescription</key>
 	<string>Motion permission helps detect when device in in-motion</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera access is required to scan QR codes</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
