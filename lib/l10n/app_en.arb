@@ -28,7 +28,9 @@
   "trackingLabel": "Continuous tracking",
   "motionLabel": "Active movement",
   "advancedLabel": "Advanced settings",
+  "passwordLabel": "Password",
   "optimizationMessage": "To ensure reliable tracking, please disable battery optimization for this app.",
+  "passwordError": "Wrong password",
   "startAction": "Start service",
   "stopAction": "Stop service",
   "sosAction": "Send SOS"

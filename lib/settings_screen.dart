@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
+import 'package:traccar_client/password_service.dart';
 import 'package:traccar_client/qr_code_screen.dart';
 import 'package:wakelock_partial_android/wakelock_partial_android.dart';
 
@@ -80,6 +81,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
       }
       await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
       setState(() {});
+    }
+  }
+
+  Future<void> _changePassword() async {
+    final controller = TextEditingController();
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: TextField(
+          controller: controller,
+          decoration: InputDecoration(labelText: AppLocalizations.of(context)!.passwordLabel),
+          obscureText: true,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(AppLocalizations.of(context)!.cancelButton),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(AppLocalizations.of(context)!.saveButton),
+          ),
+        ],
+      ),
+    );
+    if (result == true) {
+      await PasswordService.setPassword(controller.text);
     }
   }
 
@@ -200,6 +228,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
                 setState(() {});
               },
+            ),
+          if (advanced)
+            ListTile(
+              title: Text(AppLocalizations.of(context)!.passwordLabel),
+              onTap: _changePassword,
             ),
         ],
       ),

@@ -1,6 +1,7 @@
 import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
+import 'package:traccar_client/password_service.dart';
 import 'package:traccar_client/preferences.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 
@@ -93,12 +94,14 @@ class _MainScreenState extends State<MainScreen> {
               contentPadding: EdgeInsets.zero,
               title: Text(AppLocalizations.of(context)!.trackingLabel),
               value: trackingEnabled,
-              onChanged: (bool value) {
-                if (value) {
-                  bg.BackgroundGeolocation.start();
-                  _checkBatteryOptimizations(context);
-                } else {
-                  bg.BackgroundGeolocation.stop();
+              onChanged: (bool value) async {
+                if (await PasswordService.authenticate(context) && mounted) {
+                  if (value) {
+                    bg.BackgroundGeolocation.start();
+                    _checkBatteryOptimizations(context);
+                  } else {
+                    bg.BackgroundGeolocation.stop();
+                  }
                 }
               },
             ),
@@ -166,10 +169,12 @@ class _MainScreenState extends State<MainScreen> {
               children: [
                 FilledButton.tonal(
                   onPressed: () async {
-                    await Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen()));
-                    setState(() {
-                      stopDetection = Preferences.instance.getBool(Preferences.stopDetection);
-                    });
+                    if (await PasswordService.authenticate(context) && mounted) {
+                      await Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen()));
+                      setState(() {
+                        stopDetection = Preferences.instance.getBool(Preferences.stopDetection);
+                      });
+                    }
                   },
                   child: Text(AppLocalizations.of(context)!.settingsButton),
                 ),
