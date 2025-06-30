@@ -4,7 +4,7 @@
     <uses-permission android:name="android.permission.CAMERA"/>
     <application
         tools:replace="android:label"
-        android:label="Traccar Client"
+        android:label="Caguar FMS V1"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:networkSecurityConfig="@xml/network_security_config">
