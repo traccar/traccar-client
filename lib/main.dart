@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,8 @@ import 'package:traccar_client/quick_actions.dart';
 import 'l10n/app_localizations.dart';
 import 'main_screen.dart';
 import 'preferences.dart';
+
+final messengerKey = GlobalKey<ScaffoldMessengerState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,8 +40,12 @@ class _MainAppState extends State<MainApp> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await rateMyApp.init();
-      if (mounted && rateMyApp.shouldOpenDialog) {  
-        rateMyApp.showRateDialog(context);
+      if (mounted && rateMyApp.shouldOpenDialog) {
+        try {
+          await rateMyApp.showRateDialog(context);
+        } catch (error) {
+          developer.log('Failed to show rate dialog', error: error);
+        }
       }
     });
   }
@@ -45,6 +53,7 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scaffoldMessengerKey: messengerKey,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       theme: ThemeData(

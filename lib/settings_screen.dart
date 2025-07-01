@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
+import 'package:traccar_client/main.dart';
 import 'package:traccar_client/password_service.dart';
 import 'package:traccar_client/qr_code_screen.dart';
 import 'package:wakelock_partial_android/wakelock_partial_android.dart';
@@ -35,7 +36,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         : Preferences.instance.getString(key) ?? '';
 
     final controller = TextEditingController(text: initialValue);
-    final scaffoldManager = ScaffoldMessenger.of(context);
     final errorMessage = AppLocalizations.of(context)!.invalidValue;
 
     final result = await showDialog<String>(
@@ -64,7 +64,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       if (key == Preferences.url) {
         final uri = Uri.tryParse(result);
         if (uri == null || uri.host.isEmpty || !(uri.scheme == 'http' || uri.scheme == 'https')) {
-          scaffoldManager.showSnackBar(SnackBar(content: Text(errorMessage)));
+          messengerKey.currentState?.showSnackBar(SnackBar(content: Text(errorMessage)));
           return;
         }
       }

@@ -1,6 +1,6 @@
-import 'dart:developer' as developer;
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:traccar_client/main.dart';
 import 'package:traccar_client/password_service.dart';
 import 'package:traccar_client/preferences.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
@@ -97,8 +97,14 @@ class _MainScreenState extends State<MainScreen> {
               onChanged: (bool value) async {
                 if (await PasswordService.authenticate(context) && mounted) {
                   if (value) {
-                    bg.BackgroundGeolocation.start();
-                    _checkBatteryOptimizations(context);
+                    try {
+                      await bg.BackgroundGeolocation.start();
+                      if (mounted) {
+                        _checkBatteryOptimizations(context);
+                      }
+                    } on PlatformException catch (error) {
+                      messengerKey.currentState?.showSnackBar(SnackBar(content: Text(error.message ?? error.code)));
+                    }
                   } else {
                     bg.BackgroundGeolocation.stop();
                   }
@@ -126,8 +132,8 @@ class _MainScreenState extends State<MainScreen> {
                   onPressed: () async {
                     try {
                       await bg.BackgroundGeolocation.getCurrentPosition(samples: 1, persist: true, extras: {'manual': true});
-                    } catch (error) {
-                      developer.log('Failed to fetch location', error: error);
+                    } on PlatformException catch (error) {
+                      messengerKey.currentState?.showSnackBar(SnackBar(content: Text(error.message ?? error.code)));
                     }
                   },
                   child: Text(AppLocalizations.of(context)!.locationButton),

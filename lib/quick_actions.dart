@@ -21,7 +21,6 @@ class _QuickActionsInitializerState extends State<QuickActionsInitializer> {
   void initState() {
     super.initState();
     quickActions.initialize((shortcutType) async {
-      developer.log('action $shortcutType');
       switch (shortcutType) {
         case 'start':
           bg.BackgroundGeolocation.start();
