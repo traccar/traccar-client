@@ -6,12 +6,6 @@ import 'package:flutter_background_geolocation/flutter_background_geolocation.da
 
 import 'preferences.dart';
 
-@pragma('vm:entry-point')
-Future<void> pushServiceBackgroundHandler(RemoteMessage message) async {
-  await Preferences.init();
-  await PushService._onMessage(message);
-}
-
 class PushService {
   static Future<void> init() async {
     await FirebaseMessaging.instance.requestPermission();
@@ -55,4 +49,10 @@ class PushService {
       developer.log('Failed to upload token', error: error);
     }
   }
+}
+
+@pragma('vm:entry-point')
+Future<void> pushServiceBackgroundHandler(RemoteMessage message) async {
+  await Preferences.init();
+  await PushService._onMessage(message);
 }
