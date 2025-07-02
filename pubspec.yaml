@@ -17,7 +17,7 @@ dependencies:
   firebase_core: ^3.15.0
   firebase_messaging: ^15.2.7
   firebase_analytics: ^11.5.1
-  firebase_crashlytics: ^4.3.7
+  firebase_crashlytics: ^4.3.8
   quick_actions: ^1.1.0
   rate_my_app: ^2.3.2
   shared_preferences_android: ^2.4.10
