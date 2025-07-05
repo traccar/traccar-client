@@ -16,8 +16,10 @@ class GeolocationService {
     }
     bg.BackgroundGeolocation.onEnabledChange(onEnabledChange);
     bg.BackgroundGeolocation.onMotionChange(onMotionChange);
-    bg.BackgroundGeolocation.onLocation(onLocation);
     bg.BackgroundGeolocation.onHeartbeat(onHeartbeat);
+    bg.BackgroundGeolocation.onLocation(onLocation, (bg.LocationError error) {
+      developer.log('Location error', error: error);
+    });
   }
 
   static Future<void> onEnabledChange(bool enabled) async {
@@ -38,6 +40,10 @@ class GeolocationService {
     }
   }
 
+  static Future<void> onHeartbeat(bg.HeartbeatEvent event) async {
+    await bg.BackgroundGeolocation.getCurrentPosition(samples: 1, persist: true, extras: {'heartbeat': true});
+  }
+
   static Future<void> onLocation(bg.Location location) async {
     if (_shouldDelete(location)) {
       await bg.BackgroundGeolocation.destroyLocation(location.uuid);
@@ -49,10 +55,6 @@ class GeolocationService {
         developer.log('Failed to send location', error: error);
       }
     }
-  }
-
-  static Future<void> onHeartbeat(bg.HeartbeatEvent event) async {
-    await bg.BackgroundGeolocation.getCurrentPosition(samples: 1, persist: true, extras: {'heartbeat': true});
   }
 
   static bool _shouldDelete(bg.Location location) {
@@ -113,11 +115,11 @@ void headlessTask(bg.HeadlessEvent headlessEvent) async {
     case bg.Event.MOTIONCHANGE:
       await GeolocationService.onMotionChange(headlessEvent.event);
       break;
-    case bg.Event.LOCATION:
-      await GeolocationService.onLocation(headlessEvent.event);
-      break;
     case bg.Event.HEARTBEAT:
       await GeolocationService.onHeartbeat(headlessEvent.event);
+      break;
+    case bg.Event.LOCATION:
+      await GeolocationService.onLocation(headlessEvent.event);
       break;
   }
 }

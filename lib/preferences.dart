@@ -78,6 +78,7 @@ class Preferences {
     final fastestLocationUpdateInterval = (instance.getInt(fastestInterval) ?? 30) * 1000;
     final heartbeatInterval = instance.getInt(heartbeat) ?? 0;
     return bg.Config(
+      isMoving: true,
       enableHeadless: true,
       stopOnTerminate: false,
       startOnBoot: true,
@@ -102,6 +103,7 @@ class Preferences {
       preventSuspend: heartbeatInterval > 0,
       disableElasticity: true,
       disableStopDetection: instance.getBool(stopDetection) == false,
+      pausesLocationUpdatesAutomatically: Platform.isIOS ? !(isHighestAccuracy || instance.getBool(stopDetection) == false) : null,
       fastestLocationUpdateInterval: isHighestAccuracy ? 0 : fastestLocationUpdateInterval,
       backgroundPermissionRationale: bg.PermissionRationale(
         title: 'Allow {applicationName} to access this device\'s location in the background',
