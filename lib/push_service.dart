@@ -14,7 +14,11 @@ class PushService {
     FirebaseMessaging.instance.onTokenRefresh.listen(_uploadToken);
     bg.BackgroundGeolocation.onEnabledChange((enabled) async {
       if (enabled) {
-        _uploadToken(await FirebaseMessaging.instance.getToken());
+        try {
+          _uploadToken(await FirebaseMessaging.instance.getToken());
+        } catch (error) {
+          developer.log('Failed to get notificaion token', error: error);
+        }
       }
     });
   }
