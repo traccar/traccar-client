@@ -46,7 +46,11 @@ class GeolocationService {
 
   static Future<void> onLocation(bg.Location location) async {
     if (_shouldDelete(location)) {
-      await bg.BackgroundGeolocation.destroyLocation(location.uuid);
+      try {
+        await bg.BackgroundGeolocation.destroyLocation(location.uuid);
+      } catch(error) {
+        developer.log('Failed to delete location', error: error);
+      }
     } else {
       LocationCache.set(location);
       try {
