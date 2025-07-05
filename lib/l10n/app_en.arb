@@ -26,7 +26,6 @@
   "wakelockLabel": "Wake lock",
   "stopDetectionLabel": "Stop detection",
   "trackingLabel": "Continuous tracking",
-  "motionLabel": "Active movement",
   "advancedLabel": "Advanced settings",
   "passwordLabel": "Password",
   "optimizationMessage": "To ensure reliable tracking, please disable battery optimization for this app.",

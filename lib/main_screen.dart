@@ -18,7 +18,6 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   bool trackingEnabled = false;
-  bool? stopDetection;
   bool? isMoving;
 
   @override
@@ -31,7 +30,6 @@ class _MainScreenState extends State<MainScreen> {
     final state = await bg.BackgroundGeolocation.state;
     setState(() {
       trackingEnabled = state.enabled;
-      stopDetection = Preferences.instance.getBool(Preferences.stopDetection);
       isMoving = state.isMoving;
     });
     bg.BackgroundGeolocation.onEnabledChange((bool enabled) {
@@ -94,6 +92,7 @@ class _MainScreenState extends State<MainScreen> {
               contentPadding: EdgeInsets.zero,
               title: Text(AppLocalizations.of(context)!.trackingLabel),
               value: trackingEnabled,
+              activeTrackColor: isMoving == false ? Theme.of(context).colorScheme.error :  null,
               onChanged: (bool value) async {
                 if (await PasswordService.authenticate(context) && mounted) {
                   if (value) {
@@ -111,19 +110,6 @@ class _MainScreenState extends State<MainScreen> {
                 }
               },
             ),
-            if (stopDetection == false)
-              SwitchListTile(
-                contentPadding: EdgeInsets.zero,
-                title: Text(AppLocalizations.of(context)!.motionLabel),
-                value: isMoving == true,
-                onChanged: (bool value) {
-                  if (value) {
-                    bg.BackgroundGeolocation.changePace(true);
-                  } else {
-                    bg.BackgroundGeolocation.changePace(false);
-                  }
-                },
-              ),
             const SizedBox(height: 8),
             OverflowBar(
               spacing: 8,
@@ -177,9 +163,6 @@ class _MainScreenState extends State<MainScreen> {
                   onPressed: () async {
                     if (await PasswordService.authenticate(context) && mounted) {
                       await Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen()));
-                      setState(() {
-                        stopDetection = Preferences.instance.getBool(Preferences.stopDetection);
-                      });
                     }
                   },
                   child: Text(AppLocalizations.of(context)!.settingsButton),
