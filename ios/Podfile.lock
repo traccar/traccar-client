@@ -17,18 +17,18 @@ PODS:
   - Firebase/Messaging (11.15.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 11.15.0)
-  - firebase_analytics (11.5.1):
+  - firebase_analytics (11.5.2):
     - Firebase/Analytics (= 11.15.0)
     - firebase_core
     - Flutter
-  - firebase_core (3.15.0):
+  - firebase_core (3.15.1):
     - Firebase/CoreOnly (= 11.15.0)
     - Flutter
-  - firebase_crashlytics (4.3.8):
+  - firebase_crashlytics (4.3.9):
     - Firebase/Crashlytics (= 11.15.0)
     - firebase_core
     - Flutter
-  - firebase_messaging (15.2.8):
+  - firebase_messaging (15.2.9):
     - Firebase/Messaging (= 11.15.0)
     - firebase_core
     - Flutter
@@ -244,10 +244,10 @@ SPEC CHECKSUMS:
   background_fetch: 851122c99dc3f25a011a6aebec5379ccdf4ab5eb
   CocoaLumberjack: 6a459bc897d6d80bd1b8c78482ec7ad05dffc3f0
   Firebase: d99ac19b909cd2c548339c2241ecd0d1599ab02e
-  firebase_analytics: ce94441a2197dc84b13e7adcc9e4460b134b603d
-  firebase_core: c727a02c560a53f1f1e56e18f16515eb5753c492
-  firebase_crashlytics: 6273355054ed9b46631aa7d5d8a02367ca2c5141
-  firebase_messaging: 4158969b04b667f5435731ec9d6e453bb58b0c4c
+  firebase_analytics: 740475b8bf6f9a79b04c2d55fe226a60679fe593
+  firebase_core: ece862f94b2bc72ee0edbeec7ab5c7cb09fe1ab5
+  firebase_crashlytics: f89f5137e667ba1733ca5d7ab1b7af3390572520
+  firebase_messaging: e1a5fae495603115be1d0183bc849da748734e2b
   FirebaseAnalytics: 6433dfd311ba78084fc93bdfc145e8cb75740eae
   FirebaseCore: efb3893e5b94f32b86e331e3bd6dadf18b66568e
   FirebaseCoreExtension: edbd30474b5ccf04e5f001470bdf6ea616af2435
