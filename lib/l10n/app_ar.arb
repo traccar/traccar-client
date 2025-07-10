@@ -26,9 +26,10 @@
   "wakelockLabel": "قفل التنبيه",
   "stopDetectionLabel": "اكتشاف التوقف",
   "trackingLabel": "تتبع مستمر",
-  "motionLabel": "حركة نشطة",
   "advancedLabel": "إعدادات متقدمة",
+  "passwordLabel": "Password",
   "optimizationMessage": "لضمان تتبع موثوق، يرجى تعطيل تحسين البطارية لهذا التطبيق.",
+  "passwordError": "Wrong password",
   "startAction": "بدء الخدمة",
   "stopAction": "إيقاف الخدمة",
   "sosAction": "إرسال SOS"

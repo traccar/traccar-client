@@ -26,9 +26,10 @@
   "wakelockLabel": "Wake lock",
   "stopDetectionLabel": "Rilevamento arresto",
   "trackingLabel": "Tracciamento continuo",
-  "motionLabel": "Movimento attivo",
   "advancedLabel": "Impostazioni avanzate",
+  "passwordLabel": "Password",
   "optimizationMessage": "Per garantire un tracciamento affidabile, disattiva l'ottimizzazione batteria per questa app.",
+  "passwordError": "Wrong password",
   "startAction": "Avvia servizio",
   "stopAction": "Ferma servizio",
   "sosAction": "Invia SOS"

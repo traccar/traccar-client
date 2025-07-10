@@ -26,9 +26,10 @@
   "wakelockLabel": "Wake lock",
   "stopDetectionLabel": "Stop detection",
   "trackingLabel": "継続追跡",
-  "motionLabel": "Active movement",
   "advancedLabel": "Advanced settings",
+  "passwordLabel": "Password",
   "optimizationMessage": "To ensure reliable tracking, please disable battery optimization for this app.",
+  "passwordError": "Wrong password",
   "startAction": "サービス開始",
   "stopAction": "サービス停止",
   "sosAction": "SOSを送信"

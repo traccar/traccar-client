@@ -26,9 +26,10 @@
   "wakelockLabel": "Wake lock",
   "stopDetectionLabel": "Stop detection",
   "trackingLabel": "מעקב רציף",
-  "motionLabel": "Active movement",
   "advancedLabel": "Advanced settings",
+  "passwordLabel": "Password",
   "optimizationMessage": "To ensure reliable tracking, please disable battery optimization for this app.",
+  "passwordError": "Wrong password",
   "startAction": "התחל מעקב",
   "stopAction": "עצור מעקב",
   "sosAction": "שלח SOS"

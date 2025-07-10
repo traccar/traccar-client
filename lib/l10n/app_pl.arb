@@ -26,9 +26,10 @@
   "wakelockLabel": "Blokada uśpienia",
   "stopDetectionLabel": "Wykrywanie zatrzymania",
   "trackingLabel": "Ciągłe śledzenie",
-  "motionLabel": "Aktywny ruch",
   "advancedLabel": "Ustawienia zaawansowane",
+  "passwordLabel": "Password",
   "optimizationMessage": "Aby zapewnić niezawodne śledzenie, wyłącz optymalizację baterii dla tej aplikacji.",
+  "passwordError": "Wrong password",
   "startAction": "Uruchom usługę",
   "stopAction": "Zatrzymaj usługę",
   "sosAction": "Wyślij SOS"

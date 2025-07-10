@@ -26,9 +26,10 @@
   "wakelockLabel": "Maintien éveillé",
   "stopDetectionLabel": "Détection d'arrêt",
   "trackingLabel": "Suivi continu",
-  "motionLabel": "Mouvement actif",
   "advancedLabel": "Paramètres avancés",
+  "passwordLabel": "Password",
   "optimizationMessage": "Pour garantir un suivi fiable, veuillez désactiver l'optimisation de la batterie pour cette application.",
+  "passwordError": "Wrong password",
   "startAction": "Démarrer le service",
   "stopAction": "Arrêter le service",
   "sosAction": "Envoyer un SOS"

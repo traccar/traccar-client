@@ -26,9 +26,10 @@
   "wakelockLabel": "Uyanık kilidi",
   "stopDetectionLabel": "Durma algılama",
   "trackingLabel": "Sürekli izleme",
-  "motionLabel": "Aktif hareket",
   "advancedLabel": "Gelişmiş ayarlar",
+  "passwordLabel": "Password",
   "optimizationMessage": "Güvenilir izleme için lütfen bu uygulama için pil optimizasyonunu devre dışı bırakın.",
+  "passwordError": "Wrong password",
   "startAction": "Servisi başlat",
   "stopAction": "Servisi durdur",
   "sosAction": "SOS gönder"

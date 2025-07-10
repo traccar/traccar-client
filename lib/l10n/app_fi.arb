@@ -26,9 +26,10 @@
   "wakelockLabel": "Pakota päälläolo",
   "stopDetectionLabel": "Pysähdyksissä olon tunnistus",
   "trackingLabel": "Jatkuva paikannus",
-  "motionLabel": "Aktiivinen liike",
   "advancedLabel": "Lisäasetukset",
+  "passwordLabel": "Password",
   "optimizationMessage": "Luotettavan paikannuksen varmistamiseksi, poista akun optimointi käytöstä tältä sovellukselta.",
+  "passwordError": "Wrong password",
   "startAction": "Käynnistä seuranta",
   "stopAction": "Lopeta seuranta",
   "sosAction": "Lähetä SOS"

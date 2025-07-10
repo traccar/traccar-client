@@ -26,9 +26,10 @@
   "wakelockLabel": "Wake lock",
   "stopDetectionLabel": "Deteksi berhenti",
   "trackingLabel": "Pelacakan berkelanjutan",
-  "motionLabel": "Gerakan aktif",
   "advancedLabel": "Pengaturan lanjutan",
+  "passwordLabel": "Password",
   "optimizationMessage": "Untuk memastikan pelacakan yang andal, nonaktifkan optimasi baterai untuk aplikasi ini.",
+  "passwordError": "Wrong password",
   "startAction": "Mulai layanan",
   "stopAction": "Hentikan layanan",
   "sosAction": "Kirim SOS"

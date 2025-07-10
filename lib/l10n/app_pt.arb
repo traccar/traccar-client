@@ -26,9 +26,10 @@
   "wakelockLabel": "Bloqueio de despertar",
   "stopDetectionLabel": "Deteção de paragem",
   "trackingLabel": "Rastreio contínuo",
-  "motionLabel": "Movimento ativo",
   "advancedLabel": "Definições avançadas",
+  "passwordLabel": "Password",
   "optimizationMessage": "Para garantir um rastreio fiável, desative a otimização de bateria para esta aplicação.",
+  "passwordError": "Wrong password",
   "startAction": "Iniciar serviço",
   "stopAction": "Parar serviço",
   "sosAction": "Enviar SOS"

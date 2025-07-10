@@ -26,9 +26,10 @@
   "wakelockLabel": "ป้องกันไม่ให้อุปกรณ์เข้าสู่โหมดพัก",
   "stopDetectionLabel": "หยุดการตรวจจับ",
   "trackingLabel": "ติดตามอย่างต่อเนื่อง",
-  "motionLabel": "อยู่ในระหว่างเคลื่อนที่",
   "advancedLabel": "การตั้งค่าขั้นสูง",
+  "passwordLabel": "รหัสผ่าน",
   "optimizationMessage": "เพื่อให้การติดตามตำแหน่งทำงานได้อย่างต่อเนื่อง โปรดปิดการเพิ่มประสิทธิภาพแบตเตอรี่สำหรับแอปนี้",
+  "passwordError": "รหัสผ่านไม่ถูกต้อง",
   "startAction": "เริ่มต้นบริการ",
   "stopAction": "หยุดบริการ",
   "sosAction": "ส่ง SOS"

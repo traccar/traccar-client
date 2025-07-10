@@ -26,9 +26,10 @@
   "wakelockLabel": "Wakelock",
   "stopDetectionLabel": "Stopdetectie",
   "trackingLabel": "Continu volgen",
-  "motionLabel": "Actieve beweging",
   "advancedLabel": "Geavanceerde instellingen",
+  "passwordLabel": "Password",
   "optimizationMessage": "Schakel batterijoptimalisatie voor deze app uit om betrouwbare tracking te garanderen.",
+  "passwordError": "Wrong password",
   "startAction": "Service starten",
   "stopAction": "Service stoppen",
   "sosAction": "SOS verzenden"

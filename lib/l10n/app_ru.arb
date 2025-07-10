@@ -26,9 +26,10 @@
   "wakelockLabel": "Блокировка сна",
   "stopDetectionLabel": "Обнаружение остановки",
   "trackingLabel": "Непрерывное отслеживание",
-  "motionLabel": "Активное движение",
   "advancedLabel": "Расширенные настройки",
+  "passwordLabel": "Password",
   "optimizationMessage": "Чтобы обеспечить надёжное отслеживание, отключите оптимизацию батареи для этого приложения.",
+  "passwordError": "Wrong password",
   "startAction": "Запустить сервис",
   "stopAction": "Остановить сервис",
   "sosAction": "Отправить SOS"

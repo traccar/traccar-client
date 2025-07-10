@@ -26,9 +26,10 @@
   "wakelockLabel": "Wakelock",
   "stopDetectionLabel": "Stopp-Erkennung",
   "trackingLabel": "Kontinuierliches Tracking",
-  "motionLabel": "Aktive Bewegung",
   "advancedLabel": "Erweiterte Einstellungen",
+  "passwordLabel": "Password",
   "optimizationMessage": "Um zuverlässiges Tracking zu gewährleisten, bitte die Akkuoptimierung für diese App deaktivieren.",
+  "passwordError": "Wrong password",
   "startAction": "Dienst starten",
   "stopAction": "Dienst stoppen",
   "sosAction": "SOS senden"
