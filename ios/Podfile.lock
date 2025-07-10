@@ -92,7 +92,7 @@ PODS:
     - nanopb (~> 3.30910.0)
     - PromisesSwift (~> 2.1)
   - Flutter (1.0.0)
-  - flutter_background_geolocation (4.16.11):
+  - flutter_background_geolocation (4.16.12):
     - CocoaLumberjack (~> 3.8.5)
     - Flutter
   - flutter_secure_storage (6.0.0):
@@ -258,7 +258,7 @@ SPEC CHECKSUMS:
   FirebaseRemoteConfigInterop: 1c6135e8a094cc6368949f5faeeca7ee8948b8aa
   FirebaseSessions: b9a92c1c51bbb81e78fc3142cda6d925d700f8e7
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_background_geolocation: defe705fe7c50b1be772e0d298ed3765fa17c022
+  flutter_background_geolocation: 0c4de54c968665b035929d3ab1a43e444def53e6
   flutter_secure_storage: 1ed9476fba7e7a782b22888f956cce43e2c62f13
   GoogleAdsOnDeviceConversion: 2be6297a4f048459e0ae17fad9bfd2844e10cf64
   GoogleAppMeasurement: 700dce7541804bec33db590a5c496b663fbe2539
