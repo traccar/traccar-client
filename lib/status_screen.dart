@@ -20,7 +20,10 @@ class _StatusScreenState extends State<StatusScreen> {
   }
 
   Future<void> _refreshLogs() async {
-    final logs = await bg.Logger.getLog();
+    final logs = await bg.Logger.getLog(bg.SQLQuery(
+      order: bg.SQLQuery.ORDER_DESC,
+      limit: 2000,
+    ));
     setState(() {
       _logs.clear();
       _logs.addAll(logs.split('\n').reversed);
@@ -28,7 +31,10 @@ class _StatusScreenState extends State<StatusScreen> {
   }
 
   Future<void> _emailLogs() async {
-    await bg.Logger.emailLog("support@traccar.org");
+    await bg.Logger.emailLog("support@traccar.org", bg.SQLQuery(
+      order: bg.SQLQuery.ORDER_DESC,
+      limit: 25000,
+    ));
   }
 
   Future<void> _clearLogs() async {
