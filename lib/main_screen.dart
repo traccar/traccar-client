@@ -52,6 +52,7 @@ class _MainScreenState extends State<MainScreen> {
           showDialog(
             context: context,
             builder: (_) => AlertDialog(
+              scrollable: true,
               content: Text(AppLocalizations.of(context)!.optimizationMessage),
               actions: [
                 TextButton(

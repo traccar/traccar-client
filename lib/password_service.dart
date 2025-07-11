@@ -14,6 +14,7 @@ class PasswordService {
       result = await showDialog<bool>(
         context: context,
         builder: (context) => AlertDialog(
+          scrollable: true,
           content: TextField(
             controller: controller,
             autofocus: true,
