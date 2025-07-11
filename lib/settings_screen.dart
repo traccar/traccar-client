@@ -41,6 +41,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final result = await showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
+        scrollable: true,
         title: Text(title),
         content: TextField(
           controller: controller,
@@ -89,6 +90,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
+        scrollable: true,
         content: TextField(
           controller: controller,
           decoration: InputDecoration(labelText: AppLocalizations.of(context)!.passwordLabel),
