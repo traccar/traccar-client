@@ -49,16 +49,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              FocusScope.of(context).unfocus();
+              Navigator.pop(context);
+            },
             child: Text(AppLocalizations.of(context)!.cancelButton),
           ),
           TextButton(
-            onPressed: () => Navigator.pop(context, controller.text),
+            onPressed: () {
+              FocusScope.of(context).unfocus();
+              Navigator.pop(context, controller.text);
+            },
             child: Text(AppLocalizations.of(context)!.saveButton),
           ),
         ],
       ),
     );
+
+    controller.dispose();
 
     if (result != null && result.isNotEmpty) {
       if (key == Preferences.url) {
@@ -96,11 +104,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context, false),
+            onPressed: () {
+              FocusScope.of(context).unfocus();
+              Navigator.pop(context, false);
+            },
             child: Text(AppLocalizations.of(context)!.cancelButton),
           ),
           TextButton(
-            onPressed: () => Navigator.pop(context, true),
+            onPressed: () {
+              FocusScope.of(context).unfocus();
+              Navigator.pop(context, true);
+            },
             child: Text(AppLocalizations.of(context)!.saveButton),
           ),
         ],
@@ -109,6 +123,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (result == true) {
       await PasswordService.setPassword(controller.text);
     }
+    controller.dispose();
   }
 
   Widget _buildListTile(String title, String key, bool isInt) {

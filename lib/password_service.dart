@@ -22,13 +22,17 @@ class PasswordService {
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context, false),
+              onPressed: () {
+                FocusScope.of(context).unfocus();
+                Navigator.pop(context, false);
+              },
               child: Text(AppLocalizations.of(context)!.cancelButton),
             ),
             TextButton(
               onPressed: () async {
                 final password = await _secureStorage.read(key: _passwordKey);
                 if (context.mounted) {
+                  FocusScope.of(context).unfocus();
                   Navigator.pop(context, password == controller.text);
                 }
               },
@@ -38,6 +42,7 @@ class PasswordService {
         ),
       );
     }
+    controller.dispose();
     if (result != true && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(AppLocalizations.of(context)!.passwordError)),
