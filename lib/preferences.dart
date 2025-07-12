@@ -111,6 +111,10 @@ class Preferences {
         positiveAction: 'Change to {backgroundPermissionOptionLabel}',
         negativeAction: 'Cancel'
       ),
+      notification: bg.Notification(
+        smallIcon: 'drawable/ic_stat_notify',
+        priority: bg.Config.NOTIFICATION_PRIORITY_MIN,
+      ),
     );
   }
 
