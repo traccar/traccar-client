@@ -26,7 +26,7 @@ class _StatusScreenState extends State<StatusScreen> {
     ));
     setState(() {
       _logs.clear();
-      _logs.addAll(logs.split('\n').reversed);
+      _logs.addAll(logs.split('\n'));
     });
   }
 
