@@ -115,6 +115,7 @@ class Preferences {
         smallIcon: 'drawable/ic_stat_notify',
         priority: bg.Config.NOTIFICATION_PRIORITY_LOW,
       ),
+      showsBackgroundLocationIndicator: false,
     );
   }
 
