@@ -1,7 +1,7 @@
 name: traccar_client
 description: "Traccar Client"
 publish_to: 'none'
-version: 9.5.2+106
+version: 9.5.3+107
 
 environment:
   sdk: ^3.7.2
