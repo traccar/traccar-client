@@ -178,10 +178,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_background_geolocation
-      sha256: d3c3107ef4cd2965746cdfc8f40e348fce05c39b0390d84f1316e13f400fd55c
+      sha256: b89623c9789b8217bd7ef0057512b77cf7b34d3b038e048a66378b6d0472ec8d
       url: "https://pub.dev"
     source: hosted
-    version: "4.17.0"
+    version: "4.17.1"
   flutter_lints:
     dependency: "direct dev"
     description:
