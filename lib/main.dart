@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:app_links/app_links.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:traccar_client/geolocation_service.dart';
 import 'package:traccar_client/push_service.dart';
@@ -11,6 +13,7 @@ import 'package:traccar_client/quick_actions.dart';
 import 'l10n/app_localizations.dart';
 import 'main_screen.dart';
 import 'preferences.dart';
+import 'configuration_service.dart';
 
 final messengerKey = GlobalKey<ScaffoldMessengerState>();
 
@@ -38,6 +41,7 @@ class _MainAppState extends State<MainApp> {
   @override
   void initState() {
     super.initState();
+    _initLinks();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await rateMyApp.init();
       if (mounted && rateMyApp.shouldOpenDialog) {
@@ -47,6 +51,17 @@ class _MainAppState extends State<MainApp> {
           developer.log('Failed to show rate dialog', error: error);
         }
       }
+    });
+  }
+
+  Future<void> _initLinks() async {
+    final appLinks = AppLinks();
+    final uri = await appLinks.getInitialLink();
+    if (uri != null) {
+      await ConfigurationService.applyUri(uri);
+    }
+    appLinks.uriLinkStream.listen((uri) async {
+      await ConfigurationService.applyUri(uri);
     });
   }
 
