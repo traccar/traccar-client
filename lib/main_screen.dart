@@ -164,6 +164,7 @@ class _MainScreenState extends State<MainScreen> {
                   onPressed: () async {
                     if (await PasswordService.authenticate(context) && mounted) {
                       await Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen()));
+                      setState(() {});
                     }
                   },
                   child: Text(AppLocalizations.of(context)!.settingsButton),
