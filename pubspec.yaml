@@ -22,7 +22,7 @@ dependencies:
   rate_my_app: ^2.3.2
   shared_preferences_android: ^2.4.13
   wakelock_partial_android: ^1.0.1
-  mobile_scanner: ^7.0.1
+  mobile_scanner: ^7.1.2
   flutter_secure_storage: ^9.2.4
   app_links: ^6.4.1
 
