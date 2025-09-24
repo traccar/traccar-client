@@ -15,7 +15,7 @@ dependencies:
   flutter_background_geolocation: ^4.18.0
   shared_preferences: ^2.5.3
   firebase_core: ^4.1.1
-  firebase_messaging: ^16.0.1
+  firebase_messaging: ^16.0.2
   firebase_analytics: ^12.0.2
   firebase_crashlytics: ^5.0.1
   quick_actions: ^1.1.0
