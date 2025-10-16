@@ -54,7 +54,13 @@ class GeolocationService {
     } else {
       LocationCache.set(location);
       try {
+        // Sync current location to server
         await bg.BackgroundGeolocation.sync();
+
+        // CRITICAL FIX: Destroy the location after successful sync
+        // Without this, locations accumulate in the plugin's database
+        // and get resent every time sync() is called
+        await bg.BackgroundGeolocation.destroyLocation(location.uuid);
       } catch (error) {
         developer.log('Failed to send location', error: error);
       }
@@ -66,7 +72,26 @@ class GeolocationService {
     if (location.extras?.isNotEmpty == true) return false;
 
     final lastLocation = LocationCache.get();
-    if (lastLocation == null) return false;
+
+    // If cache is null (e.g., in headless isolate), check SharedPreferences directly
+    if (lastLocation == null) {
+      final lastTimestamp = Preferences.instance.getString(Preferences.lastTimestamp);
+      if (lastTimestamp != null) {
+        // Not the first location ever - apply minimum filtering to prevent excessive uploads
+        final duration = DateTime.parse(location.timestamp).difference(DateTime.parse(lastTimestamp)).inSeconds;
+        final isHighestAccuracy = Preferences.instance.getString(Preferences.accuracy) == 'highest';
+
+        if (!isHighestAccuracy) {
+          final fastestInterval = Preferences.instance.getInt(Preferences.fastestInterval);
+          if (fastestInterval != null && duration < fastestInterval) {
+            developer.log('Location too frequent (${duration}s < ${fastestInterval}s), deleting');
+            return true;
+          }
+        }
+      }
+      // First location or sufficient time passed
+      return false;
+    }
 
     final isHighestAccuracy = Preferences.instance.getString(Preferences.accuracy) == 'highest';
     final duration = DateTime.parse(location.timestamp).difference(DateTime.parse(lastLocation.timestamp)).inSeconds;
