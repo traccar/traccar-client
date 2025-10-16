@@ -52,7 +52,11 @@ class GeolocationService {
         developer.log('Failed to delete location', error: error);
       }
     } else {
-      LocationCache.set(location);
+      try {
+        await LocationCache.set(location);
+      } catch (error) {
+        developer.log('Failed to cache location', error: error);
+      }
       try {
         await bg.BackgroundGeolocation.sync();
       } catch (error) {
@@ -66,7 +70,10 @@ class GeolocationService {
     if (location.extras?.isNotEmpty == true) return false;
 
     final lastLocation = LocationCache.get();
-    if (lastLocation == null) return false;
+    if (lastLocation == null) {
+      developer.log('Location cache is null, skipping filtering');
+      return false;
+    }
 
     final isHighestAccuracy = Preferences.instance.getString(Preferences.accuracy) == 'highest';
     final duration = DateTime.parse(location.timestamp).difference(DateTime.parse(lastLocation.timestamp)).inSeconds;

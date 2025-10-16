@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 import 'package:traccar_client/preferences.dart';
 
@@ -19,17 +21,21 @@ class LocationCache {
 
   static Location? get() {
     if (_last == null) {
-      final timestamp = Preferences.instance.getString(Preferences.lastTimestamp);
-      final latitude = Preferences.instance.getDouble(Preferences.lastLatitude);
-      final longitude = Preferences.instance.getDouble(Preferences.lastLongitude);
-      final heading = Preferences.instance.getDouble(Preferences.lastHeading);
-      if (timestamp != null && latitude != null && longitude != null && heading != null) {
-        _last = Location(
-          timestamp: timestamp,
-          latitude: latitude,
-          longitude: longitude,
-          heading: heading,
-        );
+      try {
+        final timestamp = Preferences.instance.getString(Preferences.lastTimestamp);
+        final latitude = Preferences.instance.getDouble(Preferences.lastLatitude);
+        final longitude = Preferences.instance.getDouble(Preferences.lastLongitude);
+        final heading = Preferences.instance.getDouble(Preferences.lastHeading);
+        if (timestamp != null && latitude != null && longitude != null && heading != null) {
+          _last = Location(
+            timestamp: timestamp,
+            latitude: latitude,
+            longitude: longitude,
+            heading: heading,
+          );
+        }
+      } catch (error) {
+        developer.log('Failed to read location cache', error: error);
       }
     }
     return _last;
@@ -42,10 +48,10 @@ class LocationCache {
       longitude: location.coords.longitude,
       heading: location.coords.heading,
     );
-    Preferences.instance.setString(Preferences.lastTimestamp, last.timestamp);
-    Preferences.instance.setDouble(Preferences.lastLatitude, last.latitude);
-    Preferences.instance.setDouble(Preferences.lastLongitude, last.longitude);
-    Preferences.instance.setDouble(Preferences.lastHeading, last.heading);
+    await Preferences.instance.setString(Preferences.lastTimestamp, last.timestamp);
+    await Preferences.instance.setDouble(Preferences.lastLatitude, last.latitude);
+    await Preferences.instance.setDouble(Preferences.lastLongitude, last.longitude);
+    await Preferences.instance.setDouble(Preferences.lastHeading, last.heading);
     _last = last;
   }
 }
