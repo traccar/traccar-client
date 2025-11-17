@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
-import 'package:traccar_client/password_service.dart';
+import 'package:luminalink/password_service.dart';
 
 import 'preferences.dart';
 

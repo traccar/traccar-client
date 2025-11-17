@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
-import 'package:traccar_client/main.dart';
-import 'package:traccar_client/password_service.dart';
-import 'package:traccar_client/qr_code_screen.dart';
+import 'package:luminalink/main.dart';
+import 'package:luminalink/password_service.dart';
+import 'package:luminalink/qr_code_screen.dart';
 import 'package:wakelock_partial_android/wakelock_partial_android.dart';
 
 import 'l10n/app_localizations.dart';

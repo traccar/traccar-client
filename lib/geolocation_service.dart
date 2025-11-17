@@ -4,8 +4,8 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
-import 'package:traccar_client/location_cache.dart';
-import 'package:traccar_client/preferences.dart';
+import 'package:luminalink/location_cache.dart';
+import 'package:luminalink/preferences.dart';
 import 'package:wakelock_partial_android/wakelock_partial_android.dart';
 
 class GeolocationService {

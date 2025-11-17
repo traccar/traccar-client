@@ -1,7 +1,7 @@
-name: traccar_client
-description: "Traccar Client"
+name: luminalink
+description: "LuminaLink - Privacy-First Family Safety & Location Sharing"
 publish_to: 'none'
-version: 9.6.4+112
+version: 1.0.0+1
 
 environment:
   sdk: ^3.7.2

@@ -1,4 +1,4 @@
-package org.traccar.client
+package com.luminalink.app
 
 import android.app.Application
 import org.slf4j.LoggerFactory

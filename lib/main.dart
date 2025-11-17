@@ -4,11 +4,13 @@ import 'dart:developer' as developer;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:app_links/app_links.dart';
 import 'package:rate_my_app/rate_my_app.dart';
-import 'package:traccar_client/geolocation_service.dart';
-import 'package:traccar_client/push_service.dart';
-import 'package:traccar_client/quick_actions.dart';
+import 'package:luminalink/geolocation_service.dart';
+import 'package:luminalink/push_service.dart';
+import 'package:luminalink/quick_actions.dart';
+import 'package:luminalink/theme/theme.dart';
 
 import 'l10n/app_localizations.dart';
 import 'main_screen.dart';
@@ -68,21 +70,16 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'LuminaLink',
       scaffoldMessengerKey: messengerKey,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.green,
-          brightness: Brightness.light,
-        ),
-      ),
-      darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.green,
-          brightness: Brightness.dark,
-        ),
-      ),
+
+      // Apply LuminaLink's custom Material Design 3 theme
+      theme: LuminaTheme.lightTheme(),
+      darkTheme: LuminaTheme.darkTheme(),
+      themeMode: ThemeMode.system, // Respects system preference
+
       home: Stack(
         children: const [
           QuickActionsInitializer(),

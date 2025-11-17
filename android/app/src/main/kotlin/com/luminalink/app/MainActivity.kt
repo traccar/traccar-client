@@ -1,4 +1,4 @@
-package org.traccar.client
+package com.luminalink.app
 
 import io.flutter.embedding.android.FlutterActivity
 
