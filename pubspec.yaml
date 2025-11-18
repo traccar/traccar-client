@@ -21,6 +21,7 @@ dependencies:
   firebase_analytics: ^12.0.4
   firebase_crashlytics: ^5.0.4
   firebase_storage: ^12.3.7
+  flutter_local_notifications: ^18.0.1
   quick_actions: ^1.1.0
   rate_my_app: ^2.3.2
   shared_preferences_android: ^2.4.15

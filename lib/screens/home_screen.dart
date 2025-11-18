@@ -5,6 +5,8 @@ import 'package:luminalink/screens/map/map_screen.dart';
 import 'package:luminalink/screens/circles/circles_screen.dart';
 import 'package:luminalink/screens/settings/settings_screen.dart';
 import 'package:luminalink/services/location_service.dart';
+import 'package:luminalink/services/notification_service.dart';
+import 'package:luminalink/services/geofence_service.dart';
 
 /// Home screen with bottom navigation
 ///
@@ -21,20 +23,37 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final LocationService _locationService = LocationService();
+  final NotificationService _notificationService = NotificationService();
+  final GeofenceService _geofenceService = GeofenceService();
   int _currentIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _initializeLocationSharing();
+    _initializeServices();
   }
 
-  /// Initialize location sharing with Firestore
+  @override
+  void dispose() {
+    _geofenceService.stopMonitoring();
+    super.dispose();
+  }
+
+  /// Initialize all location and notification services
   ///
-  /// Sets up background geolocation listener to push location updates
-  /// to Firestore for sharing with circles.
-  Future<void> _initializeLocationSharing() async {
+  /// Sets up:
+  /// - Background location sharing with Firestore
+  /// - Push notifications via FCM
+  /// - Geofence monitoring for place alerts
+  Future<void> _initializeServices() async {
+    // Initialize location sharing
     await _locationService.initializeLocationSharing();
+
+    // Initialize notifications
+    await _notificationService.initialize();
+
+    // Start geofence monitoring
+    await _geofenceService.startMonitoring();
   }
 
   final List<Widget> _screens = const [
