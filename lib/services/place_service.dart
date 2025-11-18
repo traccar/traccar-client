@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:luminalink/models/models.dart';
 import 'package:luminalink/services/auth_service.dart';
 import 'package:luminalink/services/circle_service.dart';
+import 'package:luminalink/utils/exceptions.dart';
 
 /// Service for managing Places (geofenced locations) in Firestore
 ///
@@ -37,14 +38,23 @@ class PlaceService {
   }) async {
     final userId = _authService.currentUserId;
     if (userId == null) {
-      throw Exception('User not authenticated');
+      throw const AuthenticationException(
+        'No user logged in. Please sign in first.',
+        code: 'auth/not-authenticated',
+      );
     }
 
     try {
       // Verify user is a member of the circle
       final circle = await _circleService.getCircle(circleId);
-      if (circle == null || !circle.isMember(userId)) {
-        throw Exception('You must be a member of the circle to create places');
+      if (circle == null) {
+        throw CircleException.notFound();
+      }
+      if (!circle.isMember(userId)) {
+        throw const PermissionException(
+          'You must be a member of the circle to create places.',
+          code: 'permission/not-circle-member',
+        );
       }
 
       final now = DateTime.now();
@@ -210,21 +220,25 @@ class PlaceService {
   }) async {
     final userId = _authService.currentUserId;
     if (userId == null) {
-      throw Exception('User not authenticated');
+      throw const AuthenticationException(
+        'No user logged in. Please sign in first.',
+        code: 'auth/not-authenticated',
+      );
     }
 
     try {
       final place = await getPlace(placeId);
       if (place == null) {
-        throw Exception('Place not found');
+        throw PlaceException.notFound();
       }
 
       // Verify user has permission to update
       final circle = await _circleService.getCircle(place.circleId);
-      if (circle == null ||
-          (place.createdBy != userId && !circle.isAdmin(userId))) {
-        throw Exception(
-            'Only the creator or circle admins can update this place');
+      if (circle == null) {
+        throw CircleException.notFound();
+      }
+      if (place.createdBy != userId && !circle.isAdmin(userId)) {
+        throw PlaceException.unauthorized();
       }
 
       final Map<String, dynamic> updates = {
@@ -256,21 +270,25 @@ class PlaceService {
   Future<void> deletePlace(String placeId) async {
     final userId = _authService.currentUserId;
     if (userId == null) {
-      throw Exception('User not authenticated');
+      throw const AuthenticationException(
+        'No user logged in. Please sign in first.',
+        code: 'auth/not-authenticated',
+      );
     }
 
     try {
       final place = await getPlace(placeId);
       if (place == null) {
-        throw Exception('Place not found');
+        throw PlaceException.notFound();
       }
 
       // Verify user has permission to delete
       final circle = await _circleService.getCircle(place.circleId);
-      if (circle == null ||
-          (place.createdBy != userId && !circle.isAdmin(userId))) {
-        throw Exception(
-            'Only the creator or circle admins can delete this place');
+      if (circle == null) {
+        throw CircleException.notFound();
+      }
+      if (place.createdBy != userId && !circle.isAdmin(userId)) {
+        throw PlaceException.unauthorized();
       }
 
       await _placesCollection.doc(placeId).delete();

@@ -3,6 +3,7 @@ import 'dart:developer' as developer;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:luminalink/models/models.dart';
+import 'package:luminalink/utils/exceptions.dart';
 
 /// Authentication service for LuminaLink
 ///
@@ -32,7 +33,7 @@ class AuthService {
   ///
   /// Creates a new Firebase Auth user and a corresponding user document in Firestore.
   ///
-  /// Throws [FirebaseAuthException] if sign up fails.
+  /// Throws [AuthenticationException] if sign up fails.
   Future<AppUser> signUpWithEmail({
     required String email,
     required String password,
@@ -48,7 +49,10 @@ class AuthService {
 
       final User? firebaseUser = userCredential.user;
       if (firebaseUser == null) {
-        throw Exception('Failed to create user account');
+        throw const AuthenticationException(
+          'Failed to create user account. Please try again.',
+          code: 'auth/user-creation-failed',
+        );
       }
 
       // Update display name
@@ -80,7 +84,7 @@ class AuthService {
 
   /// Sign in with email and password
   ///
-  /// Throws [FirebaseAuthException] if sign in fails.
+  /// Throws [AuthenticationException] if sign in fails.
   Future<AppUser> signInWithEmail({
     required String email,
     required String password,
@@ -94,7 +98,10 @@ class AuthService {
 
       final User? firebaseUser = userCredential.user;
       if (firebaseUser == null) {
-        throw Exception('Failed to sign in');
+        throw const AuthenticationException(
+          'Failed to sign in. Please try again.',
+          code: 'auth/sign-in-failed',
+        );
       }
 
       // Get user document from Firestore
@@ -148,7 +155,7 @@ class AuthService {
 
   /// Send a password reset email
   ///
-  /// Throws [FirebaseAuthException] if the operation fails.
+  /// Throws [AuthenticationException] if the operation fails.
   Future<void> sendPasswordResetEmail(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
@@ -161,7 +168,7 @@ class AuthService {
 
   /// Change the current user's password
   ///
-  /// Requires recent authentication. May throw [FirebaseAuthException]
+  /// Requires recent authentication. May throw [AuthenticationException]
   /// if re-authentication is required.
   Future<void> changePassword({
     required String currentPassword,
@@ -169,7 +176,12 @@ class AuthService {
   }) async {
     try {
       final user = _auth.currentUser;
-      if (user == null) throw Exception('No user logged in');
+      if (user == null) {
+        throw const AuthenticationException(
+          'No user logged in. Please sign in first.',
+          code: 'auth/not-authenticated',
+        );
+      }
 
       // Re-authenticate with current password
       final credential = EmailAuthProvider.credential(
@@ -225,7 +237,12 @@ class AuthService {
     String? photoUrl,
   }) async {
     final user = _auth.currentUser;
-    if (user == null) throw Exception('No user logged in');
+    if (user == null) {
+      throw const AuthenticationException(
+        'No user logged in. Please sign in first.',
+        code: 'auth/not-authenticated',
+      );
+    }
 
     try {
       // Update Firebase Auth profile
@@ -253,7 +270,7 @@ class AuthService {
   }
 
   /// Update the user's FCM token for push notifications
-  Future<void> updateFcmToken(String token) async {
+  Future<void> updateFCMToken(String token) async {
     final user = _auth.currentUser;
     if (user == null) return;
 
@@ -270,7 +287,12 @@ class AuthService {
   /// Mark onboarding as completed
   Future<void> completeOnboarding() async {
     final user = _auth.currentUser;
-    if (user == null) throw Exception('No user logged in');
+    if (user == null) {
+      throw const AuthenticationException(
+        'No user logged in. Please sign in first.',
+        code: 'auth/not-authenticated',
+      );
+    }
 
     try {
       await _firestore.collection('users').doc(user.uid).update({
@@ -286,7 +308,12 @@ class AuthService {
   /// Update location sharing status
   Future<void> updateLocationSharing(bool enabled) async {
     final user = _auth.currentUser;
-    if (user == null) throw Exception('No user logged in');
+    if (user == null) {
+      throw const AuthenticationException(
+        'No user logged in. Please sign in first.',
+        code: 'auth/not-authenticated',
+      );
+    }
 
     try {
       await _firestore.collection('users').doc(user.uid).update({
@@ -331,29 +358,40 @@ class AuthService {
   // ERROR HANDLING
   // ==========================================================================
 
-  /// Convert FirebaseAuthException to user-friendly messages
-  Exception _handleAuthException(FirebaseAuthException e) {
+  /// Convert FirebaseAuthException to user-friendly AuthenticationException
+  AuthenticationException _handleAuthException(FirebaseAuthException e) {
     switch (e.code) {
       case 'weak-password':
-        return Exception('Password is too weak. Please use a stronger password.');
+        return AuthenticationException.weakPassword();
       case 'email-already-in-use':
-        return Exception('An account already exists with this email address.');
+        return AuthenticationException.emailAlreadyInUse();
       case 'invalid-email':
-        return Exception('The email address is not valid.');
+        return AuthenticationException.invalidEmail();
       case 'user-disabled':
-        return Exception('This account has been disabled.');
+        return AuthenticationException.userDisabled();
       case 'user-not-found':
-        return Exception('No account found with this email address.');
+        return AuthenticationException.userNotFound();
       case 'wrong-password':
-        return Exception('Incorrect password. Please try again.');
+      case 'invalid-credential':
+        return AuthenticationException.invalidCredentials();
       case 'too-many-requests':
-        return Exception('Too many failed attempts. Please try again later.');
+        return AuthenticationException.tooManyRequests();
       case 'requires-recent-login':
-        return Exception('This operation requires recent authentication. Please sign in again.');
+        return const AuthenticationException(
+          'This operation requires recent authentication. Please sign in again.',
+          code: 'auth/requires-recent-login',
+        );
       case 'network-request-failed':
-        return Exception('Network error. Please check your internet connection.');
+        return const AuthenticationException(
+          'Network error. Please check your internet connection.',
+          code: 'auth/network-error',
+        );
       default:
-        return Exception('Authentication failed: ${e.message}');
+        return AuthenticationException(
+          e.message ?? 'Authentication failed. Please try again.',
+          code: 'auth/${e.code}',
+          originalError: e,
+        );
     }
   }
 }

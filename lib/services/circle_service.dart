@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:luminalink/models/models.dart';
 import 'package:luminalink/services/auth_service.dart';
+import 'package:luminalink/utils/exceptions.dart';
 
 /// Service for managing Circles (groups of users who share location)
 ///
@@ -35,7 +36,12 @@ class CircleService {
     int maxMembers = -1,
   }) async {
     final userId = _authService.currentUserId;
-    if (userId == null) throw Exception('User not logged in');
+    if (userId == null) {
+      throw const AuthenticationException(
+        'No user logged in. Please sign in first.',
+        code: 'auth/not-authenticated',
+      );
+    }
 
     try {
       final now = DateTime.now();
@@ -138,14 +144,19 @@ class CircleService {
     int? maxMembers,
   }) async {
     final userId = _authService.currentUserId;
-    if (userId == null) throw Exception('User not logged in');
+    if (userId == null) {
+      throw const AuthenticationException(
+        'No user logged in. Please sign in first.',
+        code: 'auth/not-authenticated',
+      );
+    }
 
     try {
       // Check if user is admin
       final circle = await getCircle(circleId);
-      if (circle == null) throw Exception('Circle not found');
+      if (circle == null) throw CircleException.notFound();
       if (!circle.isAdmin(userId)) {
-        throw Exception('Only admins can update circle details');
+        throw PermissionException.unauthorized();
       }
 
       final updates = <String, dynamic>{
@@ -173,13 +184,18 @@ class CircleService {
   /// rather than deleting the document.
   Future<void> deleteCircle(String circleId) async {
     final userId = _authService.currentUserId;
-    if (userId == null) throw Exception('User not logged in');
+    if (userId == null) {
+      throw const AuthenticationException(
+        'No user logged in. Please sign in first.',
+        code: 'auth/not-authenticated',
+      );
+    }
 
     try {
       final circle = await getCircle(circleId);
-      if (circle == null) throw Exception('Circle not found');
+      if (circle == null) throw CircleException.notFound();
       if (!circle.isOwner(userId)) {
-        throw Exception('Only the owner can delete a circle');
+        throw CircleException.onlyOwnerCanDelete();
       }
 
       // Archive the circle
@@ -210,25 +226,30 @@ class CircleService {
   /// Add a member to a circle by user ID
   Future<void> addMember(String circleId, String userId) async {
     final currentUserId = _authService.currentUserId;
-    if (currentUserId == null) throw Exception('User not logged in');
+    if (currentUserId == null) {
+      throw const AuthenticationException(
+        'No user logged in. Please sign in first.',
+        code: 'auth/not-authenticated',
+      );
+    }
 
     try {
       final circle = await getCircle(circleId);
-      if (circle == null) throw Exception('Circle not found');
+      if (circle == null) throw CircleException.notFound();
 
       // Check if user is admin
       if (!circle.isAdmin(currentUserId)) {
-        throw Exception('Only admins can add members');
+        throw PermissionException.unauthorized();
       }
 
       // Check if already a member
       if (circle.isMember(userId)) {
-        throw Exception('User is already a member of this circle');
+        throw CircleException.alreadyMember();
       }
 
       // Check member limit
       if (circle.isFull) {
-        throw Exception('Circle has reached its member limit');
+        throw CircleException.circleFull();
       }
 
       // Add to circle
@@ -253,20 +274,28 @@ class CircleService {
   /// Remove a member from a circle
   Future<void> removeMember(String circleId, String userId) async {
     final currentUserId = _authService.currentUserId;
-    if (currentUserId == null) throw Exception('User not logged in');
+    if (currentUserId == null) {
+      throw const AuthenticationException(
+        'No user logged in. Please sign in first.',
+        code: 'auth/not-authenticated',
+      );
+    }
 
     try {
       final circle = await getCircle(circleId);
-      if (circle == null) throw Exception('Circle not found');
+      if (circle == null) throw CircleException.notFound();
 
       // Users can remove themselves, or admins can remove others
       if (userId != currentUserId && !circle.isAdmin(currentUserId)) {
-        throw Exception('Only admins can remove other members');
+        throw PermissionException.unauthorized();
       }
 
       // Can't remove the owner
       if (circle.isOwner(userId)) {
-        throw Exception('Cannot remove the circle owner');
+        throw const CircleException(
+          'Cannot remove the circle owner. The owner must transfer ownership or delete the circle.',
+          code: 'circle/cannot-remove-owner',
+        );
       }
 
       // Remove from circle
@@ -292,23 +321,34 @@ class CircleService {
   /// Promote a member to admin
   Future<void> promoteToAdmin(String circleId, String userId) async {
     final currentUserId = _authService.currentUserId;
-    if (currentUserId == null) throw Exception('User not logged in');
+    if (currentUserId == null) {
+      throw const AuthenticationException(
+        'No user logged in. Please sign in first.',
+        code: 'auth/not-authenticated',
+      );
+    }
 
     try {
       final circle = await getCircle(circleId);
-      if (circle == null) throw Exception('Circle not found');
+      if (circle == null) throw CircleException.notFound();
 
       // Only owner or existing admins can promote
       if (!circle.isAdmin(currentUserId)) {
-        throw Exception('Only admins can promote members');
+        throw PermissionException.unauthorized();
       }
 
       if (!circle.isMember(userId)) {
-        throw Exception('User is not a member of this circle');
+        throw const CircleException(
+          'User is not a member of this circle.',
+          code: 'circle/not-member',
+        );
       }
 
       if (circle.isAdmin(userId)) {
-        throw Exception('User is already an admin');
+        throw const CircleException(
+          'User is already an admin.',
+          code: 'circle/already-admin',
+        );
       }
 
       await _circlesCollection.doc(circleId).update({
@@ -326,24 +366,38 @@ class CircleService {
   /// Demote an admin to regular member
   Future<void> demoteAdmin(String circleId, String userId) async {
     final currentUserId = _authService.currentUserId;
-    if (currentUserId == null) throw Exception('User not logged in');
+    if (currentUserId == null) {
+      throw const AuthenticationException(
+        'No user logged in. Please sign in first.',
+        code: 'auth/not-authenticated',
+      );
+    }
 
     try {
       final circle = await getCircle(circleId);
-      if (circle == null) throw Exception('Circle not found');
+      if (circle == null) throw CircleException.notFound();
 
       // Only owner can demote admins
       if (!circle.isOwner(currentUserId)) {
-        throw Exception('Only the owner can demote admins');
+        throw const PermissionException(
+          'Only the circle owner can demote admins.',
+          code: 'permission/owner-only',
+        );
       }
 
       // Can't demote the owner
       if (circle.isOwner(userId)) {
-        throw Exception('Cannot demote the circle owner');
+        throw const CircleException(
+          'Cannot demote the circle owner.',
+          code: 'circle/cannot-demote-owner',
+        );
       }
 
       if (!circle.isAdmin(userId)) {
-        throw Exception('User is not an admin');
+        throw const CircleException(
+          'User is not an admin.',
+          code: 'circle/not-admin',
+        );
       }
 
       await _circlesCollection.doc(circleId).update({
@@ -365,14 +419,19 @@ class CircleService {
   /// Generate a new invite code for a circle
   Future<String> regenerateInviteCode(String circleId) async {
     final userId = _authService.currentUserId;
-    if (userId == null) throw Exception('User not logged in');
+    if (userId == null) {
+      throw const AuthenticationException(
+        'No user logged in. Please sign in first.',
+        code: 'auth/not-authenticated',
+      );
+    }
 
     try {
       final circle = await getCircle(circleId);
-      if (circle == null) throw Exception('Circle not found');
+      if (circle == null) throw CircleException.notFound();
 
       if (!circle.isAdmin(userId)) {
-        throw Exception('Only admins can regenerate invite codes');
+        throw PermissionException.unauthorized();
       }
 
       final newCode = _generateInviteCode();
@@ -393,7 +452,12 @@ class CircleService {
   /// Join a circle using an invite code
   Future<Circle> joinCircleWithCode(String inviteCode) async {
     final userId = _authService.currentUserId;
-    if (userId == null) throw Exception('User not logged in');
+    if (userId == null) {
+      throw const AuthenticationException(
+        'No user logged in. Please sign in first.',
+        code: 'auth/not-authenticated',
+      );
+    }
 
     try {
       // Find circle with this invite code
@@ -405,19 +469,19 @@ class CircleService {
           .get();
 
       if (querySnapshot.docs.isEmpty) {
-        throw Exception('Invalid or expired invite code');
+        throw CircleException.invalidInviteCode();
       }
 
       final circle = Circle.fromFirestore(querySnapshot.docs.first);
 
       // Check if already a member
       if (circle.isMember(userId)) {
-        throw Exception('You are already a member of this circle');
+        throw CircleException.alreadyMember();
       }
 
       // Check member limit
       if (circle.isFull) {
-        throw Exception('This circle has reached its member limit');
+        throw CircleException.circleFull();
       }
 
       // Add member
