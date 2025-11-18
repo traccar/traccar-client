@@ -10,3 +10,4 @@
 export 'app_user.dart';
 export 'circle.dart';
 export 'user_location.dart';
+export 'place.dart';

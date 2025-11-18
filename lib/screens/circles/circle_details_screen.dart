@@ -6,6 +6,7 @@ import 'package:luminalink/services/auth_service.dart';
 import 'package:luminalink/widgets/widgets.dart';
 import 'package:luminalink/theme/spacing.dart';
 import 'package:luminalink/theme/colors.dart';
+import 'package:luminalink/screens/places/places_list_screen.dart';
 
 /// Circle details screen - Shows circle information and members
 ///
@@ -112,6 +113,33 @@ class CircleDetailsScreen extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],
+                ),
+              ),
+
+              // Places quick action
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: LuminaSpacing.md,
+                  vertical: LuminaSpacing.sm,
+                ),
+                child: Card(
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.place_outlined,
+                      color: iconColor,
+                    ),
+                    title: const Text('Places & Alerts'),
+                    subtitle: const Text('Manage geofenced locations for this circle'),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PlacesListScreen(circle: circle),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
 

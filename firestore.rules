@@ -117,17 +117,37 @@ service cloud.firestore {
     }
 
     // ========================================================================
-    // GEOFENCE/PLACE DOCUMENTS (Future implementation)
+    // PLACE DOCUMENTS
     // ========================================================================
 
-    match /geofences/{geofenceId} {
-      // Users can manage their own geofences
-      allow read, write: if isOwner(resource.data.userId);
-
-      // Circle members can read geofences shared with them
+    match /places/{placeId} {
+      // Circle members can read places for their circles
       allow read: if isAuthenticated() &&
-                    exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
-                    get(/databases/$(database)/documents/users/$(request.auth.uid)).data.circleIds.hasAny(resource.data.sharedWith);
+                    exists(/databases/$(database)/documents/circles/$(resource.data.circleId)) &&
+                    isCircleMember(get(/databases/$(database)/documents/circles/$(resource.data.circleId)).data);
+
+      // Circle members can create places for their circles
+      allow create: if isAuthenticated() &&
+                      exists(/databases/$(database)/documents/circles/$(request.resource.data.circleId)) &&
+                      isCircleMember(get(/databases/$(database)/documents/circles/$(request.resource.data.circleId)).data) &&
+                      request.resource.data.createdBy == request.auth.uid;
+
+      // Only place creator or circle admins can update places
+      allow update: if isAuthenticated() && (
+                      resource.data.createdBy == request.auth.uid ||
+                      (exists(/databases/$(database)/documents/circles/$(resource.data.circleId)) &&
+                       isCircleAdmin(get(/databases/$(database)/documents/circles/$(resource.data.circleId)).data))
+                    ) &&
+                    // Ensure circleId and createdBy cannot be changed
+                    request.resource.data.circleId == resource.data.circleId &&
+                    request.resource.data.createdBy == resource.data.createdBy;
+
+      // Only place creator or circle admins can delete places
+      allow delete: if isAuthenticated() && (
+                      resource.data.createdBy == request.auth.uid ||
+                      (exists(/databases/$(database)/documents/circles/$(resource.data.circleId)) &&
+                       isCircleAdmin(get(/databases/$(database)/documents/circles/$(resource.data.circleId)).data))
+                    );
     }
 
     // ========================================================================
