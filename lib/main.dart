@@ -11,9 +11,9 @@ import 'package:luminalink/geolocation_service.dart';
 import 'package:luminalink/push_service.dart';
 import 'package:luminalink/quick_actions.dart';
 import 'package:luminalink/theme/theme.dart';
+import 'package:luminalink/screens/auth/auth_wrapper.dart';
 
 import 'l10n/app_localizations.dart';
-import 'main_screen.dart';
 import 'preferences.dart';
 import 'configuration_service.dart';
 
@@ -83,7 +83,7 @@ class _MainAppState extends State<MainApp> {
       home: Stack(
         children: const [
           QuickActionsInitializer(),
-          MainScreen(),
+          AuthWrapper(), // Handles routing based on auth state
         ],
       ),
     );

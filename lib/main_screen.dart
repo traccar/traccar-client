@@ -181,7 +181,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Traccar Client'),
+        title: const Text('LuminaLink'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
