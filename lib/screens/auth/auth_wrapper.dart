@@ -4,7 +4,7 @@ import 'package:luminalink/services/auth_service.dart';
 import 'package:luminalink/models/models.dart';
 import 'package:luminalink/screens/auth/login_screen.dart';
 import 'package:luminalink/screens/onboarding/onboarding_screen.dart';
-import 'package:luminalink/main_screen.dart';
+import 'package:luminalink/screens/home_screen.dart';
 import 'package:luminalink/widgets/widgets.dart';
 
 /// Authentication wrapper that routes users based on their auth state
@@ -57,8 +57,8 @@ class AuthWrapper extends StatelessWidget {
               return const OnboardingScreen();
             }
 
-            // User is fully authenticated and onboarded - show main screen
-            return const MainScreen();
+            // User is fully authenticated and onboarded - show home screen
+            return const HomeScreen();
           },
         );
       },

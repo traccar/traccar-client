@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 /// Represents a Circle (group) of users who share location with each other
 ///
@@ -168,6 +169,33 @@ class Circle {
 
   /// Check if the circle has reached its member limit
   bool get isFull => maxMembers > 0 && memberCount >= maxMembers;
+
+  /// Parse the icon color string to a Color object
+  ///
+  /// Returns the parsed color if iconColor is a valid hex string,
+  /// otherwise returns a default amber color.
+  Color get iconColorParsed {
+    if (iconColor == null || iconColor!.isEmpty) {
+      return const Color(0xFFF59E0B); // Default amber
+    }
+
+    try {
+      // Remove '#' if present
+      final colorString = iconColor!.replaceAll('#', '');
+
+      // Parse hex color (supports both RGB and ARGB formats)
+      if (colorString.length == 6) {
+        return Color(int.parse('FF$colorString', radix: 16));
+      } else if (colorString.length == 8) {
+        return Color(int.parse(colorString, radix: 16));
+      }
+    } catch (e) {
+      // Return default color if parsing fails
+      return const Color(0xFFF59E0B);
+    }
+
+    return const Color(0xFFF59E0B);
+  }
 
   @override
   bool operator ==(Object other) =>
