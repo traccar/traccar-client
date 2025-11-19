@@ -11,7 +11,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Traccar Client</string>
+	<string>LuminaLink</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -19,7 +19,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>traccar_client</string>
+	<string>luminalink</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -31,7 +31,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>org.traccar.client</string>
+				<string>luminalink</string>
 			</array>
 		</dict>
 	</array>
@@ -47,11 +47,11 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Camera access is required to scan QR codes</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Location required in background</string>
+	<string>LuminaLink needs your location to share it with your trusted circle and provide safety features like place alerts.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Location required when app is in use</string>
+	<string>LuminaLink needs your location to show you on the map and share with your circle when the app is in use.</string>
 	<key>NSMotionUsageDescription</key>
-	<string>Motion permission helps detect when device in in-motion</string>
+	<string>Motion data helps LuminaLink optimize battery usage by detecting when your device is in motion.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

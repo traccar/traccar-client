@@ -66,7 +66,7 @@ class DefaultFirebaseOptions {
     databaseURL: 'https://traccar-client-app.firebaseio.com',
     storageBucket: 'traccar-client-app.firebasestorage.app',
     iosClientId: '39016471396-7mdutolor3h210bm9qmf60gp18lmmhnm.apps.googleusercontent.com',
-    iosBundleId: 'org.traccar.client.TraccarClient',
+    iosBundleId: 'com.luminalink.app',
   );
 
 }

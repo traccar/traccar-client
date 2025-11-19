@@ -1,0 +1,177 @@
+rules_version = '2';
+
+// Firestore Security Rules for LuminaLink
+//
+// These rules ensure that:
+// - Users can only read/write their own profile data
+// - Circle members can read circle data and member locations
+// - Only circle admins can modify circle settings
+// - Location data is only accessible to circle members
+//
+// IMPORTANT: These rules are for reference and documentation.
+// Deploy them to Firebase Console or via Firebase CLI:
+//   firebase deploy --only firestore:rules
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ========================================================================
+    // HELPER FUNCTIONS
+    // ========================================================================
+
+    // Check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Check if user is the owner of the document
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Check if user is a member of a circle
+    function isCircleMember(circleData) {
+      return isAuthenticated() && request.auth.uid in circleData.memberIds;
+    }
+
+    // Check if user is an admin of a circle
+    function isCircleAdmin(circleData) {
+      return isAuthenticated() &&
+        (request.auth.uid == circleData.ownerId ||
+         request.auth.uid in circleData.adminIds);
+    }
+
+    // Check if user is the owner of a circle
+    function isCircleOwner(circleData) {
+      return isAuthenticated() && request.auth.uid == circleData.ownerId;
+    }
+
+    // ========================================================================
+    // USER DOCUMENTS
+    // ========================================================================
+
+    match /users/{userId} {
+      // Users can read their own profile
+      allow read: if isOwner(userId);
+
+      // Users can create their own profile during signup
+      allow create: if isOwner(userId) &&
+                      request.resource.data.uid == userId &&
+                      request.resource.data.email == request.auth.token.email;
+
+      // Users can update their own profile
+      allow update: if isOwner(userId) &&
+                      // Ensure UID and email cannot be changed
+                      request.resource.data.uid == userId &&
+                      request.resource.data.email == resource.data.email;
+
+      // Users cannot delete their own profile (use Firebase Auth delete)
+      allow delete: if false;
+
+      // Circle members can read basic info of other members
+      // This is a separate rule to allow reading other users' public data
+      allow read: if isAuthenticated() &&
+                    exists(/databases/$(database)/documents/circles/$(get(/databases/$(database)/documents/users/$(request.auth.uid)).data.circleIds[0])) &&
+                    userId in get(/databases/$(database)/documents/circles/$(get(/databases/$(database)/documents/users/$(request.auth.uid)).data.circleIds[0])).data.memberIds;
+    }
+
+    // ========================================================================
+    // CIRCLE DOCUMENTS
+    // ========================================================================
+
+    match /circles/{circleId} {
+      // Members can read circle data
+      allow read: if isCircleMember(resource.data);
+
+      // Authenticated users can create circles
+      allow create: if isAuthenticated() &&
+                      request.resource.data.ownerId == request.auth.uid &&
+                      request.auth.uid in request.resource.data.memberIds &&
+                      request.auth.uid in request.resource.data.adminIds;
+
+      // Only admins can update circle settings
+      allow update: if isCircleAdmin(resource.data) &&
+                      // Ensure owner cannot be changed
+                      request.resource.data.ownerId == resource.data.ownerId;
+
+      // Only owner can delete (archive) a circle
+      allow delete: if isCircleOwner(resource.data);
+    }
+
+    // ========================================================================
+    // LOCATION DOCUMENTS
+    // ========================================================================
+
+    match /locations/{userId} {
+      // Users can write their own location
+      allow write: if isOwner(userId);
+
+      // Circle members can read locations that are shared with their circles
+      allow read: if isAuthenticated() && (
+        // User can read their own location
+        isOwner(userId) ||
+        // Or if any of the user's circles are in the sharedWith array
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.circleIds.hasAny(resource.data.sharedWith)
+      );
+    }
+
+    // ========================================================================
+    // PLACE DOCUMENTS
+    // ========================================================================
+
+    match /places/{placeId} {
+      // Circle members can read places for their circles
+      allow read: if isAuthenticated() &&
+                    exists(/databases/$(database)/documents/circles/$(resource.data.circleId)) &&
+                    isCircleMember(get(/databases/$(database)/documents/circles/$(resource.data.circleId)).data);
+
+      // Circle members can create places for their circles
+      allow create: if isAuthenticated() &&
+                      exists(/databases/$(database)/documents/circles/$(request.resource.data.circleId)) &&
+                      isCircleMember(get(/databases/$(database)/documents/circles/$(request.resource.data.circleId)).data) &&
+                      request.resource.data.createdBy == request.auth.uid;
+
+      // Only place creator or circle admins can update places
+      allow update: if isAuthenticated() && (
+                      resource.data.createdBy == request.auth.uid ||
+                      (exists(/databases/$(database)/documents/circles/$(resource.data.circleId)) &&
+                       isCircleAdmin(get(/databases/$(database)/documents/circles/$(resource.data.circleId)).data))
+                    ) &&
+                    // Ensure circleId and createdBy cannot be changed
+                    request.resource.data.circleId == resource.data.circleId &&
+                    request.resource.data.createdBy == resource.data.createdBy;
+
+      // Only place creator or circle admins can delete places
+      allow delete: if isAuthenticated() && (
+                      resource.data.createdBy == request.auth.uid ||
+                      (exists(/databases/$(database)/documents/circles/$(resource.data.circleId)) &&
+                       isCircleAdmin(get(/databases/$(database)/documents/circles/$(resource.data.circleId)).data))
+                    );
+    }
+
+    // ========================================================================
+    // NOTIFICATIONS (Future implementation)
+    // ========================================================================
+
+    match /notifications/{notificationId} {
+      // Users can read and update their own notifications
+      allow read, update: if isOwner(resource.data.userId);
+
+      // System can create notifications
+      allow create: if isAuthenticated();
+
+      // Users can delete their own notifications
+      allow delete: if isOwner(resource.data.userId);
+    }
+
+    // ========================================================================
+    // DEFAULT DENY
+    // ========================================================================
+
+    // Deny all other access by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

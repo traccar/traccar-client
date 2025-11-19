@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:traccar_client/main.dart';
-import 'package:traccar_client/password_service.dart';
-import 'package:traccar_client/preferences.dart';
+import 'package:luminalink/main.dart';
+import 'package:luminalink/password_service.dart';
+import 'package:luminalink/preferences.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 
 import 'l10n/app_localizations.dart';
@@ -181,7 +181,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Traccar Client'),
+        title: const Text('LuminaLink'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
