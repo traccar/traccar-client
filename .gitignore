@@ -47,3 +47,4 @@ app.*.map.json
 # Flutter gen-l10n outputs
 lib/l10n/app_localizations.dart
 lib/l10n/app_localizations_*.dart
+devtools_options.yaml
