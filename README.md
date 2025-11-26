@@ -11,8 +11,43 @@ Traccar Client is a GPS tracking app for Android and iOS. It runs in the backgro
 - **Customizable**: Configure update intervals, accuracy, and data usage to fit your needs.
 - **Privacy First**: Your location data is sent only to your chosen server—never to third parties.
 - **Easy Integration**: Designed to work seamlessly with the Traccar server and many third-party GPS tracking platforms.
+- **Extended Deep-Link Support**: Configure schedules, server settings, and tracking state instantly via QR codes or `traccar://` links.
 
 Just enter your server address, grant location permissions, and the app will automatically send periodic location reports in the background.
+
+## Deep-Link Configuration
+
+You can configure the client instantly via QR codes or by opening a `traccar://config` URL on the device.
+
+### Example
+
+```
+traccar://config?url=https%3A%2F%2Fdemo.traccar.org%2F&
+id=MY-DEVICE&accuracy=high&distance=50&interval=30&angle=10&
+heartbeat=120&fastest_interval=15&buffer=true&wakelock=false&
+stop_detection=true&startTime=08:00&stopTime=17:00&service=false
+```
+
+### Parameters
+
+| Parameter | Description |
+|-----------|-------------|
+| `url` | Base URL of the server (HTTP or HTTPS). |
+| `id` | Device identifier registered with the server. |
+| `accuracy` | `highest`, `high`, `medium`, or `low`. |
+| `distance` | Distance filter in meters. |
+| `interval` | Update interval in seconds. |
+| `angle` | Minimum heading change (degrees) before reporting. |
+| `heartbeat` | Heartbeat interval in seconds (>= 60). |
+| `fastest_interval` | Minimum location interval (seconds). |
+| `buffer` | `true` to buffer unlimited positions offline. |
+| `wakelock` | `true` to keep a partial wakelock while tracking is active. |
+| `stop_detection` | `true` to keep the automatic stop-detection algorithm enabled. |
+| `startTime` | Scheduled start (HH:mm). Enables the schedule when set. |
+| `stopTime` | Scheduled stop (HH:mm). |
+| `service` | `true` to start tracking immediately, `false` to stop. | (continous tracking)
+
+Parameters that are omitted remain unchanged. When `startTime`/`stopTime` are provided, scheduled tracking is enabled automatically and can later be adjusted from the Settings screen.
 
 ## Team
 
