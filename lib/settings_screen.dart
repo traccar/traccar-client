@@ -335,7 +335,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ],
       ),
-      body: _buildSettingsCard(),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: _buildSettingsCard(),
+        ),
+      ),
     );
   }
 }
