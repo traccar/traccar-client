@@ -32,5 +32,10 @@
   "passwordError": "Wrong password",
   "startAction": "Įjungti servisą",
   "stopAction": "Sustabdyti servisą",
-  "sosAction": "Siųsti SOS"
+  "sosAction": "Siųsti SOS",
+  "scheduleTitle": "Automatic schedule",
+  "scheduleEnabledLabel": "Enable automatic schedule",
+  "scheduleStartLabel": "Start time",
+  "scheduleStopLabel": "Stop time",
+  "scheduleUnsetLabel": "Not set"
 }

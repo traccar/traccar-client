@@ -32,5 +32,10 @@
   "passwordError": "Wrong password",
   "startAction": "Démarrer le service",
   "stopAction": "Arrêter le service",
-  "sosAction": "Envoyer un SOS"
+  "sosAction": "Envoyer un SOS",
+  "scheduleTitle": "Programmation automatique",
+  "scheduleEnabledLabel": "Activer la planification automatique",
+  "scheduleStartLabel": "Heure de début",
+  "scheduleStopLabel": "Arrêter le temps",
+  "scheduleUnsetLabel": "Non défini"
 }

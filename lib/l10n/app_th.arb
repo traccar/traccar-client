@@ -32,5 +32,10 @@
   "passwordError": "รหัสผ่านไม่ถูกต้อง",
   "startAction": "เริ่มต้นบริการ",
   "stopAction": "หยุดบริการ",
-  "sosAction": "ส่ง SOS"
+  "sosAction": "ส่ง SOS",
+  "scheduleTitle": "โปรแกรมอัตโนมัติ",
+  "scheduleEnabledLabel": "เปิดโปรแกรมอัตโนมัติ",
+  "scheduleStartLabel": "เวลาเริ่มต้น",
+  "scheduleStopLabel": "หยุดเวลา",
+  "scheduleUnsetLabel": "ไม่กำหนด"
 }

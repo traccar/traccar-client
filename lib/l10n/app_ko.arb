@@ -32,5 +32,10 @@
   "passwordError": "Wrong password",
   "startAction": "서비스 시작",
   "stopAction": "서비스 중지",
-  "sosAction": "SOS 전송"
+  "sosAction": "SOS 전송",
+  "scheduleTitle": "Automatic schedule",
+  "scheduleEnabledLabel": "Enable automatic schedule",
+  "scheduleStartLabel": "Start time",
+  "scheduleStopLabel": "Stop time",
+  "scheduleUnsetLabel": "Not set"
 }

@@ -32,5 +32,10 @@
   "passwordError": "Wrong password",
   "startAction": "Zaženi storitev",
   "stopAction": "Ustavi storitev",
-  "sosAction": "Pošlji SOS"
+  "sosAction": "Pošlji SOS",
+  "scheduleTitle": "Automatic schedule",
+  "scheduleEnabledLabel": "Enable automatic schedule",
+  "scheduleStartLabel": "Start time",
+  "scheduleStopLabel": "Stop time",
+  "scheduleUnsetLabel": "Not set"
 }

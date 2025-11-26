@@ -32,5 +32,10 @@
   "passwordError": "Wrong password",
   "startAction": "התחל מעקב",
   "stopAction": "עצור מעקב",
-  "sosAction": "שלח SOS"
+  "sosAction": "שלח SOS",
+  "scheduleTitle": "Automatic schedule",
+  "scheduleEnabledLabel": "Enable automatic schedule",
+  "scheduleStartLabel": "Start time",
+  "scheduleStopLabel": "Stop time",
+  "scheduleUnsetLabel": "Not set"
 }

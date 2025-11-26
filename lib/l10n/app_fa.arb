@@ -32,5 +32,10 @@
   "passwordError": "Wrong password",
   "startAction": "شروع کار",
   "stopAction": "توقف کار",
-  "sosAction": "ارسال پیام اضطراری"
+  "sosAction": "ارسال پیام اضطراری",
+  "scheduleTitle": "الجدول الزمني التلقائي",
+  "scheduleEnabledLabel": "تمكين الجدول الزمني التلقائي",
+  "scheduleStartLabel": "وقت البدء",
+  "scheduleStopLabel": "توقف عن الوقت",
+  "scheduleUnsetLabel": "غير محدد"
 }

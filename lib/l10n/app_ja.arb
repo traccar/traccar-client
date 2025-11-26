@@ -32,5 +32,10 @@
   "passwordError": "Wrong password",
   "startAction": "サービス開始",
   "stopAction": "サービス停止",
-  "sosAction": "SOSを送信"
+  "sosAction": "SOSを送信",
+  "scheduleTitle": "Automatic schedule",
+  "scheduleEnabledLabel": "Enable automatic schedule",
+  "scheduleStartLabel": "Start time",
+  "scheduleStopLabel": "Stop time",
+  "scheduleUnsetLabel": "Not set"
 }

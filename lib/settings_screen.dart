@@ -6,6 +6,7 @@ import 'package:flutter_background_geolocation/flutter_background_geolocation.da
 import 'package:traccar_client/main.dart';
 import 'package:traccar_client/password_service.dart';
 import 'package:traccar_client/qr_code_screen.dart';
+import 'package:traccar_client/schedule_service.dart';
 import 'package:wakelock_partial_android/wakelock_partial_android.dart';
 
 import 'l10n/app_localizations.dart';
@@ -20,6 +21,56 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool advanced = false;
+
+  String _formatScheduleTime(String? value) {
+    final time = _parseTime(value);
+    if (time == null) {
+      return AppLocalizations.of(context)!.scheduleUnsetLabel;
+    }
+    return time.format(context);
+  }
+
+  TimeOfDay? _parseTime(String? value) {
+    if (value == null) return null;
+    final parts = value.split(':');
+    if (parts.length != 2) return null;
+    final hour = int.tryParse(parts[0]);
+    final minute = int.tryParse(parts[1]);
+    if (hour == null || minute == null) return null;
+    return TimeOfDay(hour: hour, minute: minute);
+  }
+
+  String _timeToPreference(TimeOfDay time) {
+    final hour = time.hour.toString().padLeft(2, '0');
+    final minute = time.minute.toString().padLeft(2, '0');
+    return '$hour:$minute';
+  }
+
+  Future<void> _pickScheduleTime(String key, String label) async {
+    final initial = _parseTime(Preferences.instance.getString(key)) ?? const TimeOfDay(hour: 9, minute: 0);
+    final result = await showTimePicker(context: context, initialTime: initial);
+    if (result != null) {
+      await Preferences.instance.setString(key, _timeToPreference(result));
+      await ScheduleService.sync();
+      if (mounted) setState(() {});
+    }
+  }
+
+  Future<void> _toggleSchedule(bool value) async {
+    if (value) {
+      final start = Preferences.instance.getString(Preferences.scheduleStart);
+      final stop = Preferences.instance.getString(Preferences.scheduleStop);
+      if (start == null) {
+        await Preferences.instance.setString(Preferences.scheduleStart, '08:00');
+      }
+      if (stop == null) {
+        await Preferences.instance.setString(Preferences.scheduleStop, '17:00');
+      }
+    }
+    await Preferences.instance.setBool(Preferences.scheduleEnabled, value);
+    await ScheduleService.sync();
+    if (mounted) setState(() {});
+  }
 
   String _getAccuracyLabel(String? key) {
     return switch (key) {
@@ -157,10 +208,120 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  Widget _buildSettingsCard() {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text(AppLocalizations.of(context)!.settingsTitle),
+            ),
+            _buildListTile(AppLocalizations.of(context)!.idLabel, Preferences.id, false),
+            _buildListTile(AppLocalizations.of(context)!.urlLabel, Preferences.url, false),
+            _buildAccuracyListTile(),
+            _buildListTile(AppLocalizations.of(context)!.distanceLabel, Preferences.distance, true),
+            if (Preferences.instance.getString(Preferences.accuracy) == 'highest' || Platform.isAndroid && Preferences.instance.getInt(Preferences.distance) == 0)
+              _buildListTile(AppLocalizations.of(context)!.intervalLabel, Preferences.interval, true),
+            if (Preferences.instance.getString(Preferences.accuracy) == 'highest')
+              _buildListTile(AppLocalizations.of(context)!.angleLabel, Preferences.angle, true),
+            _buildListTile(AppLocalizations.of(context)!.heartbeatLabel, Preferences.heartbeat, true),
+            SwitchListTile(
+              title: Text(AppLocalizations.of(context)!.advancedLabel),
+              value: advanced,
+              onChanged: (value) {
+                setState(() => advanced = value);
+              },
+            ),
+            if (advanced)
+              _buildListTile(AppLocalizations.of(context)!.fastestIntervalLabel, Preferences.fastestInterval, true),
+            if (advanced)
+              SwitchListTile(
+                title: Text(AppLocalizations.of(context)!.bufferLabel),
+                value: Preferences.instance.getBool(Preferences.buffer) ?? true,
+                onChanged: (value) async {
+                  await Preferences.instance.setBool(Preferences.buffer, value);
+                  await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
+                  setState(() {});
+                },
+              ),
+            if (advanced && Platform.isAndroid)
+              SwitchListTile(
+                title: Text(AppLocalizations.of(context)!.wakelockLabel),
+                value: Preferences.instance.getBool(Preferences.wakelock) ?? false,
+                onChanged: (value) async {
+                  await Preferences.instance.setBool(Preferences.wakelock, value);
+                  if (value) {
+                    final state = await bg.BackgroundGeolocation.state;
+                    if (state.isMoving == true) {
+                      WakelockPartialAndroid.acquire();
+                    }
+                  } else {
+                    WakelockPartialAndroid.release();
+                  }
+                  setState(() {});
+                },
+              ),
+            if (advanced)
+              SwitchListTile(
+                title: Text(AppLocalizations.of(context)!.stopDetectionLabel),
+                value: Preferences.instance.getBool(Preferences.stopDetection) ?? true,
+                onChanged: (value) async {
+                  await Preferences.instance.setBool(Preferences.stopDetection, value);
+                  await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
+                  setState(() {});
+                },
+              ),
+            if (advanced)
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.passwordLabel),
+                onTap: _changePassword,
+              ),
+            _buildScheduleSection(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildScheduleSection() {
+    final enabled = Preferences.instance.getBool(Preferences.scheduleEnabled) ?? false;
+    final start = Preferences.instance.getString(Preferences.scheduleStart);
+    final stop = Preferences.instance.getString(Preferences.scheduleStop);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          title: Text(AppLocalizations.of(context)!.scheduleTitle),
+        ),
+        SwitchListTile(
+          contentPadding: EdgeInsets.zero,
+          title: Text(AppLocalizations.of(context)!.scheduleEnabledLabel),
+          value: enabled,
+          onChanged: (value) => _toggleSchedule(value),
+        ),
+        if (enabled)
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            title: Text(AppLocalizations.of(context)!.scheduleStartLabel),
+            subtitle: Text(_formatScheduleTime(start)),
+            onTap: () => _pickScheduleTime(Preferences.scheduleStart, AppLocalizations.of(context)!.scheduleStartLabel),
+          ),
+        if (enabled)
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            title: Text(AppLocalizations.of(context)!.scheduleStopLabel),
+            subtitle: Text(_formatScheduleTime(stop)),
+            onTap: () => _pickScheduleTime(Preferences.scheduleStop, AppLocalizations.of(context)!.scheduleStopLabel),
+          ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final isHighestAccuracy = Preferences.instance.getString(Preferences.accuracy) == 'highest';
-    final distance = Preferences.instance.getInt(Preferences.distance);
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.settingsTitle),
@@ -174,70 +335,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ],
       ),
-      body: ListView(
-        children: [
-          _buildListTile(AppLocalizations.of(context)!.idLabel, Preferences.id, false),
-          _buildListTile(AppLocalizations.of(context)!.urlLabel, Preferences.url, false),
-          _buildAccuracyListTile(),
-          _buildListTile(AppLocalizations.of(context)!.distanceLabel, Preferences.distance, true),
-          if (isHighestAccuracy || Platform.isAndroid && distance == 0)
-            _buildListTile(AppLocalizations.of(context)!.intervalLabel, Preferences.interval, true),
-          if (isHighestAccuracy)
-            _buildListTile(AppLocalizations.of(context)!.angleLabel, Preferences.angle, true),
-          _buildListTile(AppLocalizations.of(context)!.heartbeatLabel, Preferences.heartbeat, true),
-          SwitchListTile(
-            title: Text(AppLocalizations.of(context)!.advancedLabel),
-            value: advanced,
-            onChanged: (value) {
-              setState(() => advanced = value);
-            },
-          ),
-          if (advanced)
-            _buildListTile(AppLocalizations.of(context)!.fastestIntervalLabel, Preferences.fastestInterval, true),
-          if (advanced)
-            SwitchListTile(
-              title: Text(AppLocalizations.of(context)!.bufferLabel),
-              value: Preferences.instance.getBool(Preferences.buffer) ?? true,
-              onChanged: (value) async {
-                await Preferences.instance.setBool(Preferences.buffer, value);
-                await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
-                setState(() {});
-              },
-            ),
-          if (advanced && Platform.isAndroid)
-            SwitchListTile(
-              title: Text(AppLocalizations.of(context)!.wakelockLabel),
-              value: Preferences.instance.getBool(Preferences.wakelock) ?? false,
-              onChanged: (value) async {
-                await Preferences.instance.setBool(Preferences.wakelock, value);
-                if (value) {
-                  final state = await bg.BackgroundGeolocation.state;
-                  if (state.isMoving == true) {
-                    WakelockPartialAndroid.acquire();
-                  }
-                } else {
-                  WakelockPartialAndroid.release();
-                }
-                setState(() {});
-              },
-            ),
-          if (advanced)
-            SwitchListTile(
-              title: Text(AppLocalizations.of(context)!.stopDetectionLabel),
-              value: Preferences.instance.getBool(Preferences.stopDetection) ?? true,
-              onChanged: (value) async {
-                await Preferences.instance.setBool(Preferences.stopDetection, value);
-                await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
-                setState(() {});
-              },
-            ),
-          if (advanced)
-            ListTile(
-              title: Text(AppLocalizations.of(context)!.passwordLabel),
-              onTap: _changePassword,
-            ),
-        ],
-      ),
+      body: _buildSettingsCard(),
     );
   }
 }

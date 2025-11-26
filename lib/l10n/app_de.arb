@@ -32,5 +32,10 @@
   "passwordError": "Wrong password",
   "startAction": "Dienst starten",
   "stopAction": "Dienst stoppen",
-  "sosAction": "SOS senden"
+  "sosAction": "SOS senden",
+  "scheduleTitle": "Automatische Planung",
+  "scheduleEnabledLabel": "Automatische Planung aktivieren",
+  "scheduleStartLabel": "Startzeit",
+  "scheduleStopLabel": "Stoppen Sie die Zeit",
+  "scheduleUnsetLabel": "Nicht definiert"
 }

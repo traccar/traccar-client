@@ -17,6 +17,7 @@ class GeolocationService {
     bg.BackgroundGeolocation.onEnabledChange(onEnabledChange);
     bg.BackgroundGeolocation.onMotionChange(onMotionChange);
     bg.BackgroundGeolocation.onHeartbeat(onHeartbeat);
+    bg.BackgroundGeolocation.onSchedule(onSchedule);
     bg.BackgroundGeolocation.onLocation(onLocation, (bg.LocationError error) {
       developer.log('Location error', error: error);
     });
@@ -42,6 +43,18 @@ class GeolocationService {
 
   static Future<void> onHeartbeat(bg.HeartbeatEvent event) async {
     await bg.BackgroundGeolocation.getCurrentPosition(samples: 1, persist: true, extras: {'heartbeat': true});
+  }
+
+  static Future<void> onSchedule(bg.State state) async {
+    try {
+      if (state.enabled) {
+        await bg.BackgroundGeolocation.start();
+      } else {
+        await bg.BackgroundGeolocation.stop();
+      }
+    } catch (error, stackTrace) {
+      developer.log('Failed to handle schedule event', error: error, stackTrace: stackTrace);
+    }
   }
 
   static Future<void> onLocation(bg.Location location) async {

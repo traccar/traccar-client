@@ -32,5 +32,10 @@
   "passwordError": "Wrong password",
   "startAction": "Käynnistä seuranta",
   "stopAction": "Lopeta seuranta",
-  "sosAction": "Lähetä SOS"
+  "sosAction": "Lähetä SOS",
+  "scheduleTitle": "Automatiksi suoritettava aikataulu",
+  "scheduleEnabledLabel": "Ota automaattinen aikataulu käyttöön",
+  "scheduleStartLabel": "aloitusaika",
+  "scheduleStopLabel": "Pysäytä aika",
+  "scheduleUnsetLabel": "Ei asetettu"
 }

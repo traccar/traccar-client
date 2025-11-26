@@ -32,5 +32,10 @@
   "passwordError": "Wrong password",
   "startAction": "啟動服務",
   "stopAction": "停止服務",
-  "sosAction": "發送SOS求救"
+  "sosAction": "發送SOS求救",
+  "scheduleTitle": "自動計劃",
+  "scheduleEnabledLabel": "啟用自動計劃",
+  "scheduleStartLabel": "開始時間",
+  "scheduleStopLabel": "停止時間",
+  "scheduleUnsetLabel": "未設定"
 }

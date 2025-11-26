@@ -32,5 +32,10 @@
   "passwordError": "Wrong password",
   "startAction": "Запустити сервіс",
   "stopAction": "Зупинити сервіс",
-  "sosAction": "Відправити SOS"
+  "sosAction": "Відправити SOS",
+  "scheduleTitle": "Автоматичний розклад",
+  "scheduleEnabledLabel": "Включити автоматичний розклад",
+  "scheduleStartLabel": "Початкова часова мітка",
+  "scheduleStopLabel": "Зупинити часова мітка",
+  "scheduleUnsetLabel": "Не встановлено"
 }

@@ -32,5 +32,10 @@
   "passwordError": "Contraseña errónea",
   "startAction": "Iniciar servicio",
   "stopAction": "Detener servicio",
-  "sosAction": "Enviar SOS"
+  "sosAction": "Enviar SOS",
+  "scheduleTitle": "Programación automática",
+  "scheduleEnabledLabel": "Habilitar programación automática",
+  "scheduleStartLabel": "Hora de inicio",
+  "scheduleStopLabel": "Hora de finalización",
+  "scheduleUnsetLabel": "No definido"
 }

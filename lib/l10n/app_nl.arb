@@ -32,5 +32,10 @@
   "passwordError": "Wrong password",
   "startAction": "Service starten",
   "stopAction": "Service stoppen",
-  "sosAction": "SOS verzenden"
+  "sosAction": "SOS verzenden",
+  "scheduleTitle": "Automatic schedule",
+  "scheduleEnabledLabel": "Enable automatic schedule",
+  "scheduleStartLabel": "Start time",
+  "scheduleStopLabel": "Stop time",
+  "scheduleUnsetLabel": "Not set"
 }

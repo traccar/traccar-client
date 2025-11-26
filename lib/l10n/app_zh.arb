@@ -32,5 +32,10 @@
   "passwordError": "密码错误",
   "startAction": "启动服务",
   "stopAction": "停止服务",
-  "sosAction": "发送求救信号"
+  "sosAction": "发送求救信号",
+  "scheduleTitle": "自动计划",
+  "scheduleEnabledLabel": "启用自动计划",
+  "scheduleStartLabel": "开始时间",
+  "scheduleStopLabel": "停止时间",
+  "scheduleUnsetLabel": "未设置"
 }

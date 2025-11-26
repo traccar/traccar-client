@@ -32,5 +32,10 @@
   "passwordError": "Wrong password",
   "startAction": "Mulai layanan",
   "stopAction": "Hentikan layanan",
-  "sosAction": "Kirim SOS"
+  "sosAction": "Kirim SOS",
+  "scheduleTitle": "Automatic schedule",
+  "scheduleEnabledLabel": "Enable automatic schedule",
+  "scheduleStartLabel": "Start time",
+  "scheduleStopLabel": "Stop time",
+  "scheduleUnsetLabel": "Not set"
 }

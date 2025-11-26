@@ -32,5 +32,10 @@
   "passwordError": "Wrong password",
   "startAction": "Servisi başlat",
   "stopAction": "Servisi durdur",
-  "sosAction": "SOS gönder"
+  "sosAction": "SOS gönder",
+  "scheduleTitle": "Automatik program",
+  "scheduleEnabledLabel": "Automatik programı etkinleştir",
+  "scheduleStartLabel": "Başlangıç zamanı",
+  "scheduleStopLabel": "Durdurma zamanı",
+  "scheduleUnsetLabel": "Ayarlanmamış"
 }

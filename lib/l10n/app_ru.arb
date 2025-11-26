@@ -32,5 +32,10 @@
   "passwordError": "Wrong password",
   "startAction": "Запустить сервис",
   "stopAction": "Остановить сервис",
-  "sosAction": "Отправить SOS"
+  "sosAction": "Отправить SOS",
+  "scheduleTitle": "Автоматическая программа",
+  "scheduleEnabledLabel": "Включить автоматическую программу",
+  "scheduleStartLabel": "Начать время",
+  "scheduleStopLabel": "Остановить время",
+  "scheduleUnsetLabel": "Не установлено"
 }
