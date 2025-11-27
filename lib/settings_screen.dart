@@ -6,6 +6,7 @@ import 'package:flutter_background_geolocation/flutter_background_geolocation.da
 import 'package:traccar_client/main.dart';
 import 'package:traccar_client/password_service.dart';
 import 'package:traccar_client/qr_code_screen.dart';
+import 'package:traccar_client/schedule_service.dart';
 import 'package:wakelock_partial_android/wakelock_partial_android.dart';
 
 import 'l10n/app_localizations.dart';
@@ -20,6 +21,59 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool advanced = false;
+
+  String _formatScheduleTime(String? value) {
+    final time = _parseTime(value);
+    if (time == null) {
+      return AppLocalizations.of(context)!.scheduleUnsetLabel;
+    }
+    return time.format(context);
+  }
+
+  TimeOfDay? _parseTime(String? value) {
+    if (value == null) return null;
+    final parts = value.split(':');
+    if (parts.length != 2) return null;
+    final hour = int.tryParse(parts[0]);
+    final minute = int.tryParse(parts[1]);
+    if (hour == null || minute == null) return null;
+    return TimeOfDay(hour: hour, minute: minute);
+  }
+
+  String _timeToPreference(TimeOfDay time) {
+    final hour = time.hour.toString().padLeft(2, '0');
+    final minute = time.minute.toString().padLeft(2, '0');
+    return '$hour:$minute';
+  }
+
+  Future<void> _pickScheduleTime(String key) async {
+    final initial = _parseTime(Preferences.instance.getString(key)) ?? const TimeOfDay(hour: 9, minute: 0);
+    final result = await showTimePicker(context: context, initialTime: initial);
+    if (result != null) {
+      await Preferences.instance.setString(key, _timeToPreference(result));
+      await ScheduleService.sync();
+      if (mounted) setState(() {});
+    }
+  }
+
+  Future<void> _toggleSchedule(bool value) async {
+    if (value) {
+      await Preferences.instance.setString(
+        Preferences.scheduleStart,
+        Preferences.instance.getString(Preferences.scheduleStart) ?? '08:00',
+      );
+      await Preferences.instance.setString(
+        Preferences.scheduleStop,
+        Preferences.instance.getString(Preferences.scheduleStop) ?? '17:00',
+      );
+    } else {
+      await Preferences.instance.remove(Preferences.scheduleStart);
+      await Preferences.instance.remove(Preferences.scheduleStop);
+    }
+    await Preferences.instance.setBool(Preferences.scheduleEnabled, value);
+    await ScheduleService.sync();
+    if (mounted) setState(() {});
+  }
 
   String _getAccuracyLabel(String? key) {
     return switch (key) {
@@ -161,6 +215,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     final isHighestAccuracy = Preferences.instance.getString(Preferences.accuracy) == 'highest';
     final distance = Preferences.instance.getInt(Preferences.distance);
+    final scheduleEnabled = Preferences.instance.getBool(Preferences.scheduleEnabled) ?? false;
+    final scheduleStart = Preferences.instance.getString(Preferences.scheduleStart);
+    final scheduleStop = Preferences.instance.getString(Preferences.scheduleStop);
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.settingsTitle),
@@ -192,6 +249,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
               setState(() => advanced = value);
             },
           ),
+          SwitchListTile(
+            title: Text(AppLocalizations.of(context)!.scheduleEnabledLabel),
+            value: scheduleEnabled,
+            onChanged: _toggleSchedule,
+          ),
+          if (scheduleEnabled)
+            ListTile(
+              contentPadding: const EdgeInsets.only(left: 32, right: 16),
+              title: Text(AppLocalizations.of(context)!.scheduleStartLabel),
+              subtitle: Text(_formatScheduleTime(scheduleStart)),
+              onTap: () => _pickScheduleTime(Preferences.scheduleStart),
+            ),
+          if (scheduleEnabled)
+            ListTile(
+              contentPadding: const EdgeInsets.only(left: 32, right: 16),
+              title: Text(AppLocalizations.of(context)!.scheduleStopLabel),
+              subtitle: Text(_formatScheduleTime(scheduleStop)),
+              onTap: () => _pickScheduleTime(Preferences.scheduleStop),
+            ),
           if (advanced)
             _buildListTile(AppLocalizations.of(context)!.fastestIntervalLabel, Preferences.fastestInterval, true),
           if (advanced)
