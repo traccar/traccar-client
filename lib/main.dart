@@ -9,6 +9,7 @@ import 'package:rate_my_app/rate_my_app.dart';
 import 'package:traccar_client/geolocation_service.dart';
 import 'package:traccar_client/push_service.dart';
 import 'package:traccar_client/quick_actions.dart';
+import 'package:traccar_client/schedule_service.dart';
 
 import 'l10n/app_localizations.dart';
 import 'main_screen.dart';
@@ -24,6 +25,7 @@ void main() async {
   await Preferences.init();
   await Preferences.migrate();
   await GeolocationService.init();
+  await ScheduleService.sync();
   await PushService.init();
   runApp(const MainApp());
 }

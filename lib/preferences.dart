@@ -20,6 +20,9 @@ class Preferences {
   static const String buffer = 'buffer';
   static const String wakelock = 'wakelock';
   static const String stopDetection = 'stop_detection';
+  static const String scheduleStart = 'schedule_start';
+  static const String scheduleStop = 'schedule_stop';
+  static const String scheduleEnabled = 'schedule_enabled';
 
   static const String lastTimestamp = 'lastTimestamp';
   static const String lastLatitude = 'lastLatitude';
@@ -35,6 +38,7 @@ class Preferences {
         allowList: {
           id, url, accuracy, distance, interval, angle, heartbeat,
           fastestInterval, buffer,  wakelock, stopDetection,
+          scheduleStart, scheduleStop, scheduleEnabled,
           lastTimestamp, lastLatitude, lastLongitude, lastHeading,
           'device_id_preference', 'server_url_preference', 'accuracy_preference',
           'frequency_preference', 'distance_preference', 'buffer_preference',
@@ -70,6 +74,7 @@ class Preferences {
     await instance.setBool(buffer, instance.getBool(buffer) ?? true);
     await instance.setBool(stopDetection, instance.getBool(stopDetection) ?? true);
     await instance.setInt(fastestInterval, instance.getInt(fastestInterval) ?? 30);
+    await instance.setBool(scheduleEnabled, instance.getBool(scheduleEnabled) ?? false);
   }
 
   static bg.Config geolocationConfig() {
