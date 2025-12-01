@@ -1,6 +1,7 @@
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 
 import 'preferences.dart';
+import 'schedule_service.dart';
 
 class ConfigurationService {
   static Future<void> applyUri(Uri uri) async {
@@ -23,7 +24,10 @@ class ConfigurationService {
     await _applyBoolParameter(parameters, Preferences.buffer);
     await _applyBoolParameter(parameters, Preferences.wakelock);
     await _applyBoolParameter(parameters, Preferences.stopDetection);
+    await _applyScheduleParameters(parameters);
     await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
+    await ScheduleService.sync();
+    await _applyServiceParameter(parameters);
   }
 
   static Future<void> _applyStringParameter(
@@ -58,6 +62,58 @@ class ConfigurationService {
           break;
       }
     }
+  }
+
+  static Future<void> _applyScheduleParameters(
+      Map<String, String> parameters) async {
+    final hasSchedule = parameters.containsKey('startTime') || parameters.containsKey('stopTime');
+    if (!hasSchedule) {
+      return;
+    }
+
+    final start = parameters['startTime'];
+    final stop = parameters['stopTime'];
+    if (_isValidTime(start) && _isValidTime(stop)) {
+      await Preferences.instance.setString(Preferences.scheduleStart, _normalizeTime(start!));
+      await Preferences.instance.setString(Preferences.scheduleStop, _normalizeTime(stop!));
+      await Preferences.instance.setBool(Preferences.scheduleEnabled, true);
+    }
+  }
+
+  static Future<void> _applyServiceParameter(
+      Map<String, String> parameters) async {
+    final value = parameters['service'];
+    switch (value) {
+      case 'true':
+        await bg.BackgroundGeolocation.start();
+        break;
+      case 'false':
+        await bg.BackgroundGeolocation.stop();
+        break;
+    }
+  }
+
+  static bool _isValidTime(String? value) {
+    if (value == null) {
+      return false;
+    }
+    final parts = value.split(':');
+    if (parts.length != 2) {
+      return false;
+    }
+    final hour = int.tryParse(parts[0]);
+    final minute = int.tryParse(parts[1]);
+    if (hour == null || minute == null) {
+      return false;
+    }
+    return hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59;
+  }
+
+  static String _normalizeTime(String value) {
+    final parts = value.split(':');
+    final hour = int.parse(parts[0]);
+    final minute = int.parse(parts[1]);
+    return '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}';
   }
 }
 
