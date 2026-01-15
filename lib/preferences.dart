@@ -79,43 +79,55 @@ class Preferences {
     final heartbeatInterval = instance.getInt(heartbeat) ?? 0;
     return bg.Config(
       isMoving: true,
-      enableHeadless: true,
-      stopOnTerminate: false,
-      startOnBoot: true,
-      desiredAccuracy: switch (instance.getString(accuracy)) {
-        'highest' => Platform.isIOS ? bg.Config.DESIRED_ACCURACY_NAVIGATION : bg.Config.DESIRED_ACCURACY_HIGH,
-        'high' => bg.Config.DESIRED_ACCURACY_HIGH,
-        'low' => bg.Config.DESIRED_ACCURACY_LOW,
-        _ => bg.Config.DESIRED_ACCURACY_MEDIUM,
-      },
-      autoSync: false,
-      url: _formatUrl(instance.getString(url)),
-      params: {
-        'device_id': instance.getString(id),
-      },
-      distanceFilter: isHighestAccuracy ? 0 : instance.getInt(distance)?.toDouble(),
-      locationUpdateInterval: isHighestAccuracy ? 0 : (locationUpdateInterval > 0 ? locationUpdateInterval : null),
-      heartbeatInterval: heartbeatInterval > 0 ? heartbeatInterval : null,
-      maxRecordsToPersist: instance.getBool(buffer) != false ? -1 : 1,
-      logLevel: bg.Config.LOG_LEVEL_VERBOSE,
-      logMaxDays: 1,
-      locationTemplate: _locationTemplate(),
-      preventSuspend: heartbeatInterval > 0,
-      disableElasticity: true,
-      disableStopDetection: instance.getBool(stopDetection) == false,
-      pausesLocationUpdatesAutomatically: Platform.isIOS ? !(isHighestAccuracy || instance.getBool(stopDetection) == false) : null,
-      fastestLocationUpdateInterval: isHighestAccuracy ? 0 : fastestLocationUpdateInterval,
-      backgroundPermissionRationale: bg.PermissionRationale(
-        title: 'Allow {applicationName} to access this device\'s location in the background',
-        message: 'For reliable tracking, please enable {backgroundPermissionOptionLabel} location access.',
-        positiveAction: 'Change to {backgroundPermissionOptionLabel}',
-        negativeAction: 'Cancel'
+      geolocation: bg.GeoConfig(
+        desiredAccuracy: switch (instance.getString(accuracy)) {
+          'highest' => Platform.isIOS ? bg.DesiredAccuracy.navigation : bg.DesiredAccuracy.high,
+          'high' => bg.DesiredAccuracy.high,
+          'low' => bg.DesiredAccuracy.low,
+          _ => bg.DesiredAccuracy.medium,
+        },
+        distanceFilter: isHighestAccuracy ? 0 : instance.getInt(distance)?.toDouble(),
+        locationUpdateInterval: isHighestAccuracy ? 0 : (locationUpdateInterval > 0 ? locationUpdateInterval : null),
+        fastestLocationUpdateInterval: isHighestAccuracy ? 0 : fastestLocationUpdateInterval,
+        disableElasticity: true,
+        pausesLocationUpdatesAutomatically: Platform.isIOS ? !(isHighestAccuracy || instance.getBool(stopDetection) == false) : null,
+        showsBackgroundLocationIndicator: false,
       ),
-      notification: bg.Notification(
-        smallIcon: 'drawable/ic_stat_notify',
-        priority: bg.Config.NOTIFICATION_PRIORITY_LOW,
+      app: bg.AppConfig(
+        enableHeadless: true,
+        stopOnTerminate: false,
+        startOnBoot: true,
+        heartbeatInterval: heartbeatInterval > 0 ? heartbeatInterval.toDouble() : null,
+        preventSuspend: heartbeatInterval > 0,
+        backgroundPermissionRationale: bg.PermissionRationale(
+          title: 'Allow {applicationName} to access this device\'s location in the background',
+          message: 'For reliable tracking, please enable {backgroundPermissionOptionLabel} location access.',
+          positiveAction: 'Change to {backgroundPermissionOptionLabel}',
+          negativeAction: 'Cancel'
+        ),
+        notification: bg.Notification(
+          smallIcon: 'drawable/ic_stat_notify',
+          priority: bg.NotificationPriority.low,
+        ),
       ),
-      showsBackgroundLocationIndicator: false,
+      http: bg.HttpConfig(
+        autoSync: false,
+        url: _formatUrl(instance.getString(url)),
+        params: {
+          'device_id': instance.getString(id),
+        },
+      ),
+      logger: const bg.LoggerConfig(
+        logLevel: bg.LogLevel.verbose,
+        logMaxDays: 1,
+      ),
+      activity: bg.ActivityConfig(
+        disableStopDetection: instance.getBool(stopDetection) == false,
+      ),
+      persistence: bg.PersistenceConfig(
+        maxRecordsToPersist: instance.getBool(buffer) != false ? -1 : 1,
+        locationTemplate: _locationTemplate(),
+      ),
     );
   }
 

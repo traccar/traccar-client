@@ -44,7 +44,7 @@
         <!-- flutter_background_geolocation license -->
         <meta-data
             android:name="com.transistorsoft.locationmanager.license"
-            android:value="ddc599599cddaa61dfe5bb25c2b46f549c6d749fae5d0273297b304753e2e5e3" />
+            android:value="eyJhbGciOiJFZERTQSIsImtpZCI6ImVkMjU1MTktbWFpbi12MSJ9.eyJvcyI6ImFuZHJvaWQiLCJhcHBfaWQiOiJvcmcudHJhY2Nhci5jbGllbnQiLCJvcmRlcl9udW1iZXIiOjE0MDgzLCJyZW5ld2FsX3VybCI6Imh0dHBzOi8vc2hvcC50cmFuc2lzdG9yc29mdC5jb20vY2FydC8zMTg3NDM1NjA1MjA3MToxP25vdGU9OTQ2MSIsImN1c3RvbWVyX2lkIjo4NjE1LCJwcm9kdWN0IjoiZmx1dHRlci1iYWNrZ3JvdW5kLWdlb2xvY2F0aW9uIiwia2V5X3ZlcnNpb24iOjEsImFsbG93ZWRfc3VmZml4ZXMiOlsiLmRldiIsIi5kZXZlbG9wbWVudCIsIi5zdGFnaW5nIiwiLnN0YWdlIiwiLnFhIiwiLnVhdCIsIi50ZXN0IiwiLmRlYnVnIl0sIm1heF9idWlsZF9zdGFtcCI6MjAyNjA3MDYsImdyYWNlX2J1aWxkcyI6MCwiZW50aXRsZW1lbnRzIjpbImNvcmUiXSwiaWF0IjoxNzY1NjQyNzI2fQ.ufcC9IUak4MD7lcbB2CXIIaXHzo1xUauHIFcqyC7onBUxFcpcg2LihIk7cJGFsA_FhsHjRfkSzqQFweD1gdiCA" />
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and
