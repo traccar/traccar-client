@@ -1,27 +1,21 @@
 PODS:
   - Flutter (1.0.0)
-  - flutter_secure_storage (6.0.0):
-    - Flutter
   - rate_my_app (2.3.2):
     - Flutter
     - FlutterMacOS
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - rate_my_app (from `.symlinks/plugins/rate_my_app/darwin`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  flutter_secure_storage:
-    :path: ".symlinks/plugins/flutter_secure_storage/ios"
   rate_my_app:
     :path: ".symlinks/plugins/rate_my_app/darwin"
 
 SPEC CHECKSUMS:
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  flutter_secure_storage: 1ed9476fba7e7a782b22888f956cce43e2c62f13
   rate_my_app: cbb89973f870601f80f7bad63aba107260cabc5b
 
 PODFILE CHECKSUM: ce2a4dd764e1c7aeed6a7cdc5e61d092b6dc6d32

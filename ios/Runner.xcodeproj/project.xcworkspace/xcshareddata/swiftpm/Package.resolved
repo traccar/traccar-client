@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/flutterfire",
       "state" : {
-        "revision" : "1fc2adfbeb6e132e49ba72d04c727227f9827b3e",
-        "version" : "4.2.1-firebase-core-swift"
+        "revision" : "39bdb5b1ef392e8c31c60209e333b45e408099e8",
+        "version" : "4.3.0-firebase-core-swift"
       }
     },
     {
@@ -124,6 +124,15 @@
       "state" : {
         "revision" : "b7e1104502eca3a213b46303391ca4d3bc8ddec1",
         "version" : "2.30910.0"
+      }
+    },
+    {
+      "identity" : "native-background-geolocation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/transistorsoft/native-background-geolocation.git",
+      "state" : {
+        "revision" : "4d2863da94c493f59c9ea8ad185d54fb7cd9a9c1",
+        "version" : "4.0.4"
       }
     },
     {
