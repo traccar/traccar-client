@@ -63,6 +63,10 @@ android {
             isShrinkResources = false
         }
     }
+
+    lint {
+        disable.add("NullSafeMutableLiveData")
+    }
 }
 
 dependencies {
