@@ -93,7 +93,7 @@ class _MainScreenState extends State<MainScreen> {
               contentPadding: EdgeInsets.zero,
               title: Text(AppLocalizations.of(context)!.trackingLabel),
               value: trackingEnabled,
-              activeTrackColor: isMoving == false ? Theme.of(context).colorScheme.error :  null,
+              activeTrackColor: isMoving == false ? Theme.of(context).colorScheme.secondary : null,
               onChanged: (bool value) async {
                 if (await PasswordService.authenticate(context) && mounted) {
                   if (value) {
