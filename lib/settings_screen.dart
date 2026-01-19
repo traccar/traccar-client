@@ -20,37 +20,57 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  static const _defaultScheduleEntry = '1-7 08:00-17:00';
+
   bool advanced = false;
 
-  String _formatScheduleTime(String? value) {
-    final time = _parseTime(value);
-    if (time == null) {
+  String _schedulePreview() {
+    final entry = Preferences.instance.getString(Preferences.scheduleEntry)?.trim();
+    if (entry == null || entry.isEmpty) {
       return AppLocalizations.of(context)!.scheduleUnsetLabel;
     }
-    return time.format(context);
+    return entry.split('\n').first;
   }
 
-  TimeOfDay? _parseTime(String? value) {
-    if (value == null) return null;
-    final parts = value.split(':');
-    if (parts.length != 2) return null;
-    final hour = int.tryParse(parts[0]);
-    final minute = int.tryParse(parts[1]);
-    if (hour == null || minute == null) return null;
-    return TimeOfDay(hour: hour, minute: minute);
-  }
-
-  String _timeToPreference(TimeOfDay time) {
-    final hour = time.hour.toString().padLeft(2, '0');
-    final minute = time.minute.toString().padLeft(2, '0');
-    return '$hour:$minute';
-  }
-
-  Future<void> _pickScheduleTime(String key) async {
-    final initial = _parseTime(Preferences.instance.getString(key)) ?? const TimeOfDay(hour: 9, minute: 0);
-    final result = await showTimePicker(context: context, initialTime: initial);
+  Future<void> _editScheduleEntry() async {
+    final controller = TextEditingController(
+      text: Preferences.instance.getString(Preferences.scheduleEntry) ?? _defaultScheduleEntry,
+    );
+    final result = await showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        scrollable: true,
+        title: Text(AppLocalizations.of(context)!.scheduleEntryLabel),
+        content: TextField(
+          controller: controller,
+          minLines: 3,
+          maxLines: 5,
+          keyboardType: TextInputType.multiline,
+          decoration: InputDecoration(
+            hintText: AppLocalizations.of(context)!.scheduleEntryHint,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(AppLocalizations.of(context)!.cancelButton),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, controller.text),
+            child: Text(AppLocalizations.of(context)!.saveButton),
+          ),
+        ],
+      ),
+    );
     if (result != null) {
-      await Preferences.instance.setString(key, _timeToPreference(result));
+      final trimmed = result.trim();
+      if (trimmed.isEmpty) {
+        messengerKey.currentState?.showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context)!.invalidValue)),
+        );
+        return;
+      }
+      await Preferences.instance.setString(Preferences.scheduleEntry, trimmed);
       await ScheduleService.sync();
       if (mounted) setState(() {});
     }
@@ -58,15 +78,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _toggleSchedule(bool value) async {
     if (value) {
-      await Preferences.instance.setString(
-        Preferences.scheduleStart,
-        Preferences.instance.getString(Preferences.scheduleStart) ?? '08:00',
-      );
-      await Preferences.instance.setString(
-        Preferences.scheduleStop,
-        Preferences.instance.getString(Preferences.scheduleStop) ?? '17:00',
-      );
+      final entry = Preferences.instance.getString(Preferences.scheduleEntry);
+      if (entry == null || entry.trim().isEmpty) {
+        await Preferences.instance.setString(Preferences.scheduleEntry, _defaultScheduleEntry);
+      }
     } else {
+      await Preferences.instance.remove(Preferences.scheduleEntry);
       await Preferences.instance.remove(Preferences.scheduleStart);
       await Preferences.instance.remove(Preferences.scheduleStop);
     }
@@ -216,8 +233,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final isHighestAccuracy = Preferences.instance.getString(Preferences.accuracy) == 'highest';
     final distance = Preferences.instance.getInt(Preferences.distance);
     final scheduleEnabled = Preferences.instance.getBool(Preferences.scheduleEnabled) ?? false;
-    final scheduleStart = Preferences.instance.getString(Preferences.scheduleStart);
-    final scheduleStop = Preferences.instance.getString(Preferences.scheduleStop);
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.settingsTitle),
@@ -257,16 +272,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           if (scheduleEnabled)
             ListTile(
               contentPadding: const EdgeInsets.only(left: 32, right: 16),
-              title: Text(AppLocalizations.of(context)!.scheduleStartLabel),
-              subtitle: Text(_formatScheduleTime(scheduleStart)),
-              onTap: () => _pickScheduleTime(Preferences.scheduleStart),
-            ),
-          if (scheduleEnabled)
-            ListTile(
-              contentPadding: const EdgeInsets.only(left: 32, right: 16),
-              title: Text(AppLocalizations.of(context)!.scheduleStopLabel),
-              subtitle: Text(_formatScheduleTime(scheduleStop)),
-              onTap: () => _pickScheduleTime(Preferences.scheduleStop),
+              title: Text(AppLocalizations.of(context)!.scheduleEntryLabel),
+              subtitle: Text(_schedulePreview()),
+              onTap: _editScheduleEntry,
             ),
           if (advanced)
             _buildListTile(AppLocalizations.of(context)!.fastestIntervalLabel, Preferences.fastestInterval, true),

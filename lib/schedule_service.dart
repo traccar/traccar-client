@@ -6,21 +6,27 @@ import 'package:flutter_background_geolocation/flutter_background_geolocation.da
 import 'preferences.dart';
 
 class ScheduleService {
-  static const _weekdays = '1-7';
-
   static Future<void> sync() async {
     final enabled = Preferences.instance.getBool(Preferences.scheduleEnabled) ?? false;
-    final start = Preferences.instance.getString(Preferences.scheduleStart);
-    final stop = Preferences.instance.getString(Preferences.scheduleStop);
+    final rawEntry = Preferences.instance.getString(Preferences.scheduleEntry)?.trim();
 
-    if (!enabled || start == null || stop == null) {
+    if (!enabled || rawEntry == null || rawEntry.isEmpty) {
       await _clear();
       return;
     }
 
-    final entry = '$_weekdays $start-$stop';
+    final entries = rawEntry
+        .split(RegExp(r'[\r\n]+'))
+        .map((value) => value.trim())
+        .where((value) => value.isNotEmpty)
+        .toList();
+    if (entries.isEmpty) {
+      await _clear();
+      return;
+    }
+
     try {
-      await bg.BackgroundGeolocation.setConfig(bg.Config(schedule: [entry]));
+      await bg.BackgroundGeolocation.setConfig(bg.Config(schedule: entries));
       await bg.BackgroundGeolocation.startSchedule();
     } catch (error, stackTrace) {
       developer.log('Failed to apply schedule', error: error, stackTrace: stackTrace);

@@ -34,7 +34,7 @@
   "stopAction": "Stop service",
   "sosAction": "Send SOS",
   "scheduleEnabledLabel": "Enable schedule",
-  "scheduleStartLabel": "Start time",
-  "scheduleStopLabel": "Stop time",
+  "scheduleEntryLabel": "Schedule entries",
+  "scheduleEntryHint": "Example: 1-5 08:00-17:00",
   "scheduleUnsetLabel": "Not set"
 }

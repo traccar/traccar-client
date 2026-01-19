@@ -66,16 +66,24 @@ class ConfigurationService {
 
   static Future<void> _applyScheduleParameters(
       Map<String, String> parameters) async {
-    final hasSchedule = parameters.containsKey('startTime') || parameters.containsKey('stopTime');
-    if (!hasSchedule) {
+    final scheduleEntry = parameters['schedule']?.trim();
+    if (scheduleEntry != null && scheduleEntry.isNotEmpty) {
+      await Preferences.instance.setString(Preferences.scheduleEntry, scheduleEntry);
+      await Preferences.instance.setBool(Preferences.scheduleEnabled, true);
       return;
     }
 
     final start = parameters['startTime'];
     final stop = parameters['stopTime'];
     if (_isValidTime(start) && _isValidTime(stop)) {
-      await Preferences.instance.setString(Preferences.scheduleStart, _normalizeTime(start!));
-      await Preferences.instance.setString(Preferences.scheduleStop, _normalizeTime(stop!));
+      final normalizedStart = _normalizeTime(start!);
+      final normalizedStop = _normalizeTime(stop!);
+      final days = parameters['days']?.trim();
+      final entryDays = (days != null && days.isNotEmpty) ? days : '1-7';
+      final entry = '$entryDays $normalizedStart-$normalizedStop';
+      await Preferences.instance.setString(Preferences.scheduleStart, normalizedStart);
+      await Preferences.instance.setString(Preferences.scheduleStop, normalizedStop);
+      await Preferences.instance.setString(Preferences.scheduleEntry, entry);
       await Preferences.instance.setBool(Preferences.scheduleEnabled, true);
     }
   }
