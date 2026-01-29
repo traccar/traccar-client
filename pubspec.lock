@@ -250,10 +250,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_background_geolocation
-      sha256: "506fc7d9f2a79c8f67057c1e83debe27b2f611aca464b77e0e14e3b0872db4ad"
+      sha256: "32764885fb378e61660ffe8cb51220bf37a2008873b9aefa69fe3a0e4fa7902b"
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.1"
+    version: "5.0.2"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
