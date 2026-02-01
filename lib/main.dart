@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:app_links/app_links.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:traccar_client/geolocation_service.dart';
+import 'package:traccar_client/password_service.dart';
 import 'package:traccar_client/push_service.dart';
 import 'package:traccar_client/quick_actions.dart';
 
@@ -23,6 +24,7 @@ void main() async {
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   await Preferences.init();
   await Preferences.migrate();
+  await PasswordService.migrate();
   await GeolocationService.init();
   await PushService.init();
   runApp(const MainApp());

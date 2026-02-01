@@ -37,7 +37,7 @@ class Preferences {
           fastestInterval, buffer,  wakelock, stopDetection,
           lastTimestamp, lastLatitude, lastLongitude, lastHeading,
           'device_id_preference', 'server_url_preference', 'accuracy_preference',
-          'frequency_preference', 'distance_preference', 'buffer_preference',
+          'frequency_preference', 'distance_preference', 'buffer_preference', 'password',
         },
       ),
     );
