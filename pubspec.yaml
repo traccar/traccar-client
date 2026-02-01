@@ -12,7 +12,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: any
-  flutter_background_geolocation: ^5.0.2
+  flutter_background_geolocation: ^5.0.3
   shared_preferences: ^2.5.4
   firebase_core: ^4.4.0
   firebase_messaging: ^16.1.1
