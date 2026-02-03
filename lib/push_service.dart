@@ -1,6 +1,7 @@
 import 'dart:developer' as developer;
 import 'dart:io';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 import 'package:traccar_client/password_service.dart';
@@ -26,6 +27,7 @@ class PushService {
 
   static Future<void> _onMessage(RemoteMessage message) async {
     final command = message.data['command'];
+    FirebaseCrashlytics.instance.log('push_command: $command');
     switch (command) {
       case 'positionSingle':
         try {
@@ -61,5 +63,7 @@ class PushService {
 @pragma('vm:entry-point')
 Future<void> pushServiceBackgroundHandler(RemoteMessage message) async {
   await Preferences.init();
+  await bg.BackgroundGeolocation.ready(Preferences.geolocationConfig());
+  FirebaseCrashlytics.instance.log('push_background_handler');
   await PushService._onMessage(message);
 }

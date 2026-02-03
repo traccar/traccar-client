@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:traccar_client/main.dart';
 import 'package:traccar_client/password_service.dart';
 import 'package:traccar_client/preferences.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 
 import 'l10n/app_localizations.dart';
@@ -98,6 +99,7 @@ class _MainScreenState extends State<MainScreen> {
                 if (await PasswordService.authenticate(context) && mounted) {
                   if (value) {
                     try {
+                      FirebaseCrashlytics.instance.log('tracking_toggle_start');
                       await bg.BackgroundGeolocation.start();
                       if (mounted) {
                         _checkBatteryOptimizations(context);
@@ -106,6 +108,7 @@ class _MainScreenState extends State<MainScreen> {
                       messengerKey.currentState?.showSnackBar(SnackBar(content: Text(error.message ?? error.code)));
                     }
                   } else {
+                    FirebaseCrashlytics.instance.log('tracking_toggle_stop');
                     bg.BackgroundGeolocation.stop();
                   }
                 }

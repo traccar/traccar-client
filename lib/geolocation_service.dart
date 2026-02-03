@@ -3,6 +3,7 @@ import 'dart:developer' as developer;
 import 'dart:io';
 import 'dart:math';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 import 'package:traccar_client/location_cache.dart';
 import 'package:traccar_client/preferences.dart';
@@ -14,6 +15,7 @@ class GeolocationService {
     if (Platform.isAndroid) {
       await bg.BackgroundGeolocation.registerHeadlessTask(headlessTask);
     }
+    FirebaseCrashlytics.instance.log('geolocation_init');
     bg.BackgroundGeolocation.onEnabledChange(onEnabledChange);
     bg.BackgroundGeolocation.onMotionChange(onMotionChange);
     bg.BackgroundGeolocation.onHeartbeat(onHeartbeat);
@@ -23,6 +25,7 @@ class GeolocationService {
   }
 
   static Future<void> onEnabledChange(bool enabled) async {
+    FirebaseCrashlytics.instance.log('geolocation_enabled:$enabled');
     if (Preferences.instance.getBool(Preferences.wakelock) ?? false) {
       if (!enabled) {
         await WakelockPartialAndroid.release();
@@ -31,6 +34,7 @@ class GeolocationService {
   }
 
   static Future<void> onMotionChange(bg.Location location) async {
+    FirebaseCrashlytics.instance.log('geolocation_motion:${location.isMoving}');
     if (Preferences.instance.getBool(Preferences.wakelock) ?? false) {
       if (location.isMoving) {
         await WakelockPartialAndroid.acquire();

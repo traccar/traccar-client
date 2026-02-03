@@ -1,5 +1,6 @@
 import 'dart:developer' as developer;
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:quick_actions/quick_actions.dart';
@@ -21,11 +22,12 @@ class _QuickActionsInitializerState extends State<QuickActionsInitializer> {
   void initState() {
     super.initState();
     quickActions.initialize((shortcutType) async {
+      FirebaseCrashlytics.instance.log('quick_action: $shortcutType');
       switch (shortcutType) {
         case 'start':
-          bg.BackgroundGeolocation.start();
+          await bg.BackgroundGeolocation.start();
         case 'stop':
-          bg.BackgroundGeolocation.stop();
+          await bg.BackgroundGeolocation.stop();
         case 'sos':
           try {
             await bg.BackgroundGeolocation.getCurrentPosition(samples: 1, persist: true, extras: {'alarm': 'sos'});
@@ -34,6 +36,7 @@ class _QuickActionsInitializerState extends State<QuickActionsInitializer> {
           }
       }
       if (mounted) {
+        FirebaseCrashlytics.instance.log('quick_action_exit');
         SystemNavigator.pop();
       }
     });
