@@ -25,6 +25,7 @@ dependencies:
   mobile_scanner: ^7.1.4
   flutter_secure_storage: ^10.0.0
   app_links: ^7.0.0
+  app_settings: ^7.0.0
 
 dev_dependencies:
   flutter_test:

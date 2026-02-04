@@ -1,3 +1,4 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
@@ -66,6 +67,36 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
         controller: _controller,
         fit: BoxFit.cover,
         onDetect: _onDetect,
+        errorBuilder: (context, error) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.videocam_off_outlined, size: 64),
+                  const SizedBox(height: 16),
+                  Text(
+                    error.errorCode == MobileScannerErrorCode.permissionDenied
+                        ? "Camera Permission Has Been Denied"
+                        : error.errorDetails?.message ?? "Camera Error",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  const SizedBox(height: 24),
+                  FilledButton.icon(
+                    onPressed:
+                        () => AppSettings.openAppSettings(
+                          type: AppSettingsType.settings,
+                        ),
+                    icon: const Icon(Icons.settings),
+                    label: Text("Open Settings"),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
