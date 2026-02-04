@@ -48,14 +48,13 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
           ValueListenableBuilder<MobileScannerState>(
             valueListenable: _controller,
             builder: (context, state, _) {
-              final torchState = state.torchState;
               return IconButton(
                 icon: Icon(
-                  torchState == TorchState.on
+                  state.torchState == TorchState.on
                       ? Icons.flash_on
                       : Icons.flash_off,
                 ),
-                onPressed: torchState == TorchState.unavailable
+                onPressed: state.torchState == TorchState.unavailable
                     ? null
                     : () => _controller.toggleTorch(),
               );
