@@ -1,6 +1,6 @@
 allprojects {
     ext {
-        set("appCompatVersion", "1.7.0")
+        set("appCompatVersion", "1.7.1")
         set("playServicesLocationVersion", "21.3.0")
     }
     repositories {
