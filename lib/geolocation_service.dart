@@ -3,6 +3,7 @@ import 'dart:developer' as developer;
 import 'dart:io';
 import 'dart:math';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 import 'package:traccar_client/location_cache.dart';
@@ -115,7 +116,9 @@ class GeolocationService {
 
 @pragma('vm:entry-point')
 void headlessTask(bg.HeadlessEvent headlessEvent) async {
+  await Firebase.initializeApp();
   await Preferences.init();
+  FirebaseCrashlytics.instance.log('geolocation_headless:${headlessEvent.name}');
   switch (headlessEvent.name) {
     case bg.Event.ENABLEDCHANGE:
       await GeolocationService.onEnabledChange(headlessEvent.event);

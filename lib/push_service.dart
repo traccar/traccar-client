@@ -1,6 +1,7 @@
 import 'dart:developer' as developer;
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
@@ -62,6 +63,7 @@ class PushService {
 
 @pragma('vm:entry-point')
 Future<void> pushServiceBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
   await Preferences.init();
   await bg.BackgroundGeolocation.ready(Preferences.geolocationConfig());
   FirebaseCrashlytics.instance.log('push_background_handler');
