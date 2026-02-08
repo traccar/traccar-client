@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shared_preferences_android/shared_preferences_android.dart';
 
 class Preferences {
+  static Future<void>? _initFuture;
   static late SharedPreferencesWithCache instance;
 
   static const String id = 'id';
@@ -27,6 +28,11 @@ class Preferences {
   static const String lastHeading = 'lastHeading';
 
   static Future<void> init() async {
+    _initFuture ??= _createInstance();
+    await _initFuture;
+  }
+
+  static Future<void> _createInstance() async {
     instance = await SharedPreferencesWithCache.create(
       sharedPreferencesOptions: Platform.isAndroid
         ? SharedPreferencesAsyncAndroidOptions(backend: SharedPreferencesAndroidBackendLibrary.SharedPreferences)
