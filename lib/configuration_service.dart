@@ -52,12 +52,9 @@ class ConfigurationService {
       switch (value) {
         case 'false':
           await Preferences.instance.setBool(key, false);
-          break;
         case 'true':
           await Preferences.instance.setBool(key, true);
-          break;
       }
     }
   }
 }
-

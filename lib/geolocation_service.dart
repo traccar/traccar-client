@@ -122,15 +122,11 @@ void headlessTask(bg.HeadlessEvent headlessEvent) async {
   switch (headlessEvent.name) {
     case bg.Event.ENABLEDCHANGE:
       await GeolocationService.onEnabledChange(headlessEvent.event);
-      break;
     case bg.Event.MOTIONCHANGE:
       await GeolocationService.onMotionChange(headlessEvent.event);
-      break;
     case bg.Event.HEARTBEAT:
       await GeolocationService.onHeartbeat(headlessEvent.event);
-      break;
     case bg.Event.LOCATION:
       await GeolocationService.onLocation(headlessEvent.event);
-      break;
   }
 }
