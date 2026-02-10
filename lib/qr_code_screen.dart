@@ -56,8 +56,8 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
                       : Icons.flash_off,
                 ),
                 onPressed: state.torchState == TorchState.unavailable
-                    ? null
-                    : () => _controller.toggleTorch(),
+                        ? null
+                        : () => _controller.toggleTorch(),
               );
             },
           ),
@@ -74,23 +74,15 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.videocam_off_outlined, size: 64),
-                  const SizedBox(height: 16),
-                  Text(
-                    error.errorCode == MobileScannerErrorCode.permissionDenied
-                        ? "Camera Permission Has Been Denied"
-                        : error.errorDetails?.message ?? "Camera Error",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  const SizedBox(height: 24),
-                  FilledButton.icon(
+                  Icon(Icons.videocam_off_outlined, size: 120),
+                  Text(AppLocalizations.of(context)!.disabledValue),
+                  SizedBox(height: 24,),
+                  FilledButton.tonal(
                     onPressed:
                         () => AppSettings.openAppSettings(
                           type: AppSettingsType.settings,
                         ),
-                    icon: const Icon(Icons.settings),
-                    label: Text("Open Settings"),
+                    child: Text(AppLocalizations.of(context)!.settingsTitle),
                   ),
                 ],
               ),
