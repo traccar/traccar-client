@@ -1,3 +1,4 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
@@ -55,8 +56,8 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
                       : Icons.flash_off,
                 ),
                 onPressed: state.torchState == TorchState.unavailable
-                    ? null
-                    : () => _controller.toggleTorch(),
+                        ? null
+                        : () => _controller.toggleTorch(),
               );
             },
           ),
@@ -66,6 +67,28 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
         controller: _controller,
         fit: BoxFit.cover,
         onDetect: _onDetect,
+        errorBuilder: (context, error) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.videocam_off_outlined, size: 120),
+                  Text(AppLocalizations.of(context)!.disabledValue),
+                  SizedBox(height: 24,),
+                  FilledButton.tonal(
+                    onPressed:
+                        () => AppSettings.openAppSettings(
+                          type: AppSettingsType.settings,
+                        ),
+                    child: Text(AppLocalizations.of(context)!.settingsTitle),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
