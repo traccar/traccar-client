@@ -74,11 +74,10 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-  bool isPermissionDeniedError(PlatformException error) {
-    final errorDetails = '${error.code} ${error.message ?? ''}'.toLowerCase();
-    return errorDetails.contains('denied') ||
-          errorDetails.contains('permission_denied') ||
-          errorDetails.contains('access_denied');
+  Future<bool> _isPermissionDenied() async {
+    final providerState = await bg.BackgroundGeolocation.providerState;
+    return providerState.status == bg.ProviderChangeEvent.AUTHORIZATION_STATUS_DENIED ||
+          providerState.status == bg.ProviderChangeEvent.AUTHORIZATION_STATUS_RESTRICTED;
   }
 
   Widget _buildTrackingCard() {
@@ -113,7 +112,7 @@ class _MainScreenState extends State<MainScreen> {
                         _checkBatteryOptimizations(context);
                       }
                     } on PlatformException catch (error) {
-                        final isPermissionError = isPermissionDeniedError(error);
+                        final isPermissionError = await _isPermissionDenied();
                         if (!mounted) return;
                         messengerKey.currentState?.showSnackBar(
                           SnackBar(
