@@ -1,3 +1,4 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:traccar_client/main.dart';
@@ -73,6 +74,13 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+  bool isPermissionDeniedError(PlatformException error) {
+    final errorDetails = '${error.code} ${error.message ?? ''}'.toLowerCase();
+    return errorDetails.contains('denied') ||
+          errorDetails.contains('permission_denied') ||
+          errorDetails.contains('access_denied');
+  }
+
   Widget _buildTrackingCard() {
     return Card(
       child: Padding(
@@ -105,7 +113,22 @@ class _MainScreenState extends State<MainScreen> {
                         _checkBatteryOptimizations(context);
                       }
                     } on PlatformException catch (error) {
-                      messengerKey.currentState?.showSnackBar(SnackBar(content: Text(error.message ?? error.code)));
+                        final isPermissionError = isPermissionDeniedError(error);
+                        if (!mounted) return;
+                        messengerKey.currentState?.showSnackBar(
+                          SnackBar(
+                            content: Text(error.message ?? error.code),
+                            duration: const Duration(seconds: 4),
+                            action: isPermissionError
+                                ? SnackBarAction(
+                                    label: AppLocalizations.of(context)!.settingsTitle,
+                                    onPressed: () => AppSettings.openAppSettings(
+                                      type: AppSettingsType.settings,
+                                    ),
+                                  )
+                                : null,
+                          ),
+                        );
                     }
                   } else {
                     FirebaseCrashlytics.instance.log('tracking_toggle_stop');
