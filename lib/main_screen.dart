@@ -74,12 +74,6 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-  Future<bool> _isPermissionDenied() async {
-    final providerState = await bg.BackgroundGeolocation.providerState;
-    return providerState.status == bg.ProviderChangeEvent.AUTHORIZATION_STATUS_DENIED ||
-          providerState.status == bg.ProviderChangeEvent.AUTHORIZATION_STATUS_RESTRICTED;
-  }
-
   Widget _buildTrackingCard() {
     return Card(
       child: Padding(
@@ -112,7 +106,9 @@ class _MainScreenState extends State<MainScreen> {
                         _checkBatteryOptimizations(context);
                       }
                     } on PlatformException catch (error) {
-                        final isPermissionError = await _isPermissionDenied();
+                        final providerState = await bg.BackgroundGeolocation.providerState;
+                        final isPermissionError = providerState.status == bg.ProviderChangeEvent.AUTHORIZATION_STATUS_DENIED ||
+                          providerState.status == bg.ProviderChangeEvent.AUTHORIZATION_STATUS_RESTRICTED;
                         if (!mounted) return;
                         messengerKey.currentState?.showSnackBar(
                           SnackBar(
