@@ -4,9 +4,6 @@ allprojects {
         set("playServicesLocationVersion", "21.3.0")
     }
     repositories {
-        // background_geolocation
-        // [DEV] Sonatype SNAPSHOT url
-        maven(url = "https://central.sonatype.com/repository/maven-snapshots/")
         google()
         mavenCentral()
     }
