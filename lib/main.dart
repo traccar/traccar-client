@@ -23,7 +23,6 @@ void main() async {
   await Firebase.initializeApp();
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   await Preferences.init();
-  await Preferences.migrate();
   await PasswordService.migrate();
   await GeolocationService.init();
   await PushService.init();

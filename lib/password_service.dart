@@ -5,17 +5,16 @@ import 'package:traccar_client/preferences.dart';
 
 class PasswordService {
   static final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
-  static const String _passwordKey = 'password';
 
   static Future<void> migrate() async {
-    final oldPassword = await _secureStorage.read(key: _passwordKey);
+    final oldPassword = await _secureStorage.read(key: Preferences.password);
     if (oldPassword == null) return;
-    await Preferences.instance.setString(_passwordKey, oldPassword);
-    await _secureStorage.delete(key: _passwordKey);
+    await Preferences.instance.setString(Preferences.password, oldPassword);
+    await _secureStorage.delete(key: Preferences.password);
   }
 
   static Future<bool> authenticate(BuildContext context) async {
-    final storedPassword = Preferences.instance.getString(_passwordKey);
+    final storedPassword = Preferences.instance.getString(Preferences.password);
     if (storedPassword == null || storedPassword.isEmpty) return true;
     final controller = TextEditingController();
     bool? result;
@@ -58,9 +57,9 @@ class PasswordService {
 
   static Future<void> setPassword(String password) async {
     if (password.isNotEmpty) {
-      await Preferences.instance.setString(_passwordKey, password);
+      await Preferences.instance.setString(Preferences.password, password);
     } else {
-      await Preferences.instance.remove(_passwordKey);
+      await Preferences.instance.remove(Preferences.password);
     }
   }
 }
