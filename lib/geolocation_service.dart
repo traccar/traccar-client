@@ -114,9 +114,11 @@ class GeolocationService {
   static double _degToRad(double degree) => degree * pi / 180.0;
 }
 
+Future<void>? _firebaseInitialization;
+
 @pragma('vm:entry-point')
 void headlessTask(bg.HeadlessEvent headlessEvent) async {
-  await Firebase.initializeApp();
+  await (_firebaseInitialization ??= Firebase.initializeApp());
   await Preferences.init();
   FirebaseCrashlytics.instance.log('geolocation_headless:${headlessEvent.name}');
   switch (headlessEvent.name) {
