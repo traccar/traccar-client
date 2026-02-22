@@ -72,28 +72,33 @@ class Preferences {
           _ => bg.DesiredAccuracy.medium,
         },
         distanceFilter: isHighestAccuracy ? 0 : instance.getInt(distance)?.toDouble(),
-        locationUpdateInterval: isHighestAccuracy ? 0 : (locationUpdateInterval > 0 ? locationUpdateInterval : null),
-        fastestLocationUpdateInterval: isHighestAccuracy ? 0 : fastestLocationUpdateInterval,
+        locationUpdateInterval: Platform.isAndroid
+            ? (isHighestAccuracy ? 0 : (locationUpdateInterval > 0 ? locationUpdateInterval : null))
+            : null,
+        fastestLocationUpdateInterval: Platform.isAndroid ? (isHighestAccuracy ? 0 : fastestLocationUpdateInterval) : null,
         disableElasticity: true,
         pausesLocationUpdatesAutomatically: Platform.isIOS ? !(isHighestAccuracy || instance.getBool(stopDetection) == false) : null,
         showsBackgroundLocationIndicator: false,
       ),
       app: bg.AppConfig(
-        enableHeadless: true,
+        enableHeadless: Platform.isAndroid ? true : null,
         stopOnTerminate: false,
-        startOnBoot: true,
+        startOnBoot: Platform.isAndroid ? true : null,
         heartbeatInterval: heartbeatInterval > 0 ? heartbeatInterval.toDouble() : null,
-        preventSuspend: heartbeatInterval > 0,
-        backgroundPermissionRationale: bg.PermissionRationale(
-          title: 'Allow {applicationName} to access this device\'s location in the background',
-          message: 'For reliable tracking, please enable {backgroundPermissionOptionLabel} location access.',
-          positiveAction: 'Change to {backgroundPermissionOptionLabel}',
-          negativeAction: 'Cancel'
-        ),
-        notification: bg.Notification(
-          smallIcon: 'drawable/ic_stat_notify',
-          priority: bg.NotificationPriority.low,
-        ),
+        preventSuspend: Platform.isIOS ? (heartbeatInterval > 0) : null,
+        backgroundPermissionRationale: Platform.isAndroid
+            ? bg.PermissionRationale(
+                title: 'Allow {applicationName} to access this device\'s location in the background',
+                message: 'For reliable tracking, please enable {backgroundPermissionOptionLabel} location access.',
+                positiveAction: 'Change to {backgroundPermissionOptionLabel}',
+                negativeAction: 'Cancel')
+            : null,
+        notification: Platform.isAndroid
+            ? bg.Notification(
+                smallIcon: 'drawable/ic_stat_notify',
+                priority: bg.NotificationPriority.low,
+              )
+            : null,
       ),
       http: bg.HttpConfig(
         autoSync: false,
