@@ -78,7 +78,7 @@ class Preferences {
         fastestLocationUpdateInterval: Platform.isAndroid ? (isHighestAccuracy ? 0 : fastestLocationUpdateInterval) : null,
         disableElasticity: true,
         pausesLocationUpdatesAutomatically: Platform.isIOS ? !(isHighestAccuracy || instance.getBool(stopDetection) == false) : null,
-        showsBackgroundLocationIndicator: false,
+        showsBackgroundLocationIndicator: Platform.isIOS ? false : null,
       ),
       app: bg.AppConfig(
         enableHeadless: Platform.isAndroid ? true : null,
