@@ -84,7 +84,7 @@ Future<void> _updateVersion(String version) async {
 Future<void> _updateUrl(String url) async {
   await _replaceInFile(
     'lib/preferences.dart',
-    RegExp(r'https://demo\.traccar\.org:5055'),
+    RegExp(r'http://demo\.traccar\.org:5055'),
     url,
   );
 }
