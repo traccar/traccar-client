@@ -3,9 +3,6 @@ allprojects {
         set("appCompatVersion", "1.7.1")
         set("playServicesLocationVersion", "21.3.0")
     }
-    configurations.configureEach {
-        resolutionStrategy.force("com.transistorsoft:tslocationmanager:4.0.15")
-    }
     repositories {
         google()
         mavenCentral()
