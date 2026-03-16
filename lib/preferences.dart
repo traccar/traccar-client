@@ -26,7 +26,6 @@ class Preferences {
   static const String lastLatitude = 'lastLatitude';
   static const String lastLongitude = 'lastLongitude';
   static const String lastHeading = 'lastHeading';
-  static const String disclosureAccepted = 'disclosure_accepted';
 
   static Future<void> init() async {
     _initFuture ??= _createInstance();
@@ -42,7 +41,7 @@ class Preferences {
         allowList: {
           id, url, accuracy, distance, interval, angle, heartbeat,
           fastestInterval, buffer,  wakelock, stopDetection, password,
-          lastTimestamp, lastLatitude, lastLongitude, lastHeading, disclosureAccepted,
+          lastTimestamp, lastLatitude, lastLongitude, lastHeading,
         },
       ),
     );

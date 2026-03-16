@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -46,32 +48,6 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  Future<bool> _showDisclosure() async {
-    if (Preferences.instance.getBool(Preferences.disclosureAccepted) == true) return true;
-    final result = await showDialog<bool>(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) => AlertDialog(
-        scrollable: true,
-        content: Text(AppLocalizations.of(context)!.disclosureMessage),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(AppLocalizations.of(context)!.cancelButton),
-          ),
-          TextButton(
-            onPressed: () {
-              Preferences.instance.setBool(Preferences.disclosureAccepted, true);
-              Navigator.of(context).pop(true);
-            },
-            child: Text(AppLocalizations.of(context)!.acceptButton),
-          ),
-        ],
-      ),
-    );
-    return result ?? false;
-  }
-
   Future<void> _checkBatteryOptimizations(BuildContext context) async {
     try {
       if (!await bg.DeviceSettings.isIgnoringBatteryOptimizations) {
@@ -117,6 +93,13 @@ class _MainScreenState extends State<MainScreen> {
               title: Text(AppLocalizations.of(context)!.idLabel),
               subtitle: Text(Preferences.instance.getString(Preferences.id) ?? ''),
             ),
+            if (Platform.isAndroid) ...[
+              Text(
+                AppLocalizations.of(context)!.disclosureMessage,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              const SizedBox(height: 8),
+            ],
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
               title: Text(AppLocalizations.of(context)!.trackingLabel),
@@ -125,7 +108,6 @@ class _MainScreenState extends State<MainScreen> {
               onChanged: (bool value) async {
                 if (await PasswordService.authenticate(context) && mounted) {
                   if (value) {
-                    if (!await _showDisclosure() || !mounted) return;
                     try {
                       FirebaseCrashlytics.instance.log('tracking_toggle_start');
                       await bg.BackgroundGeolocation.start();

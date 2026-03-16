@@ -33,6 +33,5 @@
   "startAction": "Start service",
   "stopAction": "Stop service",
   "sosAction": "Send SOS",
-  "disclosureMessage": "This app collects location data and device activity (e.g. walking, driving, stationary) to enable GPS tracking functionality. This data is collected in the background even when the app is closed and is sent to the configured server.",
-  "acceptButton": "Accept"
+  "disclosureMessage": "This app collects location and activity data in the background and sends it to the configured server."
 }
