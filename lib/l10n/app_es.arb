@@ -29,7 +29,7 @@
   "advancedLabel": "Ajustes avanzados",
   "passwordLabel": "Contraseña",
   "optimizationMessage": "Para garantizar un seguimiento fiable, desactive la optimización de batería para esta aplicación.",
-  "passwordError": "Contraseña errónea",
+  "passwordError": "Contraseña incorrecta",
   "startAction": "Iniciar servicio",
   "stopAction": "Detener servicio",
   "sosAction": "Enviar SOS"

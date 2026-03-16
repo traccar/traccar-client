@@ -27,10 +27,10 @@
   "stopDetectionLabel": "اكتشاف التوقف",
   "trackingLabel": "تتبع مستمر",
   "advancedLabel": "إعدادات متقدمة",
-  "passwordLabel": "Password",
+  "passwordLabel": "كلمة المرور",
   "optimizationMessage": "لضمان تتبع موثوق، يرجى تعطيل تحسين البطارية لهذا التطبيق.",
-  "passwordError": "Wrong password",
+  "passwordError": "كلمة المرور خاطئة",
   "startAction": "بدء الخدمة",
   "stopAction": "إيقاف الخدمة",
-  "sosAction": "إرسال SOS"
+  "sosAction": "ارسال استغاثة"
 }

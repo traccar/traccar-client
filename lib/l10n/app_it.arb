@@ -29,7 +29,7 @@
   "advancedLabel": "Impostazioni avanzate",
   "passwordLabel": "Password",
   "optimizationMessage": "Per garantire un tracciamento affidabile, disattiva l'ottimizzazione batteria per questa app.",
-  "passwordError": "Wrong password",
+  "passwordError": "Password errata",
   "startAction": "Avvia servizio",
   "stopAction": "Ferma servizio",
   "sosAction": "Invia SOS"

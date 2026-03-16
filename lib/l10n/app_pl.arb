@@ -27,9 +27,9 @@
   "stopDetectionLabel": "Wykrywanie zatrzymania",
   "trackingLabel": "Ciągłe śledzenie",
   "advancedLabel": "Ustawienia zaawansowane",
-  "passwordLabel": "Password",
+  "passwordLabel": "Hasło",
   "optimizationMessage": "Aby zapewnić niezawodne śledzenie, wyłącz optymalizację baterii dla tej aplikacji.",
-  "passwordError": "Wrong password",
+  "passwordError": "Błędne hasło",
   "startAction": "Uruchom usługę",
   "stopAction": "Zatrzymaj usługę",
   "sosAction": "Wyślij SOS"

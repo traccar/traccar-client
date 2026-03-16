@@ -27,9 +27,9 @@
   "stopDetectionLabel": "Обнаружение остановки",
   "trackingLabel": "Непрерывное отслеживание",
   "advancedLabel": "Расширенные настройки",
-  "passwordLabel": "Password",
+  "passwordLabel": "Пароль",
   "optimizationMessage": "Чтобы обеспечить надёжное отслеживание, отключите оптимизацию батареи для этого приложения.",
-  "passwordError": "Wrong password",
+  "passwordError": "Пароль не верен",
   "startAction": "Запустить сервис",
   "stopAction": "Остановить сервис",
   "sosAction": "Отправить SOS"

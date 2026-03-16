@@ -1,5 +1,5 @@
 {
-  "trackingTitle": "追踪",
+  "trackingTitle": "实时追踪",
   "settingsTitle": "设置",
   "statusTitle": "日志",
   "saveButton": "保存",
@@ -28,7 +28,7 @@
   "trackingLabel": "持续追踪",
   "advancedLabel": "高级设置",
   "passwordLabel": "密码",
-  "optimizationMessage": "为了确保可靠的跟踪，请禁用此应用的电池优化。",
+  "optimizationMessage": "为了确保可靠的实时跟踪，请禁用此应用的电池优化。",
   "passwordError": "密码错误",
   "startAction": "启动服务",
   "stopAction": "停止服务",
