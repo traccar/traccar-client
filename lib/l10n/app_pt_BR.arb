@@ -32,5 +32,6 @@
   "passwordError": "Senha errada",
   "startAction": "Iniciar serviço",
   "stopAction": "Parar serviço",
-  "sosAction": "Enviar SOS"
+  "sosAction": "Enviar SOS",
+  "disclosureMessage": "Este aplicativo coleta dados de localização e atividade em segundo plano e os envia para o servidor configurado."
 }

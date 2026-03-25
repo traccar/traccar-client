@@ -32,5 +32,6 @@
   "passwordError": "Wrong password",
   "startAction": "התחל מעקב",
   "stopAction": "עצור מעקב",
-  "sosAction": "שלח SOS"
+  "sosAction": "שלח SOS",
+  "disclosureMessage": "This app collects location and activity data in the background and sends it to the configured server."
 }

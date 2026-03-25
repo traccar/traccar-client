@@ -32,5 +32,6 @@
   "passwordError": "Wrong password",
   "startAction": "Servisi başlat",
   "stopAction": "Servisi durdur",
-  "sosAction": "SOS gönder"
+  "sosAction": "SOS gönder",
+  "disclosureMessage": "This app collects location and activity data in the background and sends it to the configured server."
 }

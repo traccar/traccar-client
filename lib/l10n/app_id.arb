@@ -32,5 +32,6 @@
   "passwordError": "Wrong password",
   "startAction": "Mulai layanan",
   "stopAction": "Hentikan layanan",
-  "sosAction": "Kirim SOS"
+  "sosAction": "Kirim SOS",
+  "disclosureMessage": "This app collects location and activity data in the background and sends it to the configured server."
 }

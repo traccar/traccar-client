@@ -32,5 +32,6 @@
   "passwordError": "密碼錯誤",
   "startAction": "啟動服務",
   "stopAction": "停止服務",
-  "sosAction": "發送SOS求救"
+  "sosAction": "發送SOS求救",
+  "disclosureMessage": "This app collects location and activity data in the background and sends it to the configured server."
 }

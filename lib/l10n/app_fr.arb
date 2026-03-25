@@ -32,5 +32,6 @@
   "passwordError": "Wrong password",
   "startAction": "Démarrer le service",
   "stopAction": "Arrêter le service",
-  "sosAction": "Envoyer un SOS"
+  "sosAction": "Envoyer un SOS",
+  "disclosureMessage": "This app collects location and activity data in the background and sends it to the configured server."
 }

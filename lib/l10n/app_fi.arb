@@ -32,5 +32,6 @@
   "passwordError": "Väärä salasana",
   "startAction": "Käynnistä seuranta",
   "stopAction": "Lopeta seuranta",
-  "sosAction": "Lähetä SOS"
+  "sosAction": "Lähetä SOS",
+  "disclosureMessage": "This app collects location and activity data in the background and sends it to the configured server."
 }

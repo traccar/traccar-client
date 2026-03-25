@@ -32,5 +32,6 @@
   "passwordError": "Password errata",
   "startAction": "Avvia servizio",
   "stopAction": "Ferma servizio",
-  "sosAction": "Invia SOS"
+  "sosAction": "Invia SOS",
+  "disclosureMessage": "This app collects location and activity data in the background and sends it to the configured server."
 }

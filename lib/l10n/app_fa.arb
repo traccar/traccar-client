@@ -32,5 +32,6 @@
   "passwordError": "Wrong password",
   "startAction": "شروع کار",
   "stopAction": "توقف کار",
-  "sosAction": "ارسال پیام اضطراری"
+  "sosAction": "ارسال پیام اضطراری",
+  "disclosureMessage": "This app collects location and activity data in the background and sends it to the configured server."
 }

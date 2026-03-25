@@ -32,5 +32,6 @@
   "passwordError": "كلمة المرور خاطئة",
   "startAction": "بدء الخدمة",
   "stopAction": "إيقاف الخدمة",
-  "sosAction": "ارسال استغاثة"
+  "sosAction": "ارسال استغاثة",
+  "disclosureMessage": "This app collects location and activity data in the background and sends it to the configured server."
 }

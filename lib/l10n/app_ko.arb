@@ -32,5 +32,6 @@
   "passwordError": "Wrong password",
   "startAction": "서비스 시작",
   "stopAction": "서비스 중지",
-  "sosAction": "SOS 전송"
+  "sosAction": "SOS 전송",
+  "disclosureMessage": "This app collects location and activity data in the background and sends it to the configured server."
 }

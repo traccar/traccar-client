@@ -32,5 +32,6 @@
   "passwordError": "Пароль не верен",
   "startAction": "Запустить сервис",
   "stopAction": "Остановить сервис",
-  "sosAction": "Отправить SOS"
+  "sosAction": "Отправить SOS",
+  "disclosureMessage": "This app collects location and activity data in the background and sends it to the configured server."
 }
