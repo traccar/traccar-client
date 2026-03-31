@@ -39,7 +39,10 @@ class PushService {
       case 'positionPeriodic':
         await bg.BackgroundGeolocation.start();
       case 'positionStop':
-        await bg.BackgroundGeolocation.stop();
+        if (!(Preferences.instance.getBool(Preferences.trackingLock) ?? false)) {
+          await bg.BackgroundGeolocation.stop();
+        }
+        break;
       case 'factoryReset':
         await PasswordService.setPassword('');
     }
