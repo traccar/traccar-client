@@ -83,7 +83,7 @@ class Preferences {
       app: bg.AppConfig(
         enableHeadless: Platform.isAndroid ? true : null,
         stopOnTerminate: false,
-        startOnBoot: Platform.isAndroid ? true : null,
+        startOnBoot: true,
         heartbeatInterval: heartbeatInterval > 0 ? heartbeatInterval.toDouble() : null,
         preventSuspend: Platform.isIOS ? (heartbeatInterval > 0) : null,
         backgroundPermissionRationale: Platform.isAndroid
