@@ -12,7 +12,7 @@ import 'package:wakelock_partial_android/wakelock_partial_android.dart';
 
 class GeolocationService {
   static Future<void> init() async {
-    await bg.BackgroundGeolocation.ready(Preferences.geolocationConfig());
+    await bg.BackgroundGeolocation.ready(Preferences.geolocationConfig(false));
     if (Platform.isAndroid) {
       await bg.BackgroundGeolocation.registerHeadlessTask(headlessTask);
     }

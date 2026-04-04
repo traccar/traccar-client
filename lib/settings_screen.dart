@@ -80,7 +80,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       } else {
         await Preferences.instance.setString(key, result);
       }
-      await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
+      await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig(true));
       setState(() {});
     }
   }
@@ -150,7 +150,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         );
         if (selectedAccuracy != null) {
           await Preferences.instance.setString(Preferences.accuracy, selectedAccuracy);
-          await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
+          await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig(true));
           setState(() {});
         }
       },
@@ -200,7 +200,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               value: Preferences.instance.getBool(Preferences.buffer) ?? true,
               onChanged: (value) async {
                 await Preferences.instance.setBool(Preferences.buffer, value);
-                await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
+                await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig(true));
                 setState(() {});
               },
             ),
@@ -227,7 +227,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               value: Preferences.instance.getBool(Preferences.stopDetection) ?? true,
               onChanged: (value) async {
                 await Preferences.instance.setBool(Preferences.stopDetection, value);
-                await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig());
+                await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig(true));
                 setState(() {});
               },
             ),

@@ -65,7 +65,7 @@ class PushService {
 Future<void> pushServiceBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   await Preferences.init();
-  await bg.BackgroundGeolocation.ready(Preferences.geolocationConfig());
+  await bg.BackgroundGeolocation.ready(Preferences.geolocationConfig(false));
   FirebaseCrashlytics.instance.log('push_background_handler');
   await PushService._onMessage(message);
 }

@@ -57,14 +57,13 @@ class Preferences {
     }
   }
 
-  static bg.Config geolocationConfig() {
+  static bg.Config geolocationConfig(bool reset) {
     final isHighestAccuracy = instance.getString(accuracy) == 'highest';
     final locationUpdateInterval = (instance.getInt(interval) ?? 0) * 1000;
     final fastestLocationUpdateInterval = (instance.getInt(fastestInterval) ?? 30) * 1000;
     final heartbeatInterval = instance.getInt(heartbeat) ?? 0;
     return bg.Config(
-      reset: false,
-      isMoving: true,
+      reset: reset,
       geolocation: bg.GeoConfig(
         desiredAccuracy: switch (instance.getString(accuracy)) {
           'highest' => Platform.isIOS ? bg.DesiredAccuracy.navigation : bg.DesiredAccuracy.high,
