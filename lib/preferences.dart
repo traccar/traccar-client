@@ -63,6 +63,7 @@ class Preferences {
     final fastestLocationUpdateInterval = (instance.getInt(fastestInterval) ?? 30) * 1000;
     final heartbeatInterval = instance.getInt(heartbeat) ?? 0;
     return bg.Config(
+      reset: false,
       isMoving: true,
       geolocation: bg.GeoConfig(
         desiredAccuracy: switch (instance.getString(accuracy)) {
