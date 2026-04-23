@@ -232,6 +232,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
               },
             ),
           if (advanced)
+            SwitchListTile(
+              title: Text(AppLocalizations.of(context)!.trackingLockLabel),
+              value: Preferences.instance.getBool(Preferences.trackingLock) ?? false,
+              onChanged: (value) async {
+                await Preferences.instance.setBool(Preferences.trackingLock, value);
+                setState(() {});
+              },
+            ),
+          if (advanced)
             ListTile(
               title: Text(AppLocalizations.of(context)!.passwordLabel),
               onTap: _changePassword,

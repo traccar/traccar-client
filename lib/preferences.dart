@@ -21,6 +21,7 @@ class Preferences {
   static const String wakelock = 'wakelock';
   static const String stopDetection = 'stop_detection';
   static const String password = 'password';
+  static const String trackingLock = 'tracking_lock';
 
   static const String lastTimestamp = 'lastTimestamp';
   static const String lastLatitude = 'lastLatitude';
@@ -40,7 +41,7 @@ class Preferences {
       cacheOptions: SharedPreferencesWithCacheOptions(
         allowList: {
           id, url, accuracy, distance, interval, angle, heartbeat,
-          fastestInterval, buffer,  wakelock, stopDetection, password,
+          fastestInterval, buffer,  wakelock, stopDetection, password, trackingLock,
           lastTimestamp, lastLatitude, lastLongitude, lastHeading,
         },
       ),

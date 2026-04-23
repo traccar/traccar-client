@@ -25,6 +25,8 @@
   "bufferLabel": "Offline buffering",
   "wakelockLabel": "Wake lock",
   "stopDetectionLabel": "Stop detection",
+  "trackingLockLabel": "Prevent tracking from being disabled automatically",
+  "trackingLockMessage": "Tracking is locked. Disable lock in settings to turn off.",
   "trackingLabel": "Continuous tracking",
   "advancedLabel": "Advanced settings",
   "passwordLabel": "Password",
