@@ -641,10 +641,10 @@ packages:
     dependency: "direct main"
     description:
       name: rate_my_app
-      sha256: aeb400808f99aba7e8b853b911915bca10308aff711fa8e2d46b5f68dc383786
+      sha256: "910f6fbe6c070a204dc0595f876352621203a4829d72fc2771c3a1f443132721"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.2"
+    version: "2.4.0"
   record_use:
     dependency: transitive
     description:
