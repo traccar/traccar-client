@@ -135,6 +135,18 @@ class _MainScreenState extends State<MainScreen> {
                         );
                     }
                   } else {
+                    // Check if tracking lock is enabled
+                    if (Preferences.instance.getBool(Preferences.trackingLock) ?? false) {
+                      if (mounted) {
+                        messengerKey.currentState?.showSnackBar(
+                          SnackBar(
+                            content: Text(AppLocalizations.of(context)!.trackingLockMessage),
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                      }
+                      return;
+                    }
                     FirebaseCrashlytics.instance.log('tracking_toggle_stop');
                     bg.BackgroundGeolocation.stop();
                   }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
+import 'package:traccar_client/preferences.dart';
 
 import 'l10n/app_localizations.dart';
 
@@ -27,7 +28,10 @@ class _QuickActionsInitializerState extends State<QuickActionsInitializer> {
         case 'start':
           await bg.BackgroundGeolocation.start();
         case 'stop':
-          await bg.BackgroundGeolocation.stop();
+          if (!(Preferences.instance.getBool(Preferences.trackingLock) ?? false)) {
+            await bg.BackgroundGeolocation.stop();
+          }
+          break;
         case 'sos':
           try {
             await bg.BackgroundGeolocation.getCurrentPosition(samples: 1, persist: true, extras: {'alarm': 'sos'});

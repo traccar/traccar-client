@@ -27,6 +27,11 @@ class GeolocationService {
 
   static Future<void> onEnabledChange(bool enabled) async {
     FirebaseCrashlytics.instance.log('geolocation_enabled:$enabled');
+    // Auto-restart if tracking lock is enabled and service was disabled
+    if (!enabled && (Preferences.instance.getBool(Preferences.trackingLock) ?? false)) {
+      FirebaseCrashlytics.instance.log('tracking_lock_restart');
+      await bg.BackgroundGeolocation.start();
+    }
     if (Preferences.instance.getBool(Preferences.wakelock) ?? false) {
       if (!enabled) {
         await WakelockPartialAndroid.release();
