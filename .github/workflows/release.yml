@@ -3,6 +3,13 @@ name: Release
 on:
   push:
     tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: Platforms to publish
+        type: choice
+        options: [both, android, ios]
+        default: both
 
 env:
   APPLE_TEAM_ID: YW49KTJKFW
@@ -10,6 +17,7 @@ env:
 
 jobs:
   build-android:
+    if: ${{ github.event_name == 'push' || inputs.platform != 'ios' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -109,6 +117,7 @@ jobs:
           status: completed
 
   build-ios:
+    if: ${{ github.event_name == 'push' || inputs.platform != 'android' }}
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v6
