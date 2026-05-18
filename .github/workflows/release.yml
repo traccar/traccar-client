@@ -52,7 +52,7 @@ jobs:
           flutter pub get
           flutter build apk --release
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: android-apk
           path: build/app/outputs/flutter-apk/app-release.apk
@@ -69,7 +69,7 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: android-apk
           path: .
@@ -91,7 +91,7 @@ jobs:
             adb pull /sdcard/launch.png launch.png
             adb shell pidof org.traccar.client > /dev/null || { echo "App process not running after launch — crashed."; exit 1; }
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: launch-screenshot
           path: launch.png
@@ -101,7 +101,7 @@ jobs:
     needs: smoke-test-android
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: android-apk
           path: apk
@@ -184,7 +184,7 @@ jobs:
             -exportPath "$EXPORT_PATH" \
             -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: ios-ipa
           path: ${{ runner.temp }}/ipa/*.ipa
@@ -195,7 +195,7 @@ jobs:
     needs: build-ios
     runs-on: macos-26
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: ios-ipa
           path: ipa
@@ -212,3 +212,20 @@ jobs:
           xcrun altool --upload-app -t ios -f "$IPA" \
             --apiKey "$ASC_KEY_ID" \
             --apiIssuer "$ASC_ISSUER_ID"
+
+  release-github:
+    needs: [publish-android, publish-ios]
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v5
+        with:
+          name: android-apk
+          path: apk
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: apk/app-release.apk
