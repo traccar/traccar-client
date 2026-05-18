@@ -138,25 +138,25 @@ jobs:
           KEYCHAIN_PASSWORD: ${{ secrets.IOS_KEYCHAIN_PASSWORD }}
         run: keychain initialize --password "$KEYCHAIN_PASSWORD"
 
-      - name: Fetch signing files from App Store Connect
+      - name: Install signing certificate into keychain
+        env:
+          CERT_P12_BASE64: ${{ secrets.IOS_DIST_CERT_P12_BASE64 }}
+          CERT_PASSWORD: ${{ secrets.IOS_DIST_CERT_PASSWORD }}
+        run: |
+          echo "$CERT_P12_BASE64" | base64 -d > "$RUNNER_TEMP/cert.p12"
+          keychain add-certificates --certificate "$RUNNER_TEMP/cert.p12" --certificate-password "$CERT_PASSWORD"
+
+      - name: Fetch provisioning profile from App Store Connect
         env:
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ secrets.ASC_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
-          APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.ASC_API_KEY_BASE64 }}
-          CERTIFICATE_PRIVATE_KEY_BASE64: ${{ secrets.IOS_DIST_CERT_P12_BASE64 }}
-          CERTIFICATE_PASSWORD: ${{ secrets.IOS_DIST_CERT_PASSWORD }}
+          ASC_API_KEY_BASE64: ${{ secrets.ASC_API_KEY_BASE64 }}
         run: |
-          echo "$APP_STORE_CONNECT_PRIVATE_KEY" | base64 -d > "$RUNNER_TEMP/AuthKey.p8"
-          echo "$CERTIFICATE_PRIVATE_KEY_BASE64" | base64 -d > "$RUNNER_TEMP/cert.p12"
+          echo "$ASC_API_KEY_BASE64" | base64 -d > "$RUNNER_TEMP/AuthKey.p8"
+          export APP_STORE_CONNECT_PRIVATE_KEY="$(cat "$RUNNER_TEMP/AuthKey.p8")"
           app-store-connect fetch-signing-files "$IOS_BUNDLE_ID" \
             --type IOS_APP_STORE \
-            --certificate-key-password "$CERTIFICATE_PASSWORD" \
-            --p12-container-password "$CERTIFICATE_PASSWORD" \
-            --private-key "@file:$RUNNER_TEMP/AuthKey.p8" \
             --create
-
-      - name: Install certificates into keychain
-        run: keychain add-certificates
 
       - name: Apply profiles to Xcode project and generate ExportOptions.plist
         working-directory: ios
