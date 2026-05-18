@@ -159,12 +159,12 @@ jobs:
             --certificate-key "@file:$RUNNER_TEMP/dist_private_key.pem" \
             --create
 
+      - name: Install certificates into keychain
+        run: keychain add-certificates
+
       - name: Apply profiles to Xcode project and generate ExportOptions.plist
         working-directory: ios
-        run: |
-          xcode-project use-profiles --export-options-plist "$RUNNER_TEMP/ExportOptions.plist"
-          /usr/libexec/PlistBuddy -c "Delete :signingCertificate" "$RUNNER_TEMP/ExportOptions.plist" || true
-          cat "$RUNNER_TEMP/ExportOptions.plist"
+        run: xcode-project use-profiles --export-options-plist "$RUNNER_TEMP/ExportOptions.plist"
 
       - name: Archive and export IPA
         run: |
