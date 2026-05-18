@@ -145,6 +145,7 @@ jobs:
         run: |
           echo "$CERT_P12_BASE64" | base64 -d > "$RUNNER_TEMP/cert.p12"
           keychain add-certificates --certificate "$RUNNER_TEMP/cert.p12" --certificate-password "$CERT_PASSWORD"
+          openssl pkcs12 -in "$RUNNER_TEMP/cert.p12" -nodes -nocerts -password "pass:$CERT_PASSWORD" -out "$RUNNER_TEMP/cert_private_key.pem"
 
       - name: Fetch provisioning profile from App Store Connect
         env:
@@ -156,6 +157,7 @@ jobs:
           export APP_STORE_CONNECT_PRIVATE_KEY="$(cat "$RUNNER_TEMP/AuthKey.p8")"
           app-store-connect fetch-signing-files "$IOS_BUNDLE_ID" \
             --type IOS_APP_STORE \
+            --certificate-key="@file:$RUNNER_TEMP/cert_private_key.pem" \
             --create
 
       - name: Apply profiles to Xcode project and generate ExportOptions.plist
