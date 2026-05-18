@@ -12,7 +12,6 @@ on:
         default: both
 
 env:
-  APPLE_TEAM_ID: YW49KTJKFW
   IOS_BUNDLE_ID: org.traccar.client.TraccarClient
 
 jobs:
