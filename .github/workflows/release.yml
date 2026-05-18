@@ -130,80 +130,56 @@ jobs:
       - name: Install flutterfire CLI
         run: dart pub global activate flutterfire_cli
 
-      - name: Import signing certificate into temp keychain
+      - name: Install codemagic-cli-tools
+        run: pip3 install --break-system-packages codemagic-cli-tools
+
+      - name: Initialize signing keychain
         env:
-          CERT_P12_BASE64: ${{ secrets.IOS_DIST_CERT_P12_BASE64 }}
-          CERT_PASSWORD: ${{ secrets.IOS_DIST_CERT_PASSWORD }}
           KEYCHAIN_PASSWORD: ${{ secrets.IOS_KEYCHAIN_PASSWORD }}
-        run: |
-          KEYCHAIN_PATH="$RUNNER_TEMP/build.keychain-db"
-          echo "$CERT_P12_BASE64" | base64 -d > "$RUNNER_TEMP/cert.p12"
-          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
-          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-          security import "$RUNNER_TEMP/cert.p12" -P "$CERT_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
-          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-          security list-keychain -d user -s "$KEYCHAIN_PATH" $(security list-keychains -d user | tr -d '"')
+        run: keychain initialize --password "$KEYCHAIN_PASSWORD"
 
-      - name: Install App Store Connect API key
+      - name: Fetch signing files from App Store Connect
         env:
-          ASC_API_KEY_BASE64: ${{ secrets.ASC_API_KEY_BASE64 }}
-          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ secrets.ASC_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.ASC_API_KEY_BASE64 }}
+          CERTIFICATE_PRIVATE_KEY_BASE64: ${{ secrets.IOS_DIST_CERT_P12_BASE64 }}
+          CERTIFICATE_PASSWORD: ${{ secrets.IOS_DIST_CERT_PASSWORD }}
         run: |
-          mkdir -p ~/.appstoreconnect/private_keys
-          echo "$ASC_API_KEY_BASE64" | base64 -d > "$HOME/.appstoreconnect/private_keys/AuthKey_${ASC_KEY_ID}.p8"
+          echo "$APP_STORE_CONNECT_PRIVATE_KEY" | base64 -d > "$RUNNER_TEMP/AuthKey.p8"
+          echo "$CERTIFICATE_PRIVATE_KEY_BASE64" | base64 -d > "$RUNNER_TEMP/cert.p12"
+          app-store-connect fetch-signing-files "$IOS_BUNDLE_ID" \
+            --type IOS_APP_STORE \
+            --certificate-key-password "$CERTIFICATE_PASSWORD" \
+            --p12-container-password "$CERTIFICATE_PASSWORD" \
+            --private-key "@file:$RUNNER_TEMP/AuthKey.p8" \
+            --create
 
-      - name: Write ExportOptions.plist
-        run: |
-          cat > ios/ExportOptions.plist <<EOF
-          <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-          <plist version="1.0">
-          <dict>
-              <key>method</key>
-              <string>app-store</string>
-              <key>teamID</key>
-              <string>${APPLE_TEAM_ID}</string>
-              <key>signingStyle</key>
-              <string>automatic</string>
-              <key>uploadSymbols</key>
-              <true/>
-              <key>destination</key>
-              <string>upload</string>
-          </dict>
-          </plist>
-          EOF
+      - name: Install certificates into keychain
+        run: keychain add-certificates
+
+      - name: Apply profiles to Xcode project and generate ExportOptions.plist
+        working-directory: ios
+        run: xcode-project use-profiles --export-options-plist "$RUNNER_TEMP/ExportOptions.plist"
 
       - name: Archive and export IPA
-        env:
-          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
-          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
         run: |
           flutter pub get
           flutter build ios --release --no-codesign
           ARCHIVE_PATH="$RUNNER_TEMP/Runner.xcarchive"
           EXPORT_PATH="$RUNNER_TEMP/ipa"
-          API_KEY_PATH="$HOME/.appstoreconnect/private_keys/AuthKey_${ASC_KEY_ID}.p8"
           cd ios
           xcodebuild \
             -workspace Runner.xcworkspace \
             -scheme Runner \
             -configuration Release \
             -archivePath "$ARCHIVE_PATH" \
-            -allowProvisioningUpdates \
-            -authenticationKeyPath "$API_KEY_PATH" \
-            -authenticationKeyID "$ASC_KEY_ID" \
-            -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
             archive
           xcodebuild \
             -exportArchive \
             -archivePath "$ARCHIVE_PATH" \
             -exportPath "$EXPORT_PATH" \
-            -exportOptionsPlist ExportOptions.plist \
-            -allowProvisioningUpdates \
-            -authenticationKeyPath "$API_KEY_PATH" \
-            -authenticationKeyID "$ASC_KEY_ID" \
-            -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist"
 
       - uses: actions/upload-artifact@v4
         with:
