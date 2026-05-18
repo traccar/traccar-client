@@ -50,6 +50,7 @@ jobs:
           name: android-apk
           path: build/app/outputs/flutter-apk/app-release.apk
           if-no-files-found: error
+          retention-days: 1
 
   smoke-test-android:
     needs: build-android
@@ -197,6 +198,7 @@ jobs:
           name: ios-ipa
           path: ${{ runner.temp }}/ipa/*.ipa
           if-no-files-found: error
+          retention-days: 1
 
   publish-ios:
     needs: build-ios
