@@ -118,6 +118,9 @@ jobs:
           channel: stable
           cache: true
 
+      - name: Install flutterfire CLI
+        run: dart pub global activate flutterfire_cli
+
       - name: Import signing certificate into temp keychain
         env:
           CERT_P12_BASE64: ${{ secrets.IOS_DIST_CERT_P12_BASE64 }}
