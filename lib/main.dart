@@ -17,6 +17,7 @@ import 'preferences.dart';
 import 'configuration_service.dart';
 
 final messengerKey = GlobalKey<ScaffoldMessengerState>();
+final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,8 +43,8 @@ class _MainAppState extends State<MainApp> {
   @override
   void initState() {
     super.initState();
-    _initLinks();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _initLinks();
       await rateMyApp.init();
       if (mounted && rateMyApp.shouldOpenDialog) {
         try {
@@ -59,17 +60,40 @@ class _MainAppState extends State<MainApp> {
     final appLinks = AppLinks();
     final uri = await appLinks.getInitialLink();
     if (uri != null) {
+      await _handleUri(uri);
+    }
+    appLinks.uriLinkStream.listen(_handleUri);
+  }
+
+  Future<void> _handleUri(Uri uri) async {
+    final context = navigatorKey.currentContext;
+    if (context == null) return;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: Text(AppLocalizations.of(context)!.configurationMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(AppLocalizations.of(context)!.cancelButton),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(AppLocalizations.of(context)!.okButton),
+          ),
+        ],
+      ),
+    );
+    if (confirmed == true) {
       await ConfigurationService.applyUri(uri);
     }
-    appLinks.uriLinkStream.listen((uri) async {
-      await ConfigurationService.applyUri(uri);
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       scaffoldMessengerKey: messengerKey,
+      navigatorKey: navigatorKey,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       theme: ThemeData(
