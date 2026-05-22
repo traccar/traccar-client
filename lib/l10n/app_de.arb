@@ -33,5 +33,6 @@
   "startAction": "Dienst starten",
   "stopAction": "Dienst stoppen",
   "sosAction": "SOS senden",
-  "disclosureMessage": "This app collects location and activity data in the background and sends it to the configured server."
+  "disclosureMessage": "This app collects location and activity data in the background and sends it to the configured server.",
+  "configurationMessage": "Apply new configuration?"
 }

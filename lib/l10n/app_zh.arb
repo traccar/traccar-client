@@ -33,5 +33,6 @@
   "startAction": "启动服务",
   "stopAction": "停止服务",
   "sosAction": "发送求救信号",
-  "disclosureMessage": "该应用会在后台收集位置和活动数据，并将其发送到配置的服务器。"
+  "disclosureMessage": "该应用会在后台收集位置和活动数据，并将其发送到配置的服务器。",
+  "configurationMessage": "Apply new configuration?"
 }

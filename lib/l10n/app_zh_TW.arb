@@ -11,7 +11,7 @@
   "invalidValue": "無效資料",
   "disabledValue": "已停用",
   "idLabel": "設備識別碼",
-  "urlLabel": "服務器地址",
+  "urlLabel": "伺服器地址",
   "accuracyLabel": "位置精度",
   "highestAccuracyLabel": "最高",
   "highAccuracyLabel": "高",
@@ -30,8 +30,9 @@
   "passwordLabel": "密碼",
   "optimizationMessage": "為確保追蹤的可靠性，請停用此應用程式的電池優化功能。",
   "passwordError": "密碼錯誤",
-  "startAction": "啟動服務",
+  "startAction": "開始服務",
   "stopAction": "停止服務",
-  "sosAction": "發送SOS求救",
-  "disclosureMessage": "該應用程式會在背景收集位置和活動數據，並將其傳送到配置的伺服器。"
+  "sosAction": "發送 SOS 求救",
+  "disclosureMessage": "該應用程式會在背景收集位置和活動數據，並將其傳送到配置的伺服器。",
+  "configurationMessage": "Apply new configuration?"
 }

@@ -33,5 +33,6 @@
   "startAction": "Uruchom usługę",
   "stopAction": "Zatrzymaj usługę",
   "sosAction": "Wyślij SOS",
-  "disclosureMessage": "Ta aplikacja zbiera w tle dane dotyczące lokalizacji i aktywności i wysyła je na skonfigurowany serwer."
+  "disclosureMessage": "Ta aplikacja zbiera w tle dane dotyczące lokalizacji i aktywności i wysyła je na skonfigurowany serwer.",
+  "configurationMessage": "Apply new configuration?"
 }
