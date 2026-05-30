@@ -12,7 +12,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: any
-  flutter_background_geolocation: ^5.2.0
+  traccar_client_sdk: ^0.0.8
   shared_preferences: ^2.5.5
   firebase_core: ^4.9.0
   firebase_messaging: ^16.2.2
@@ -21,11 +21,11 @@ dependencies:
   quick_actions: ^1.1.0
   rate_my_app: ^2.4.0
   shared_preferences_android: ^2.4.23
-  wakelock_partial_android: ^1.0.1
   mobile_scanner: ^7.2.0
   flutter_secure_storage: ^10.2.0
   app_links: ^7.0.0
   app_settings: ^7.0.0
+  share_plus: ^11.1.0
 
 dev_dependencies:
   flutter_test:

@@ -12,9 +12,6 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
-val backgroundGeolocation = project(":flutter_background_geolocation")
-apply { from("${backgroundGeolocation.projectDir}/background_geolocation.gradle") }
-
 val keystoreProperties = Properties()
 val keystorePropertiesFile = rootProject.file("../../environment/key.properties")
 if (keystorePropertiesFile.exists()) {
@@ -39,7 +36,7 @@ android {
         applicationId = "org.traccar.client"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        minSdk = 24
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName

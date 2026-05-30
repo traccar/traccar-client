@@ -1,17 +1,15 @@
 import 'dart:io';
 
-import 'package:app_settings/app_settings.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:traccar_client/main.dart';
 import 'package:traccar_client/password_service.dart';
 import 'package:traccar_client/preferences.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 
+import 'geolocation_service.dart';
 import 'l10n/app_localizations.dart';
-import 'status_screen.dart';
 import 'settings_screen.dart';
+import 'status_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -20,60 +18,35 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   bool trackingEnabled = false;
-  bool? isMoving;
 
   @override
   void initState() {
     super.initState();
-    _initState();
+    WidgetsBinding.instance.addObserver(this);
+    _refreshState();
   }
 
-  void _initState() async {
-    final state = await bg.BackgroundGeolocation.state;
-    setState(() {
-      trackingEnabled = state.enabled;
-      isMoving = state.isMoving;
-    });
-    bg.BackgroundGeolocation.onEnabledChange((bool enabled) {
-      setState(() {
-        trackingEnabled = enabled;
-      });
-    });
-    bg.BackgroundGeolocation.onMotionChange((bg.Location location) {
-      setState(() {
-        isMoving = location.isMoving;
-      });
-    });
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
-  Future<void> _checkBatteryOptimizations(BuildContext context) async {
-    try {
-      if (!await bg.DeviceSettings.isIgnoringBatteryOptimizations) {
-        final request = await bg.DeviceSettings.showIgnoreBatteryOptimizations();
-        if (!request.seen && context.mounted) {
-          showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-              scrollable: true,
-              content: Text(AppLocalizations.of(context)!.optimizationMessage),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    bg.DeviceSettings.show(request);
-                  },
-                  child: Text(AppLocalizations.of(context)!.okButton),
-                ),
-              ],
-            ),
-          );
-        }
-      }
-    } catch (error) {
-      debugPrint(error.toString());
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _refreshState();
     }
+  }
+
+  Future<void> _refreshState() async {
+    final tracking = await GeolocationService.tracker.isTracking();
+    if (!mounted) return;
+    setState(() {
+      trackingEnabled = tracking;
+    });
   }
 
   Widget _buildTrackingCard() {
@@ -104,39 +77,25 @@ class _MainScreenState extends State<MainScreen> {
               contentPadding: EdgeInsets.zero,
               title: Text(AppLocalizations.of(context)!.trackingLabel),
               value: trackingEnabled,
-              activeTrackColor: isMoving == false ? Theme.of(context).colorScheme.secondary : null,
               onChanged: (bool value) async {
                 if (await PasswordService.authenticate(context) && mounted) {
                   if (value) {
-                    try {
-                      FirebaseCrashlytics.instance.log('tracking_toggle_start');
-                      await bg.BackgroundGeolocation.start();
-                      if (mounted) {
-                        _checkBatteryOptimizations(context);
-                      }
-                    } on PlatformException catch (error) {
-                        final providerState = await bg.BackgroundGeolocation.providerState;
-                        final isPermissionError = providerState.status == bg.ProviderChangeEvent.AUTHORIZATION_STATUS_DENIED ||
-                          providerState.status == bg.ProviderChangeEvent.AUTHORIZATION_STATUS_RESTRICTED;
-                        if (!mounted) return;
-                        messengerKey.currentState?.showSnackBar(
-                          SnackBar(
-                            content: Text(error.message ?? error.code),
-                            duration: const Duration(seconds: 4),
-                            action: isPermissionError
-                                ? SnackBarAction(
-                                    label: AppLocalizations.of(context)!.settingsTitle,
-                                    onPressed: () => AppSettings.openAppSettings(
-                                      type: AppSettingsType.settings,
-                                    ),
-                                  )
-                                : null,
-                          ),
-                        );
+                    FirebaseCrashlytics.instance.log('tracking_toggle_start');
+                    final started = await GeolocationService.tracker.start(Preferences.buildConfig());
+                    if (!mounted) return;
+                    if (!started) {
+                      messengerKey.currentState?.showSnackBar(
+                        const SnackBar(
+                          content: Text('Failed to start tracking. Check location permissions.'),
+                          duration: Duration(seconds: 4),
+                        ),
+                      );
                     }
+                    setState(() => trackingEnabled = started);
                   } else {
                     FirebaseCrashlytics.instance.log('tracking_toggle_stop');
-                    bg.BackgroundGeolocation.stop();
+                    await GeolocationService.tracker.stop();
+                    if (mounted) setState(() => trackingEnabled = false);
                   }
                 }
               },
@@ -147,11 +106,7 @@ class _MainScreenState extends State<MainScreen> {
               children: [
                 FilledButton.tonal(
                   onPressed: () async {
-                    try {
-                      await bg.BackgroundGeolocation.getCurrentPosition(samples: 1, persist: true, extras: {'manual': true});
-                    } on PlatformException catch (error) {
-                      messengerKey.currentState?.showSnackBar(SnackBar(content: Text(error.message ?? error.code)));
-                    }
+                    await GeolocationService.tracker.requestPosition(Preferences.buildConfig());
                   },
                   child: Text(AppLocalizations.of(context)!.locationButton),
                 ),
@@ -211,7 +166,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Traccar Client'),
+        title: const Text('Traccar Client'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),

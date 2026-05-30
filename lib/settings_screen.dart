@@ -2,12 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 import 'package:traccar_client/main.dart';
 import 'package:traccar_client/password_service.dart';
 import 'package:traccar_client/qr_code_screen.dart';
-import 'package:wakelock_partial_android/wakelock_partial_android.dart';
 
+import 'geolocation_service.dart';
 import 'l10n/app_localizations.dart';
 import 'preferences.dart';
 
@@ -70,17 +69,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
         }
       }
       if (isInt) {
-        int? intValue = int.tryParse(result);
+        final intValue = int.tryParse(result);
         if (intValue != null) {
-          if (key == Preferences.heartbeat && intValue > 0 && intValue < 60) {
-            intValue = 60; // minimum heartbeat is 60 seconds
-          }
           await Preferences.instance.setInt(key, intValue);
         }
       } else {
         await Preferences.instance.setString(key, result);
       }
-      await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig(true));
+      await GeolocationService.restartIfTracking();
       setState(() {});
     }
   }
@@ -150,7 +146,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         );
         if (selectedAccuracy != null) {
           await Preferences.instance.setString(Preferences.accuracy, selectedAccuracy);
-          await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig(true));
+          await GeolocationService.restartIfTracking();
           setState(() {});
         }
       },
@@ -184,7 +180,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             _buildListTile(AppLocalizations.of(context)!.intervalLabel, Preferences.interval, true),
           if (isHighestAccuracy)
             _buildListTile(AppLocalizations.of(context)!.angleLabel, Preferences.angle, true),
-          _buildListTile(AppLocalizations.of(context)!.heartbeatLabel, Preferences.heartbeat, true),
           SwitchListTile(
             title: Text(AppLocalizations.of(context)!.advancedLabel),
             value: advanced,
@@ -193,14 +188,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
             },
           ),
           if (advanced)
-            _buildListTile(AppLocalizations.of(context)!.fastestIntervalLabel, Preferences.fastestInterval, true),
-          if (advanced)
             SwitchListTile(
               title: Text(AppLocalizations.of(context)!.bufferLabel),
               value: Preferences.instance.getBool(Preferences.buffer) ?? true,
               onChanged: (value) async {
                 await Preferences.instance.setBool(Preferences.buffer, value);
-                await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig(true));
+                await GeolocationService.restartIfTracking();
                 setState(() {});
               },
             ),
@@ -210,14 +203,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               value: Preferences.instance.getBool(Preferences.wakelock) ?? false,
               onChanged: (value) async {
                 await Preferences.instance.setBool(Preferences.wakelock, value);
-                if (value) {
-                  final state = await bg.BackgroundGeolocation.state;
-                  if (state.isMoving == true) {
-                    WakelockPartialAndroid.acquire();
-                  }
-                } else {
-                  WakelockPartialAndroid.release();
-                }
+                await GeolocationService.restartIfTracking();
                 setState(() {});
               },
             ),
@@ -227,7 +213,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               value: Preferences.instance.getBool(Preferences.stopDetection) ?? true,
               onChanged: (value) async {
                 await Preferences.instance.setBool(Preferences.stopDetection, value);
-                await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig(true));
+                await GeolocationService.restartIfTracking();
                 setState(() {});
               },
             ),

@@ -1,5 +1,4 @@
-import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
-
+import 'geolocation_service.dart';
 import 'preferences.dart';
 
 class ConfigurationService {
@@ -18,12 +17,10 @@ class ConfigurationService {
     await _applyIntParameter(parameters, Preferences.distance);
     await _applyIntParameter(parameters, Preferences.interval);
     await _applyIntParameter(parameters, Preferences.angle);
-    await _applyIntParameter(parameters, Preferences.heartbeat);
-    await _applyIntParameter(parameters, Preferences.fastestInterval);
     await _applyBoolParameter(parameters, Preferences.buffer);
     await _applyBoolParameter(parameters, Preferences.wakelock);
     await _applyBoolParameter(parameters, Preferences.stopDetection);
-    await bg.BackgroundGeolocation.setConfig(Preferences.geolocationConfig(true));
+    await GeolocationService.restartIfTracking();
   }
 
   static Future<void> _applyStringParameter(

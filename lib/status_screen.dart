@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
+import 'package:share_plus/share_plus.dart';
+import 'package:traccar_client_sdk/traccar_client_sdk.dart';
 
+import 'geolocation_service.dart';
 import 'l10n/app_localizations.dart';
 
 class StatusScreen extends StatefulWidget {
@@ -11,7 +13,7 @@ class StatusScreen extends StatefulWidget {
 }
 
 class _StatusScreenState extends State<StatusScreen> {
-  final List<String> _logs = [];
+  List<String> _logs = const [];
 
   @override
   void initState() {
@@ -20,26 +22,24 @@ class _StatusScreenState extends State<StatusScreen> {
   }
 
   Future<void> _refreshLogs() async {
-    final logs = await bg.Logger.getLog(bg.SQLQuery(
-      order: bg.SQLQuery.ORDER_DESC,
-      limit: 2000,
-    ));
+    final logs = await GeolocationService.tracker.getLogs();
     setState(() {
-      _logs.clear();
-      _logs.addAll(logs.split('\n'));
+      _logs = logs.reversed.map(_format).toList(growable: false);
     });
   }
 
-  Future<void> _emailLogs() async {
-    await bg.Logger.emailLog("support@traccar.org", bg.SQLQuery(
-      order: bg.SQLQuery.ORDER_DESC,
-      limit: 25000,
-    ));
+  Future<void> _shareLogs() async {
+    await SharePlus.instance.share(ShareParams(text: _logs.reversed.join('\n')));
   }
 
   Future<void> _clearLogs() async {
-    await bg.Logger.destroyLog();
-    setState(() => _logs.clear());
+    await GeolocationService.tracker.clearLogs();
+    setState(() => _logs = const []);
+  }
+
+  static String _format(LogEntry entry) {
+    final time = DateTime.fromMillisecondsSinceEpoch(entry.time).toIso8601String();
+    return '$time ${entry.message}';
   }
 
   @override
@@ -54,7 +54,7 @@ class _StatusScreenState extends State<StatusScreen> {
           ),
           IconButton(
             icon: const Icon(Icons.share),
-            onPressed: _emailLogs,
+            onPressed: _shareLogs,
           ),
           IconButton(
             icon: const Icon(Icons.delete),
@@ -69,7 +69,7 @@ class _StatusScreenState extends State<StatusScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Text(
             _logs[index],
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 10,
               fontFamily: 'monospace',
             ),
