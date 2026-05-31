@@ -10,10 +10,11 @@ import 'package:traccar_client/password_service.dart';
 import 'package:traccar_client/push_service.dart';
 import 'package:traccar_client/quick_actions.dart';
 
+import 'configuration_service.dart';
+import 'geolocation_service.dart';
 import 'l10n/app_localizations.dart';
 import 'main_screen.dart';
 import 'preferences.dart';
-import 'configuration_service.dart';
 
 final messengerKey = GlobalKey<ScaffoldMessengerState>();
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -64,6 +65,15 @@ class _MainAppState extends State<MainApp> {
   }
 
   Future<void> _handleUri(Uri uri) async {
+    if (uri.host == 'action') {
+      switch (uri.pathSegments.firstOrNull) {
+        case 'start':
+          await GeolocationService.tracker.start(Preferences.buildConfig());
+        case 'stop':
+          await GeolocationService.tracker.stop();
+      }
+      return;
+    }
     final context = navigatorKey.currentContext;
     if (context == null) return;
     final confirmed = await showDialog<bool>(

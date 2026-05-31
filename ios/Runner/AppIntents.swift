@@ -1,14 +1,20 @@
 import AppIntents
-import TSLocationManager
+import UIKit
+
+@available(iOS 16.0, *)
+@MainActor
+private func openAction(_ name: String) async {
+    await UIApplication.shared.open(URL(string: "org.traccar.client://action/\(name)")!)
+}
 
 @available(iOS 16.0, *)
 struct StartTrackingIntent: AppIntent {
     static var title: LocalizedStringResource = "Start Tracking"
     static var description = IntentDescription("Start continuous location tracking")
-    static var openAppWhenRun: Bool = false
+    static var openAppWhenRun: Bool = true
 
     func perform() async throws -> some IntentResult {
-        BackgroundGeolocation.sharedInstance().start()
+        await openAction("start")
         return .result()
     }
 }
@@ -17,10 +23,10 @@ struct StartTrackingIntent: AppIntent {
 struct StopTrackingIntent: AppIntent {
     static var title: LocalizedStringResource = "Stop Tracking"
     static var description = IntentDescription("Stop continuous location tracking")
-    static var openAppWhenRun: Bool = false
+    static var openAppWhenRun: Bool = true
 
     func perform() async throws -> some IntentResult {
-        BackgroundGeolocation.sharedInstance().stop()
+        await openAction("stop")
         return .result()
     }
 }
