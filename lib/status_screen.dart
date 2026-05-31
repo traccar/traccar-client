@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:traccar_client_sdk/traccar_client_sdk.dart';
 
@@ -13,7 +14,10 @@ class StatusScreen extends StatefulWidget {
 }
 
 class _StatusScreenState extends State<StatusScreen> {
-  List<String> _logs = const [];
+  static final _displayFormat = DateFormat('HH:mm:ss');
+  static final _fullFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+
+  List<LogEntry> _logs = const [];
 
   @override
   void initState() {
@@ -24,22 +28,21 @@ class _StatusScreenState extends State<StatusScreen> {
   Future<void> _refreshLogs() async {
     final logs = await GeolocationService.tracker.getLogs();
     setState(() {
-      _logs = logs.reversed.map(_format).toList(growable: false);
+      _logs = logs.reversed.toList(growable: false);
     });
   }
 
   Future<void> _shareLogs() async {
-    await SharePlus.instance.share(ShareParams(text: _logs.reversed.join('\n')));
+    final text = _logs.reversed.map((entry) {
+      final t = DateTime.fromMillisecondsSinceEpoch(entry.time);
+      return '${_fullFormat.format(t)} ${entry.message}';
+    }).join('\n');
+    await SharePlus.instance.share(ShareParams(text: text));
   }
 
   Future<void> _clearLogs() async {
     await GeolocationService.tracker.clearLogs();
     setState(() => _logs = const []);
-  }
-
-  static String _format(LogEntry entry) {
-    final time = DateTime.fromMillisecondsSinceEpoch(entry.time).toIso8601String();
-    return '$time ${entry.message}';
   }
 
   @override
@@ -65,16 +68,20 @@ class _StatusScreenState extends State<StatusScreen> {
       body: ListView.builder(
         reverse: true,
         itemCount: _logs.length,
-        itemBuilder: (_, index) => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Text(
-            _logs[index],
-            style: const TextStyle(
-              fontSize: 10,
-              fontFamily: 'monospace',
+        itemBuilder: (_, index) {
+          final entry = _logs[index];
+          final t = DateTime.fromMillisecondsSinceEpoch(entry.time);
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Text(
+              '${_displayFormat.format(t)} ${entry.message}',
+              style: const TextStyle(
+                fontSize: 10,
+                fontFamily: 'monospace',
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
