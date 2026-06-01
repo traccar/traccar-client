@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
@@ -18,11 +20,23 @@ class _StatusScreenState extends State<StatusScreen> {
   static final _fullFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
 
   List<LogEntry> _logs = const [];
+  Timer? _refreshTimer;
 
   @override
   void initState() {
     super.initState();
     _refreshLogs();
+    _refreshTimer = Timer.periodic(const Duration(seconds: 5), (_) {
+      if (WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed) {
+        _refreshLogs();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _refreshTimer?.cancel();
+    super.dispose();
   }
 
   Future<void> _refreshLogs() async {
