@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:traccar_client/main.dart';
 import 'package:traccar_client/password_service.dart';
 import 'package:traccar_client/preferences.dart';
@@ -81,7 +82,13 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                 if (await PasswordService.authenticate(context) && mounted) {
                   if (value) {
                     FirebaseCrashlytics.instance.log('tracking_toggle_start');
-                    final started = await GeolocationService.tracker.start(Preferences.buildConfig());
+                    var started = false;
+                    try {
+                      await GeolocationService.tracker.start();
+                      started = true;
+                    } on PlatformException {
+                      // permission denied or startup error
+                    }
                     if (!mounted) return;
                     if (!started) {
                       messengerKey.currentState?.showSnackBar(
@@ -106,7 +113,7 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
               children: [
                 FilledButton.tonal(
                   onPressed: () async {
-                    await GeolocationService.tracker.requestPosition(Preferences.buildConfig());
+                    await GeolocationService.tracker.requestPosition();
                   },
                   child: Text(AppLocalizations.of(context)!.locationButton),
                 ),

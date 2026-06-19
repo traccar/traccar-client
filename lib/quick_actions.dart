@@ -5,7 +5,6 @@ import 'package:quick_actions/quick_actions.dart';
 
 import 'geolocation_service.dart';
 import 'l10n/app_localizations.dart';
-import 'preferences.dart';
 
 class QuickActionsInitializer extends StatefulWidget {
   const QuickActionsInitializer({super.key});
@@ -24,11 +23,11 @@ class _QuickActionsInitializerState extends State<QuickActionsInitializer> {
       FirebaseCrashlytics.instance.log('quick_action: $shortcutType');
       switch (shortcutType) {
         case 'start':
-          await GeolocationService.tracker.start(Preferences.buildConfig());
+          await GeolocationService.tracker.start();
         case 'stop':
           await GeolocationService.tracker.stop();
         case 'sos':
-          await GeolocationService.tracker.requestPosition(Preferences.buildConfig());
+          await GeolocationService.tracker.requestPosition();
       }
       if (mounted) {
         FirebaseCrashlytics.instance.log('quick_action_exit');

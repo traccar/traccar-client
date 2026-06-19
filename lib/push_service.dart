@@ -27,9 +27,9 @@ class PushService {
     FirebaseCrashlytics.instance.log('push_command: $command');
     switch (command) {
       case 'positionSingle':
-        await GeolocationService.tracker.requestPosition(Preferences.buildConfig());
+        await GeolocationService.tracker.requestPosition();
       case 'positionPeriodic':
-        await GeolocationService.tracker.start(Preferences.buildConfig());
+        await GeolocationService.tracker.start();
       case 'positionStop':
         await GeolocationService.tracker.stop();
       case 'factoryReset':
@@ -57,6 +57,7 @@ class PushService {
 Future<void> pushServiceBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   await Preferences.init();
+  await GeolocationService.tracker.init(Preferences.buildConfig());
   FirebaseCrashlytics.instance.log('push_background_handler');
   await PushService._onMessage(message);
 }

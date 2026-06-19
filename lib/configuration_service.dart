@@ -20,7 +20,7 @@ class ConfigurationService {
     await _applyBoolParameter(parameters, Preferences.buffer);
     await _applyBoolParameter(parameters, Preferences.wakelock);
     await _applyBoolParameter(parameters, Preferences.stopDetection);
-    await GeolocationService.restartIfTracking();
+    await GeolocationService.tracker.setConfig(Preferences.buildConfig());
   }
 
   static Future<void> _applyStringParameter(

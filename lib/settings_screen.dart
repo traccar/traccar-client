@@ -76,7 +76,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       } else {
         await Preferences.instance.setString(key, result);
       }
-      await GeolocationService.restartIfTracking();
+      await GeolocationService.tracker.setConfig(Preferences.buildConfig());
       setState(() {});
     }
   }
@@ -146,7 +146,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         );
         if (selectedAccuracy != null) {
           await Preferences.instance.setString(Preferences.accuracy, selectedAccuracy);
-          await GeolocationService.restartIfTracking();
+          await GeolocationService.tracker.setConfig(Preferences.buildConfig());
           setState(() {});
         }
       },
@@ -193,7 +193,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               value: Preferences.instance.getBool(Preferences.buffer) ?? true,
               onChanged: (value) async {
                 await Preferences.instance.setBool(Preferences.buffer, value);
-                await GeolocationService.restartIfTracking();
+                await GeolocationService.tracker.setConfig(Preferences.buildConfig());
                 setState(() {});
               },
             ),
@@ -203,7 +203,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               value: Preferences.instance.getBool(Preferences.wakelock) ?? false,
               onChanged: (value) async {
                 await Preferences.instance.setBool(Preferences.wakelock, value);
-                await GeolocationService.restartIfTracking();
+                await GeolocationService.tracker.setConfig(Preferences.buildConfig());
                 setState(() {});
               },
             ),
@@ -213,7 +213,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               value: Preferences.instance.getBool(Preferences.stopDetection) ?? true,
               onChanged: (value) async {
                 await Preferences.instance.setBool(Preferences.stopDetection, value);
-                await GeolocationService.restartIfTracking();
+                await GeolocationService.tracker.setConfig(Preferences.buildConfig());
                 setState(() {});
               },
             ),

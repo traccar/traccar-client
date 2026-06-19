@@ -24,6 +24,7 @@ void main() async {
   await Firebase.initializeApp();
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   await Preferences.init();
+  await GeolocationService.tracker.init(Preferences.buildConfig());
   await PasswordService.migrate();
   await PushService.init();
   runApp(const MainApp());
@@ -68,7 +69,7 @@ class _MainAppState extends State<MainApp> {
     if (uri.host == 'action') {
       switch (uri.pathSegments.firstOrNull) {
         case 'start':
-          await GeolocationService.tracker.start(Preferences.buildConfig());
+          await GeolocationService.tracker.start();
         case 'stop':
           await GeolocationService.tracker.stop();
       }
