@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer' as developer;
 import 'dart:io';
 
@@ -15,6 +16,10 @@ class PushService {
     FirebaseMessaging.onBackgroundMessage(pushServiceBackgroundHandler);
     FirebaseMessaging.onMessage.listen(_onMessage);
     FirebaseMessaging.instance.onTokenRefresh.listen(_uploadToken);
+    unawaited(_uploadInitialToken());
+  }
+
+  static Future<void> _uploadInitialToken() async {
     try {
       await _uploadToken(await FirebaseMessaging.instance.getToken());
     } catch (error) {
