@@ -34,5 +34,7 @@
   "stopAction": "Stop service",
   "sosAction": "Send SOS",
   "disclosureMessage": "This app collects location and activity data in the background and sends it to the configured server.",
-  "configurationMessage": "Apply new configuration?"
+  "configurationMessage": "Apply new configuration?",
+  "qrNotFoundMessage": "No QR code found in this image.",
+  "qrInvalidMessage": "This QR code does not contain a valid configuration."
 }
