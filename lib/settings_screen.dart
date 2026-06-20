@@ -217,6 +217,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 setState(() {});
               },
             ),
+          if (advanced && Platform.isAndroid)
+            SwitchListTile(
+              title: Text(AppLocalizations.of(context)!.preferPlatformProvidersLabel),
+              value: Preferences.instance.getBool(Preferences.preferPlatformProviders) ?? false,
+              onChanged: (value) async {
+                await Preferences.instance.setBool(Preferences.preferPlatformProviders, value);
+                await GeolocationService.tracker.setConfig(Preferences.buildConfig());
+                setState(() {});
+              },
+            ),
           if (advanced)
             ListTile(
               title: Text(AppLocalizations.of(context)!.passwordLabel),

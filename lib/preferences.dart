@@ -18,6 +18,7 @@ class Preferences {
   static const String buffer = 'buffer';
   static const String wakelock = 'wakelock';
   static const String stopDetection = 'stop_detection';
+  static const String preferPlatformProviders = 'prefer_platform_providers';
   static const String password = 'password';
 
   static Future<void> init() async {
@@ -32,7 +33,7 @@ class Preferences {
           : SharedPreferencesOptions(),
       cacheOptions: SharedPreferencesWithCacheOptions(
         allowList: {
-          id, url, accuracy, distance, interval, angle, buffer, wakelock, stopDetection, password,
+          id, url, accuracy, distance, interval, angle, buffer, wakelock, stopDetection, preferPlatformProviders, password,
         },
       ),
     );
@@ -65,6 +66,7 @@ class Preferences {
       ),
       wakeLock: instance.getBool(wakelock) ?? false,
       buffer: instance.getBool(buffer) ?? true,
+      preferPlatformProviders: instance.getBool(preferPlatformProviders) ?? false,
     );
   }
 }
