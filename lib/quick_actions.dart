@@ -27,7 +27,7 @@ class _QuickActionsInitializerState extends State<QuickActionsInitializer> {
         case 'stop':
           await GeolocationService.tracker.stop();
         case 'sos':
-          await GeolocationService.tracker.requestPosition();
+          await GeolocationService.tracker.requestPosition(alarm: 'sos');
       }
       if (mounted) {
         FirebaseCrashlytics.instance.log('quick_action_exit');
