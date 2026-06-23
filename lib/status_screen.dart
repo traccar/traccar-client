@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:traccar_client_sdk/traccar_client_sdk.dart';
 
 import 'geolocation_service.dart';
@@ -17,7 +16,6 @@ class StatusScreen extends StatefulWidget {
 
 class _StatusScreenState extends State<StatusScreen> {
   static final _displayFormat = DateFormat('HH:mm:ss');
-  static final _fullFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
 
   List<LogEntry> _logs = const [];
   Timer? _refreshTimer;
@@ -46,14 +44,6 @@ class _StatusScreenState extends State<StatusScreen> {
     });
   }
 
-  Future<void> _shareLogs() async {
-    final text = _logs.reversed.map((entry) {
-      final t = DateTime.fromMillisecondsSinceEpoch(entry.time);
-      return '${_fullFormat.format(t)} ${entry.message}';
-    }).join('\n');
-    await SharePlus.instance.share(ShareParams(text: text));
-  }
-
   Future<void> _clearLogs() async {
     await GeolocationService.tracker.clearLogs();
     setState(() => _logs = const []);
@@ -68,10 +58,6 @@ class _StatusScreenState extends State<StatusScreen> {
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: _refreshLogs,
-          ),
-          IconButton(
-            icon: const Icon(Icons.share),
-            onPressed: _shareLogs,
           ),
           IconButton(
             icon: const Icon(Icons.delete),
