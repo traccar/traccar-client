@@ -69,8 +69,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
         }
       }
       if (isInt) {
-        final intValue = int.tryParse(result);
+        int? intValue = int.tryParse(result);
         if (intValue != null) {
+          if (key == Preferences.heartbeat && intValue > 0 && intValue < 60) {
+            intValue = 60; // minimum heartbeat is 60 seconds
+          }
           await Preferences.instance.setInt(key, intValue);
         }
       } else {
@@ -180,6 +183,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             _buildListTile(AppLocalizations.of(context)!.intervalLabel, Preferences.interval, true),
           if (isHighestAccuracy)
             _buildListTile(AppLocalizations.of(context)!.angleLabel, Preferences.angle, true),
+          _buildListTile(AppLocalizations.of(context)!.heartbeatLabel, Preferences.heartbeat, true),
           SwitchListTile(
             title: Text(AppLocalizations.of(context)!.advancedLabel),
             value: advanced,

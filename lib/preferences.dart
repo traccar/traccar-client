@@ -15,6 +15,7 @@ class Preferences {
   static const String distance = 'distance';
   static const String interval = 'interval';
   static const String angle = 'angle';
+  static const String heartbeat = 'heartbeat';
   static const String buffer = 'buffer';
   static const String wakelock = 'wakelock';
   static const String stopDetection = 'stop_detection';
@@ -33,7 +34,7 @@ class Preferences {
           : SharedPreferencesOptions(),
       cacheOptions: SharedPreferencesWithCacheOptions(
         allowList: {
-          id, url, accuracy, distance, interval, angle, buffer, wakelock, stopDetection, preferPlatformProviders, password,
+          id, url, accuracy, distance, interval, angle, heartbeat, buffer, wakelock, stopDetection, preferPlatformProviders, password,
         },
       ),
     );
@@ -62,6 +63,7 @@ class Preferences {
         distanceMeters: instance.getInt(distance) ?? 75,
         intervalSeconds: instance.getInt(interval) ?? 300,
         angleDegrees: instance.getInt(angle) ?? 0,
+        heartbeatIntervalSeconds: instance.getInt(heartbeat) ?? 0,
         stopDetection: instance.getBool(stopDetection) ?? true,
       ),
       wakeLock: instance.getBool(wakelock) ?? false,
