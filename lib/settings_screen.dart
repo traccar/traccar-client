@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:traccar_client/main.dart';
 import 'package:traccar_client/password_service.dart';
-import 'package:traccar_client/qr_code_screen.dart';
 
 import 'geolocation_service.dart';
 import 'l10n/app_localizations.dart';
@@ -160,15 +159,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.settingsTitle),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.qr_code_scanner),
-            onPressed: () async {
-              await Navigator.push(context, MaterialPageRoute(builder: (_) => const QrCodeScreen()));
-              setState(() {});
-            },
-          ),
-        ],
       ),
       body: ListView(
         children: [
