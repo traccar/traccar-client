@@ -173,7 +173,7 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nexemble Client'),
+        title: const Text('Nexapp'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),

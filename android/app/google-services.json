@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:39016471396:android:b1c7194c699bfa25",
         "android_client_info": {
-          "package_name": "org.traccar.client"
+          "package_name": "com.nexemble.nexapp"
         }
       },
       "oauth_client": [],
