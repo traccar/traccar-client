@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:developer' as developer;
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:app_links/app_links.dart';
-import 'package:rate_my_app/rate_my_app.dart';
 import 'package:traccar_client/password_service.dart';
 import 'package:traccar_client/push_service.dart';
 import 'package:traccar_client/quick_actions.dart';
@@ -38,21 +36,11 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  RateMyApp rateMyApp = RateMyApp(minDays: 0, minLaunches: 0);
-
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _initLinks();
-      await rateMyApp.init();
-      if (mounted && rateMyApp.shouldOpenDialog) {
-        try {
-          await rateMyApp.showRateDialog(context);
-        } catch (error) {
-          developer.log('Failed to show rate dialog', error: error);
-        }
-      }
     });
   }
 
