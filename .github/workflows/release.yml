@@ -152,12 +152,11 @@ jobs:
           APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ secrets.ASC_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
         run: |
-          app-store-connect --verbose fetch-signing-files "$IOS_BUNDLE_ID" \
+          app-store-connect fetch-signing-files "$IOS_BUNDLE_ID" \
             --type IOS_APP_STORE \
             --private-key "@file:$RUNNER_TEMP/AuthKey.p8" \
             --certificate-key "@file:$RUNNER_TEMP/dist_private_key.pem" \
-            --create \
-            --api-server-error-retries 1
+            --create
 
       - name: Install certificates into keychain
         run: keychain add-certificates
