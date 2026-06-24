@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:traccar_client/main.dart';
@@ -81,7 +80,6 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
               onChanged: (bool value) async {
                 if (await PasswordService.authenticate(context) && mounted) {
                   if (value) {
-                    FirebaseCrashlytics.instance.log('tracking_toggle_start');
                     var started = false;
                     try {
                       await GeolocationService.tracker.start();
@@ -100,7 +98,6 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                     }
                     setState(() => trackingEnabled = started);
                   } else {
-                    FirebaseCrashlytics.instance.log('tracking_toggle_stop');
                     await GeolocationService.tracker.stop();
                     if (mounted) setState(() => trackingEnabled = false);
                   }
