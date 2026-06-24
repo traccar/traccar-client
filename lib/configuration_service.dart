@@ -17,9 +17,11 @@ class ConfigurationService {
     await _applyIntParameter(parameters, Preferences.distance);
     await _applyIntParameter(parameters, Preferences.interval);
     await _applyIntParameter(parameters, Preferences.angle);
+    await _applyIntParameter(parameters, Preferences.heartbeat);
     await _applyBoolParameter(parameters, Preferences.buffer);
     await _applyBoolParameter(parameters, Preferences.wakelock);
     await _applyBoolParameter(parameters, Preferences.stopDetection);
+    await _applyBoolParameter(parameters, Preferences.preferPlatformProviders);
     await GeolocationService.tracker.setConfig(Preferences.buildConfig());
   }
 
