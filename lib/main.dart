@@ -57,12 +57,7 @@ class _MainAppState extends State<MainApp> {
   }
 
   Future<void> _initLinks() async {
-    final appLinks = AppLinks();
-    final uri = await appLinks.getInitialLink();
-    if (uri != null) {
-      await _handleUri(uri);
-    }
-    appLinks.uriLinkStream.listen(_handleUri);
+    AppLinks().uriLinkStream.listen(_handleUri);
   }
 
   Future<void> _handleUri(Uri uri) async {
