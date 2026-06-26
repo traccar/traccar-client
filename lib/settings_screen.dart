@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:traccar_client/main.dart';
 import 'package:traccar_client/password_service.dart';
 
 import 'geolocation_service.dart';
@@ -34,7 +33,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         : Preferences.instance.getString(key) ?? '';
 
     final controller = TextEditingController(text: initialValue);
-    final errorMessage = AppLocalizations.of(context)!.invalidValue;
 
     final result = await showDialog<String>(
       context: context,
@@ -60,13 +58,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
 
     if (result != null && result.isNotEmpty) {
-      if (key == Preferences.url) {
-        final uri = Uri.tryParse(result);
-        if (uri == null || uri.host.isEmpty || !(uri.scheme == 'http' || uri.scheme == 'https')) {
-          messengerKey.currentState?.showSnackBar(SnackBar(content: Text(errorMessage)));
-          return;
-        }
-      }
       if (isInt) {
         final intValue = int.tryParse(result);
         if (intValue != null) {
@@ -163,7 +154,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: ListView(
         children: [
           _buildListTile(AppLocalizations.of(context)!.idLabel, Preferences.id, false),
-          _buildListTile(AppLocalizations.of(context)!.urlLabel, Preferences.url, false),
           _buildAccuracyListTile(),
           _buildListTile(AppLocalizations.of(context)!.distanceLabel, Preferences.distance, true),
           if (isHighestAccuracy || Platform.isAndroid && distance == 0)

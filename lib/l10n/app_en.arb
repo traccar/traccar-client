@@ -1,6 +1,7 @@
 {
   "trackingTitle": "Tracking",
   "settingsTitle": "Settings",
+  "settingsSubtitle": "Accuracy, distance, and interval",
   "statusTitle": "Logs",
   "saveButton": "Save",
   "cancelButton": "Cancel",
