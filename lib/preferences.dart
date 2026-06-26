@@ -40,9 +40,9 @@ class Preferences {
     if (instance.getString(id) == null) {
       await instance.setString(id, (Random().nextInt(90000000) + 10000000).toString());
       await instance.setString(url, 'http://demo.traccar.org:5055');
-      await instance.setString(accuracy, 'medium');
-      await instance.setInt(interval, 300);
-      await instance.setInt(distance, 75);
+      await instance.setString(accuracy, 'high');
+      await instance.setInt(interval, 180);
+      await instance.setInt(distance, 25);
       await instance.setBool(buffer, true);
       await instance.setBool(stopDetection, true);
     }
@@ -59,8 +59,8 @@ class Preferences {
           'low' => Accuracy.low,
           _ => Accuracy.medium,
         },
-        distanceMeters: instance.getInt(distance) ?? 75,
-        intervalSeconds: instance.getInt(interval) ?? 300,
+        distanceMeters: instance.getInt(distance) ?? 25,
+        intervalSeconds: instance.getInt(interval) ?? 180,
         angleDegrees: instance.getInt(angle) ?? 0,
         stopDetection: instance.getBool(stopDetection) ?? true,
       ),
