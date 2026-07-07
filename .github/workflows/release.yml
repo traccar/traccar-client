@@ -54,8 +54,10 @@ jobs:
 
       - uses: actions/upload-artifact@v5
         with:
-          name: android-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: android-release
+          path: |
+            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/mapping/release/mapping.txt
           if-no-files-found: error
           retention-days: 1
 
@@ -71,7 +73,7 @@ jobs:
 
       - uses: actions/download-artifact@v5
         with:
-          name: android-apk
+          name: android-release
           path: .
 
       - name: Launch emulator and verify app starts
@@ -84,7 +86,7 @@ jobs:
           disable-animations: true
           script: |
             adb wait-for-device
-            adb install -r app-release.apk
+            adb install -r flutter-apk/app-release.apk
             adb shell am start -W -n org.traccar.client/org.traccar.client.MainActivity
             sleep 10
             adb shell screencap -p /sdcard/launch.png
@@ -103,15 +105,16 @@ jobs:
     steps:
       - uses: actions/download-artifact@v5
         with:
-          name: android-apk
-          path: apk
+          name: android-release
+          path: .
 
       - name: Upload to Google Play (production)
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
           packageName: org.traccar.client
-          releaseFiles: apk/app-release.apk
+          releaseFiles: flutter-apk/app-release.apk
+          mappingFile: mapping/release/mapping.txt
           track: production
           status: completed
 
@@ -222,10 +225,10 @@ jobs:
     steps:
       - uses: actions/download-artifact@v5
         with:
-          name: android-apk
-          path: apk
+          name: android-release
+          path: .
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: apk/app-release.apk
+          files: flutter-apk/app-release.apk
