@@ -41,6 +41,7 @@ class _StatusScreenState extends State<StatusScreen> {
 
   Future<void> _refreshLogs() async {
     final logs = await GeolocationService.tracker.getLogs();
+    if (!mounted) return;
     setState(() {
       _logs = logs.reversed.toList(growable: false);
     });
@@ -57,6 +58,7 @@ class _StatusScreenState extends State<StatusScreen> {
 
   Future<void> _clearLogs() async {
     await GeolocationService.tracker.clearLogs();
+    if (!mounted) return;
     setState(() => _logs = const []);
   }
 
