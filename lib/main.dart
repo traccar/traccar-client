@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer' as developer;
 import 'dart:ui' show PlatformDispatcher;
 
 import 'package:firebase_core/firebase_core.dart';
