@@ -187,6 +187,13 @@ jobs:
             -exportPath "$EXPORT_PATH" \
             -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist"
 
+      - name: Upload dSYMs to Crashlytics
+        run: |
+          ios/Pods/FirebaseCrashlytics/upload-symbols \
+            -gsp ios/Runner/GoogleService-Info.plist \
+            -p ios \
+            "$RUNNER_TEMP/Runner.xcarchive/dSYMs"
+
       - uses: actions/upload-artifact@v5
         with:
           name: ios-ipa
