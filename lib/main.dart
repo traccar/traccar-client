@@ -4,6 +4,7 @@ import 'dart:ui' show PlatformDispatcher;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:app_links/app_links.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:traccar_client/password_service.dart';
@@ -63,11 +64,15 @@ class _MainAppState extends State<MainApp> {
 
   Future<void> _handleUri(Uri uri) async {
     if (uri.host == 'action') {
-      switch (uri.pathSegments.firstOrNull) {
-        case 'start':
-          await GeolocationService.tracker.start();
-        case 'stop':
-          await GeolocationService.tracker.stop();
+      try {
+        switch (uri.pathSegments.firstOrNull) {
+          case 'start':
+            await GeolocationService.tracker.start();
+          case 'stop':
+            await GeolocationService.tracker.stop();
+        }
+      } on PlatformException {
+        // permission denied or startup error
       }
       return;
     }

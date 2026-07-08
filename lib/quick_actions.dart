@@ -21,13 +21,17 @@ class _QuickActionsInitializerState extends State<QuickActionsInitializer> {
     super.initState();
     quickActions.initialize((shortcutType) async {
       FirebaseCrashlytics.instance.log('quick_action: $shortcutType');
-      switch (shortcutType) {
-        case 'start':
-          await GeolocationService.tracker.start();
-        case 'stop':
-          await GeolocationService.tracker.stop();
-        case 'sos':
-          await GeolocationService.tracker.requestPosition(alarm: 'sos');
+      try {
+        switch (shortcutType) {
+          case 'start':
+            await GeolocationService.tracker.start();
+          case 'stop':
+            await GeolocationService.tracker.stop();
+          case 'sos':
+            await GeolocationService.tracker.requestPosition(alarm: 'sos');
+        }
+      } on PlatformException {
+        // permission denied or startup error
       }
       if (mounted) {
         FirebaseCrashlytics.instance.log('quick_action_exit');

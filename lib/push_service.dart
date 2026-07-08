@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/services.dart';
 import 'package:traccar_client/password_service.dart';
 
 import 'geolocation_service.dart';
@@ -30,15 +31,19 @@ class PushService {
   static Future<void> _onMessage(RemoteMessage message) async {
     final command = message.data['command'];
     FirebaseCrashlytics.instance.log('push_command: $command');
-    switch (command) {
-      case 'positionSingle':
-        await GeolocationService.tracker.requestPosition();
-      case 'positionPeriodic':
-        await GeolocationService.tracker.start();
-      case 'positionStop':
-        await GeolocationService.tracker.stop();
-      case 'factoryReset':
-        await PasswordService.setPassword('');
+    try {
+      switch (command) {
+        case 'positionSingle':
+          await GeolocationService.tracker.requestPosition();
+        case 'positionPeriodic':
+          await GeolocationService.tracker.start();
+        case 'positionStop':
+          await GeolocationService.tracker.stop();
+        case 'factoryReset':
+          await PasswordService.setPassword('');
+      }
+    } on PlatformException {
+      // permission denied or startup error
     }
   }
 
