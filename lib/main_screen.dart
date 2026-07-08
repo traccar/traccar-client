@@ -113,7 +113,11 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
               children: [
                 FilledButton.tonal(
                   onPressed: () async {
-                    await GeolocationService.tracker.requestPosition();
+                    try {
+                      await GeolocationService.tracker.requestPosition();
+                    } on PlatformException {
+                      // permission denied or location error
+                    }
                   },
                   child: Text(AppLocalizations.of(context)!.locationButton),
                 ),
