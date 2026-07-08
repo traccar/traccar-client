@@ -38,6 +38,13 @@ class Preferences {
         },
       ),
     );
+    if (Platform.isAndroid) {
+      for (final key in {interval, distance, angle, heartbeat}) {
+        if (instance.get(key) is String) {
+          await instance.setInt(key, int.tryParse(instance.getString(key) ?? '') ?? 0);
+        }
+      }
+    }
     if (instance.getString(id) == null) {
       await instance.setString(id, (Random().nextInt(90000000) + 10000000).toString());
       await instance.setString(url, 'http://demo.traccar.org:5055');
