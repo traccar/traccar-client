@@ -51,12 +51,9 @@ class _MainAppState extends State<MainApp> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _initLinks();
       await rateMyApp.init();
-      if (mounted && rateMyApp.shouldOpenDialog) {
-        try {
-          await rateMyApp.showRateDialog(context);
-        } catch (error) {
-          developer.log('Failed to show rate dialog', error: error);
-        }
+      final dialogContext = navigatorKey.currentContext;
+      if (dialogContext != null && dialogContext.mounted && rateMyApp.shouldOpenDialog) {
+        await rateMyApp.showRateDialog(dialogContext);
       }
     });
   }
