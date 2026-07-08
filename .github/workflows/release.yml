@@ -189,7 +189,8 @@ jobs:
 
       - name: Upload dSYMs to Crashlytics
         run: |
-          ios/Pods/FirebaseCrashlytics/upload-symbols \
+          UPLOAD_SYMBOLS=$(find build/ios/SourcePackages/checkouts -name upload-symbols -type f | head -1)
+          "$UPLOAD_SYMBOLS" \
             -gsp ios/Runner/GoogleService-Info.plist \
             -p ios \
             "$RUNNER_TEMP/Runner.xcarchive/dSYMs"
