@@ -47,6 +47,7 @@ class _StatusScreenState extends State<StatusScreen> {
   }
 
   Future<void> _shareLogs() async {
+    if (_logs.isEmpty) return;
     final text = _logs.reversed.map((entry) {
       final t = DateTime.fromMillisecondsSinceEpoch(entry.time);
       return '${_fullFormat.format(t)} ${entry.message}';
