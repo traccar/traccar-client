@@ -116,7 +116,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     String? value;
     if (isInt) {
       final intValue = Preferences.instance.getInt(key);
-      if (intValue != null && intValue > 0) {
+      if (intValue != null && (intValue > 0 || key == Preferences.distance)) {
         value = intValue.toString();
       } else {
         value = AppLocalizations.of(context)!.disabledValue;
