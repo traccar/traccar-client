@@ -1,20 +1,13 @@
 import AppIntents
-import UIKit
-
-@available(iOS 16.0, *)
-@MainActor
-private func openAction(_ name: String) async {
-    await UIApplication.shared.open(URL(string: "org.traccar.client://action/\(name)")!)
-}
+import TraccarClientSDK
 
 @available(iOS 16.0, *)
 struct StartTrackingIntent: AppIntent {
     static var title: LocalizedStringResource = "Start Tracking"
     static var description = IntentDescription("Start continuous location tracking")
-    static var openAppWhenRun: Bool = true
 
     func perform() async throws -> some IntentResult {
-        await openAction("start")
+        try await TrackerKt.sharedTracker()?.start()
         return .result()
     }
 }
@@ -23,10 +16,9 @@ struct StartTrackingIntent: AppIntent {
 struct StopTrackingIntent: AppIntent {
     static var title: LocalizedStringResource = "Stop Tracking"
     static var description = IntentDescription("Stop continuous location tracking")
-    static var openAppWhenRun: Bool = true
 
     func perform() async throws -> some IntentResult {
-        await openAction("stop")
+        try await TrackerKt.sharedTracker()?.stop()
         return .result()
     }
 }
