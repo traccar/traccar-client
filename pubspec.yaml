@@ -15,7 +15,7 @@ dependencies:
   traccar_client_sdk: ^1.0.7
   shared_preferences: ^2.5.5
   firebase_core: ^4.9.0
-  firebase_messaging: ">=16.2.2 <16.4.2"
+  firebase_messaging: ^16.4.2
   firebase_analytics: ^12.4.1
   firebase_crashlytics: ">=5.2.2 <5.2.5"
   quick_actions: ^1.1.0
