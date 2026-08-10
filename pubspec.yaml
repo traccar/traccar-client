@@ -22,7 +22,7 @@ dependencies:
   rate_my_app: ^2.4.1
   shared_preferences_android: ^2.4.23
   mobile_scanner: ^7.4.0
-  flutter_secure_storage: ^10.2.0
+  flutter_secure_storage: ^11.0.0
   app_links: ^7.0.0
   app_settings: ^8.0.3
   share_plus: ^13.3.0
