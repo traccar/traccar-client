@@ -25,6 +25,7 @@
   "bufferLabel": "離線緩存",
   "wakelockLabel": "喚醒鎖定",
   "stopDetectionLabel": "停止偵測",
+  "preferPlatformProvidersLabel": "使用系統位置",
   "trackingLabel": "持續追蹤",
   "advancedLabel": "進階設定",
   "passwordLabel": "密碼",
@@ -34,5 +35,5 @@
   "stopAction": "停止服務",
   "sosAction": "發送 SOS 求救",
   "disclosureMessage": "該應用程式會在背景收集位置和活動數據，並將其傳送到配置的伺服器。",
-  "configurationMessage": "Apply new configuration?"
+  "configurationMessage": "應用新配置？"
 }

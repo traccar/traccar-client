@@ -25,6 +25,7 @@
   "bufferLabel": "Offline-Pufferung",
   "wakelockLabel": "Wakelock",
   "stopDetectionLabel": "Stopp-Erkennung",
+  "preferPlatformProvidersLabel": "Use system location",
   "trackingLabel": "Kontinuierliches Tracking",
   "advancedLabel": "Erweiterte Einstellungen",
   "passwordLabel": "Password",

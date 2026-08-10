@@ -25,6 +25,7 @@
   "bufferLabel": "Kaupti duomenis neprisijungus",
   "wakelockLabel": "Pažadinimo užraktas",
   "stopDetectionLabel": "Stabdyti aptikimą",
+  "preferPlatformProvidersLabel": "Use system location",
   "trackingLabel": "Nuolatinis stebėjimas",
   "advancedLabel": "Papildomi nustatymai",
   "passwordLabel": "Slaptažodis",

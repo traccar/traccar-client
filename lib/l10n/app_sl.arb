@@ -25,6 +25,7 @@
   "bufferLabel": "Predpomnjenje brez povezave",
   "wakelockLabel": "Wake lock",
   "stopDetectionLabel": "Stop detection",
+  "preferPlatformProvidersLabel": "Use system location",
   "trackingLabel": "Neprekinjeno sledenje",
   "advancedLabel": "Advanced settings",
   "passwordLabel": "Password",

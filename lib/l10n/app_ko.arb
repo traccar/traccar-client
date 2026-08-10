@@ -25,6 +25,7 @@
   "bufferLabel": "오프라인 버퍼링",
   "wakelockLabel": "Wake lock",
   "stopDetectionLabel": "Stop detection",
+  "preferPlatformProvidersLabel": "Use system location",
   "trackingLabel": "지속 추적",
   "advancedLabel": "Advanced settings",
   "passwordLabel": "Password",

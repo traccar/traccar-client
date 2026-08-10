@@ -25,6 +25,7 @@
   "bufferLabel": "Ukládání do vyrovnávací paměti",
   "wakelockLabel": "Wake lock",
   "stopDetectionLabel": "Stop detection",
+  "preferPlatformProvidersLabel": "Use system location",
   "trackingLabel": "Nepřetržité sledování",
   "advancedLabel": "Advanced settings",
   "passwordLabel": "Password",

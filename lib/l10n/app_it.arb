@@ -25,6 +25,7 @@
   "bufferLabel": "Memorizzazione offline",
   "wakelockLabel": "Wake lock",
   "stopDetectionLabel": "Rilevamento arresto",
+  "preferPlatformProvidersLabel": "Utilizzare la posizione di sistema",
   "trackingLabel": "Tracciamento continuo",
   "advancedLabel": "Impostazioni avanzate",
   "passwordLabel": "Password",
@@ -33,6 +34,6 @@
   "startAction": "Avvia servizio",
   "stopAction": "Ferma servizio",
   "sosAction": "Invia SOS",
-  "disclosureMessage": "This app collects location and activity data in the background and sends it to the configured server.",
-  "configurationMessage": "Apply new configuration?"
+  "disclosureMessage": "Questa app raccoglie dati sulla posizione e sull'attività in background e li invia al server configurato.",
+  "configurationMessage": "Applicare la nuova configurazione?"
 }

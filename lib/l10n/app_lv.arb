@@ -25,6 +25,7 @@
   "bufferLabel": "Bezsaistes buferizācija",
   "wakelockLabel": "Wake lock",
   "stopDetectionLabel": "Apstāšanās noteikšana",
+  "preferPlatformProvidersLabel": "Use system location",
   "trackingLabel": "Nepārtraukta izsekošana",
   "advancedLabel": "Papildus iestatījumi",
   "passwordLabel": "Parole",

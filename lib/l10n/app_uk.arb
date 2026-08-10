@@ -25,6 +25,7 @@
   "bufferLabel": "Офлайн-буферизація",
   "wakelockLabel": "Wake lock",
   "stopDetectionLabel": "Stop detection",
+  "preferPlatformProvidersLabel": "Use system location",
   "trackingLabel": "Безперервне відстеження",
   "advancedLabel": "Advanced settings",
   "passwordLabel": "Password",

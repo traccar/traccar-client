@@ -25,6 +25,7 @@
   "bufferLabel": "حافظه آفلاین",
   "wakelockLabel": "Wake lock",
   "stopDetectionLabel": "Stop detection",
+  "preferPlatformProvidersLabel": "Use system location",
   "trackingLabel": "مسیر ادامه دار",
   "advancedLabel": "Advanced settings",
   "passwordLabel": "Password",

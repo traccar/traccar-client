@@ -25,6 +25,7 @@
   "bufferLabel": "تخزين مؤقت دون اتصال",
   "wakelockLabel": "قفل التنبيه",
   "stopDetectionLabel": "اكتشاف التوقف",
+  "preferPlatformProvidersLabel": "Use system location",
   "trackingLabel": "تتبع مستمر",
   "advancedLabel": "إعدادات متقدمة",
   "passwordLabel": "كلمة المرور",

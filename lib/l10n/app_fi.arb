@@ -25,6 +25,7 @@
   "bufferLabel": "Offline puskuri",
   "wakelockLabel": "Pakota päälläolo",
   "stopDetectionLabel": "Pysähdyksissä olon tunnistus",
+  "preferPlatformProvidersLabel": "Use system location",
   "trackingLabel": "Jatkuva paikannus",
   "advancedLabel": "Lisäasetukset",
   "passwordLabel": "Salasana",

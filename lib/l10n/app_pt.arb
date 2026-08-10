@@ -25,6 +25,7 @@
   "bufferLabel": "Armazenamento em buffer offline",
   "wakelockLabel": "Bloqueio de despertar",
   "stopDetectionLabel": "Deteção de paragem",
+  "preferPlatformProvidersLabel": "Use system location",
   "trackingLabel": "Rastreio contínuo",
   "advancedLabel": "Definições avançadas",
   "passwordLabel": "Password",

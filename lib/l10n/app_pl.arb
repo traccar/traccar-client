@@ -25,6 +25,7 @@
   "bufferLabel": "Buforowanie offline",
   "wakelockLabel": "Blokada uśpienia",
   "stopDetectionLabel": "Wykrywanie zatrzymania",
+  "preferPlatformProvidersLabel": "Use system location",
   "trackingLabel": "Ciągłe śledzenie",
   "advancedLabel": "Ustawienia zaawansowane",
   "passwordLabel": "Hasło",

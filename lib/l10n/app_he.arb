@@ -25,6 +25,7 @@
   "bufferLabel": "אחסון לא מקוון",
   "wakelockLabel": "Wake lock",
   "stopDetectionLabel": "Stop detection",
+  "preferPlatformProvidersLabel": "Use system location",
   "trackingLabel": "מעקב רציף",
   "advancedLabel": "Advanced settings",
   "passwordLabel": "Password",

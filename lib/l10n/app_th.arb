@@ -25,6 +25,7 @@
   "bufferLabel": "การบัฟเฟอร์แบบออฟไลน์",
   "wakelockLabel": "ป้องกันไม่ให้อุปกรณ์เข้าสู่โหมดพัก",
   "stopDetectionLabel": "หยุดการตรวจจับ",
+  "preferPlatformProvidersLabel": "ใช้ตำแหน่งของระบบ",
   "trackingLabel": "ติดตามอย่างต่อเนื่อง",
   "advancedLabel": "การตั้งค่าขั้นสูง",
   "passwordLabel": "รหัสผ่าน",

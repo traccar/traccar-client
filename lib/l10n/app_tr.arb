@@ -25,6 +25,7 @@
   "bufferLabel": "Çevrimdışı önbellekleme",
   "wakelockLabel": "Uyanık kilidi",
   "stopDetectionLabel": "Durma algılama",
+  "preferPlatformProvidersLabel": "Use system location",
   "trackingLabel": "Sürekli izleme",
   "advancedLabel": "Gelişmiş ayarlar",
   "passwordLabel": "Password",

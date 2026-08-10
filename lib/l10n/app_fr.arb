@@ -25,6 +25,7 @@
   "bufferLabel": "Mise en tampon hors ligne",
   "wakelockLabel": "Maintien éveillé",
   "stopDetectionLabel": "Détection d'arrêt",
+  "preferPlatformProvidersLabel": "Use system location",
   "trackingLabel": "Suivi continu",
   "advancedLabel": "Paramètres avancés",
   "passwordLabel": "Password",

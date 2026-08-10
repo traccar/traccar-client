@@ -25,6 +25,7 @@
   "bufferLabel": "Búfer sin conexión",
   "wakelockLabel": "Bloqueo de suspensión",
   "stopDetectionLabel": "Detección de parada",
+  "preferPlatformProvidersLabel": "Usar la ubicación del sistema",
   "trackingLabel": "Seguimiento continuo",
   "advancedLabel": "Ajustes avanzados",
   "passwordLabel": "Contraseña",
@@ -34,5 +35,5 @@
   "stopAction": "Detener servicio",
   "sosAction": "Enviar SOS",
   "disclosureMessage": "Esta aplicación recopila datos de ubicación y actividad en segundo plano y los envía al servidor configurado.",
-  "configurationMessage": "Apply new configuration?"
+  "configurationMessage": "Aplicar la nueva configuración?"
 }

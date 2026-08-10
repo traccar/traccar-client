@@ -25,6 +25,7 @@
   "bufferLabel": "Offline buffering",
   "wakelockLabel": "Wakelock",
   "stopDetectionLabel": "Stopdetectie",
+  "preferPlatformProvidersLabel": "Use system location",
   "trackingLabel": "Continu volgen",
   "advancedLabel": "Geavanceerde instellingen",
   "passwordLabel": "Password",

@@ -25,6 +25,7 @@
   "bufferLabel": "Buffering offline",
   "wakelockLabel": "Wake lock",
   "stopDetectionLabel": "Deteksi berhenti",
+  "preferPlatformProvidersLabel": "Use system location",
   "trackingLabel": "Pelacakan berkelanjutan",
   "advancedLabel": "Pengaturan lanjutan",
   "passwordLabel": "Password",
