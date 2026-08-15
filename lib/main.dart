@@ -20,6 +20,7 @@ import 'preferences.dart';
 
 final messengerKey = GlobalKey<ScaffoldMessengerState>();
 final navigatorKey = GlobalKey<NavigatorState>();
+final mainScreenKey = GlobalKey<MainScreenState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -98,6 +99,7 @@ class _MainAppState extends State<MainApp> {
     );
     if (confirmed == true) {
       await ConfigurationService.applyUri(uri);
+      mainScreenKey.currentState?.refresh();
     }
   }
 
@@ -121,9 +123,9 @@ class _MainAppState extends State<MainApp> {
         ),
       ),
       home: Stack(
-        children: const [
-          QuickActionsInitializer(),
-          MainScreen(),
+        children: [
+          const QuickActionsInitializer(),
+          MainScreen(key: mainScreenKey),
         ],
       ),
     );

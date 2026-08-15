@@ -16,10 +16,10 @@ class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  State<MainScreen> createState() => MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
+class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   bool trackingEnabled = false;
 
   @override
@@ -49,6 +49,8 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
       trackingEnabled = tracking;
     });
   }
+
+  void refresh() => setState(() {});
 
   Widget _buildTrackingCard() {
     return Card(
