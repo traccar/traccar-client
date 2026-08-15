@@ -15,6 +15,7 @@ import 'configuration_service.dart';
 import 'geolocation_service.dart';
 import 'l10n/app_localizations.dart';
 import 'main_screen.dart';
+import 'managed_config_service.dart';
 import 'preferences.dart';
 
 final messengerKey = GlobalKey<ScaffoldMessengerState>();
@@ -32,6 +33,7 @@ void main() async {
   await GeolocationService.tracker.init(Preferences.buildConfig());
   await PasswordService.migrate();
   await PushService.init();
+  await ManagedConfigService.init();
   runApp(const MainApp());
 }
 

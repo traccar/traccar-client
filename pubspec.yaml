@@ -26,6 +26,7 @@ dependencies:
   app_links: ^7.0.0
   app_settings: ^8.0.3
   share_plus: ^13.3.0
+  managed_configurations: ^1.2.0
 
 dev_dependencies:
   flutter_test:

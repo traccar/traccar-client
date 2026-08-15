@@ -3,15 +3,20 @@ import 'preferences.dart';
 
 class ConfigurationService {
   static Future<void> applyUri(Uri uri) async {
-    if (uri.scheme == 'http' || uri.scheme == 'https') {
-      await Preferences.instance.setString(Preferences.url, '${uri.origin}${uri.path}');
-    } else {
-      final url = uri.queryParameters['url'];
-      if (url != null) {
-        await Preferences.instance.setString(Preferences.url, url);
-      }
+    final url = (uri.scheme == 'http' || uri.scheme == 'https')
+        ? '${uri.origin}${uri.path}'
+        : uri.queryParameters['url'];
+    await applyParameters(uri.queryParameters, url: url);
+  }
+
+  static Future<void> applyManagedConfig(Map<String, dynamic> config) async {
+    await applyParameters(config, url: config[Preferences.url]?.toString());
+  }
+
+  static Future<void> applyParameters(Map<String, dynamic> parameters, {String? url}) async {
+    if (url != null) {
+      await Preferences.instance.setString(Preferences.url, url);
     }
-    final parameters = uri.queryParameters;
     await _applyStringParameter(parameters, Preferences.id);
     await _applyStringParameter(parameters, Preferences.accuracy);
     await _applyIntParameter(parameters, Preferences.distance);
@@ -26,29 +31,29 @@ class ConfigurationService {
   }
 
   static Future<void> _applyStringParameter(
-      Map<String, String> parameters, String key) async {
+      Map<String, dynamic> parameters, String key) async {
     final value = parameters[key];
     if (value != null) {
-      await Preferences.instance.setString(key, value);
+      await Preferences.instance.setString(key, value.toString());
     }
   }
 
   static Future<void> _applyIntParameter(
-      Map<String, String> parameters, String key) async {
-    final stringValue = parameters[key];
-    if (stringValue != null) {
-      final value = int.tryParse(stringValue);
-      if (value != null) {
-        await Preferences.instance.setInt(key, value);
-      }
+      Map<String, dynamic> parameters, String key) async {
+    final raw = parameters[key];
+    final value = raw is int ? raw : int.tryParse(raw?.toString() ?? '');
+    if (value != null) {
+      await Preferences.instance.setInt(key, value);
     }
   }
 
   static Future<void> _applyBoolParameter(
-      Map<String, String> parameters, String key) async {
-    final value = parameters[key];
-    if (value != null) {
-      switch (value) {
+      Map<String, dynamic> parameters, String key) async {
+    final raw = parameters[key];
+    if (raw is bool) {
+      await Preferences.instance.setBool(key, raw);
+    } else if (raw is String) {
+      switch (raw) {
         case 'false':
           await Preferences.instance.setBool(key, false);
         case 'true':
