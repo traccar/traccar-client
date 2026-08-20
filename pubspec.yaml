@@ -24,7 +24,7 @@ dependencies:
   mobile_scanner: ^7.4.0
   flutter_secure_storage: ^11.0.0
   app_links: ^7.0.0
-  app_settings: ^8.0.3
+  app_settings: ^9.0.0
   share_plus: ^13.3.0
   managed_configurations: ^1.2.0
 
