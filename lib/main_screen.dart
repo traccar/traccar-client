@@ -110,8 +110,9 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
               },
             ),
             const SizedBox(height: 8),
-            OverflowBar(
+            Wrap(
               spacing: 8,
+              runSpacing: 8,
               children: [
                 FilledButton.tonal(
                   onPressed: () async {
@@ -122,6 +123,20 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                     }
                   },
                   child: Text(AppLocalizations.of(context)!.locationButton),
+                ),
+                FilledButton.tonal(
+                  style: FilledButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.errorContainer,
+                    foregroundColor: Theme.of(context).colorScheme.onErrorContainer,
+                  ),
+                  onPressed: () async {
+                    try {
+                      await GeolocationService.tracker.requestPosition(alarm: 'sos');
+                    } on PlatformException {
+                      // permission denied or location error
+                    }
+                  },
+                  child: Text(AppLocalizations.of(context)!.sosAction),
                 ),
                 FilledButton.tonal(
                   onPressed: () {
@@ -155,8 +170,9 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
               subtitle: Text(Preferences.instance.getString(Preferences.url) ?? ''),
             ),
             const SizedBox(height: 8),
-            OverflowBar(
+            Wrap(
               spacing: 8,
+              runSpacing: 8,
               children: [
                 FilledButton.tonal(
                   onPressed: () async {
