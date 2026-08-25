@@ -17,6 +17,7 @@ import 'l10n/app_localizations.dart';
 import 'main_screen.dart';
 import 'managed_config_service.dart';
 import 'preferences.dart';
+import 'root_service.dart';
 
 final messengerKey = GlobalKey<ScaffoldMessengerState>();
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -35,6 +36,7 @@ void main() async {
   await PasswordService.migrate();
   await PushService.init();
   await ManagedConfigService.init();
+  await RootService.init();
   runApp(const MainApp());
 }
 

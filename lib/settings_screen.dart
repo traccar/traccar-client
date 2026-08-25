@@ -9,6 +9,7 @@ import 'package:traccar_client/qr_code_screen.dart';
 import 'geolocation_service.dart';
 import 'l10n/app_localizations.dart';
 import 'preferences.dart';
+import 'root_service.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -19,6 +20,20 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool advanced = false;
+  bool isRootSupported = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkRootStatus();
+  }
+
+  Future<void> _checkRootStatus() async {
+    final hasRoot = await RootService.isRootAvailable();
+    if (mounted && hasRoot) {
+      setState(() => isRootSupported = true);
+    }
+  }
 
   String _getAccuracyLabel(String? key) {
     return switch (key) {
@@ -228,6 +243,36 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onChanged: (value) async {
                 await Preferences.instance.setBool(Preferences.preferPlatformProviders, value);
                 await GeolocationService.tracker.setConfig(Preferences.buildConfig());
+                setState(() {});
+              },
+            ),
+          if (advanced && Platform.isAndroid && isRootSupported)
+            SwitchListTile(
+              title: Text(AppLocalizations.of(context)!.rootKeepAliveLabel),
+              subtitle: Text(AppLocalizations.of(context)!.rootKeepAliveSubtitle),
+              value: Preferences.instance.getBool(Preferences.rootKeepAlive) ?? false,
+              onChanged: (value) async {
+                final success = await RootService.applyKeepAlive(value);
+                if (success || !value) {
+                  await Preferences.instance.setBool(Preferences.rootKeepAlive, value);
+                  if (mounted) {
+                    messengerKey.currentState?.showSnackBar(
+                      SnackBar(
+                        content: Text(value
+                            ? AppLocalizations.of(context)!.rootAppliedSuccess
+                            : AppLocalizations.of(context)!.disabledValue),
+                      ),
+                    );
+                  }
+                } else {
+                  if (mounted) {
+                    messengerKey.currentState?.showSnackBar(
+                      SnackBar(
+                        content: Text(AppLocalizations.of(context)!.rootAppliedFailed),
+                      ),
+                    );
+                  }
+                }
                 setState(() {});
               },
             ),

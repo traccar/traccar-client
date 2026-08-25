@@ -35,5 +35,9 @@
   "stopAction": "Stop service",
   "sosAction": "Send SOS",
   "disclosureMessage": "This app collects location and activity data in the background and sends it to the configured server.",
-  "configurationMessage": "Apply new configuration?"
+  "configurationMessage": "Apply new configuration?",
+  "rootKeepAliveLabel": "Root Keep-Alive",
+  "rootKeepAliveSubtitle": "Set to highest priority (-1000) and lock background execution",
+  "rootAppliedSuccess": "Root Keep-Alive enabled successfully",
+  "rootAppliedFailed": "Failed to enable Root Keep-Alive, please check Root authorization"
 }

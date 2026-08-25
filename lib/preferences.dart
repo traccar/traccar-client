@@ -21,6 +21,7 @@ class Preferences {
   static const String stopDetection = 'stop_detection';
   static const String preferPlatformProviders = 'prefer_platform_providers';
   static const String password = 'password';
+  static const String rootKeepAlive = 'root_keep_alive';
 
   static Future<void> init() async {
     _initFuture ??= _createInstance();
@@ -34,7 +35,7 @@ class Preferences {
           : SharedPreferencesOptions(),
       cacheOptions: SharedPreferencesWithCacheOptions(
         allowList: {
-          id, url, accuracy, distance, interval, angle, heartbeat, buffer, wakelock, stopDetection, preferPlatformProviders, password,
+          id, url, accuracy, distance, interval, angle, heartbeat, buffer, wakelock, stopDetection, preferPlatformProviders, password, rootKeepAlive,
         },
       ),
     );

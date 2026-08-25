@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:traccar_client/main.dart';
 import 'package:traccar_client/password_service.dart';
 import 'package:traccar_client/preferences.dart';
+import 'package:traccar_client/root_service.dart';
 
 import 'geolocation_service.dart';
 import 'l10n/app_localizations.dart';
@@ -88,6 +89,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                     try {
                       await GeolocationService.tracker.start();
                       started = true;
+                      await RootService.init();
                     } on PlatformException {
                       // permission denied or startup error
                     }
