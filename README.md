@@ -16,7 +16,9 @@ Just enter your server address, grant location permissions, and the app will aut
 
 Don't have a Traccar server yet? [Try the live demo](https://www.traccar.org/demo-server/) or see the [installation guides](https://www.traccar.org/install-vps/) to set up your own for free.
 
-<img src=".github/screenshot.png" alt="Traccar Client app" width="300">
+| Client App |
+|---|
+| <img src=".github/screenshot.png" alt="Traccar Client app" width="200"> |
 
 ## Build
 
