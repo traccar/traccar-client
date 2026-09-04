@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -53,7 +54,12 @@ class _StatusScreenState extends State<StatusScreen> {
       final t = DateTime.fromMillisecondsSinceEpoch(entry.time);
       return '${_fullFormat.format(t)} ${entry.message}';
     }).join('\n');
-    await SharePlus.instance.share(ShareParams(text: text));
+    final box = context.findRenderObject() as RenderBox;
+    await SharePlus.instance.share(ShareParams(
+      files: [XFile.fromData(utf8.encode(text), mimeType: 'text/plain')],
+      fileNameOverrides: const ['logs.txt'],
+      sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
+    ));
   }
 
   Future<void> _clearLogs() async {
