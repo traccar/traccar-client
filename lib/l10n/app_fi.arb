@@ -35,5 +35,6 @@
   "stopAction": "Pysäytä palvelu",
   "sosAction": "Lähetä SOS",
   "disclosureMessage": "Tämä sovellus kerää sijainti- ja aktiivisuustietoja taustalla ja lähettää ne asetuksissa määritettyyn palvelimeen.",
-  "configurationMessage": "Otetaanko uudet asetukset käyttöön?"
+  "configurationMessage": "Otetaanko uudet asetukset käyttöön?",
+  "@@locale": "fi"
 }

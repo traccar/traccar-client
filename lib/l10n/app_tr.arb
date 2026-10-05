@@ -35,5 +35,6 @@
   "stopAction": "Servisi durdur",
   "sosAction": "SOS gönder",
   "disclosureMessage": "Bu uygulama arka planda konum ve etkinlik verilerini toplar ve yapılandırılan sunucuya gönderir.",
-  "configurationMessage": "Yeni yapılandırma uygulansın mı?"
+  "configurationMessage": "Yeni yapılandırma uygulansın mı?",
+  "@@locale": "tr"
 }

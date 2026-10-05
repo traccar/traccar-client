@@ -35,5 +35,6 @@
   "stopAction": "Zatrzymaj usługę",
   "sosAction": "Wyślij SOS",
   "disclosureMessage": "Ta aplikacja zbiera w tle dane dotyczące lokalizacji i aktywności oraz wysyła je na skonfigurowany serwer.",
-  "configurationMessage": "Zastosować nową konfigurację?"
+  "configurationMessage": "Zastosować nową konfigurację?",
+  "@@locale": "pl"
 }

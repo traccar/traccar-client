@@ -35,5 +35,6 @@
   "stopAction": "Dienst stoppen",
   "sosAction": "SOS senden",
   "disclosureMessage": "Diese App erfasst Standort- und Aktivitätsdaten im Hintergrund und sendet sie an den konfigurierten Server.",
-  "configurationMessage": "Neue Konfiguration übernehmen?"
+  "configurationMessage": "Neue Konfiguration übernehmen?",
+  "@@locale": "de"
 }

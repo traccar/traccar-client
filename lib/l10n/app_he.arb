@@ -35,5 +35,6 @@
   "stopAction": "הפסקת השירות",
   "sosAction": "שליחת אות מצוקה",
   "disclosureMessage": "אפליקציה זו אוספת נתוני מיקום ופעילות ברקע ושולחת אותם לשרת שהוגדר.",
-  "configurationMessage": "להחיל את ההגדרות החדשות?"
+  "configurationMessage": "להחיל את ההגדרות החדשות?",
+  "@@locale": "he"
 }

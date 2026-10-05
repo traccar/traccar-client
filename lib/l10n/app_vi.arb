@@ -35,5 +35,6 @@
   "stopAction": "Dừng dịch vụ",
   "sosAction": "Gửi SOS",
   "disclosureMessage": "Ứng dụng này thu thập dữ liệu vị trí và hoạt động ở chế độ nền và gửi đến máy chủ đã cấu hình.",
-  "configurationMessage": "Áp dụng cấu hình mới?"
+  "configurationMessage": "Áp dụng cấu hình mới?",
+  "@@locale": "vi"
 }

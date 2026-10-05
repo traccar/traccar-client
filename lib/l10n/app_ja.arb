@@ -35,5 +35,6 @@
   "stopAction": "サービス停止",
   "sosAction": "SOSを送信",
   "disclosureMessage": "このアプリはバックグラウンドで位置情報とアクティビティデータを収集し、設定されたサーバーに送信します。",
-  "configurationMessage": "新しい設定を適用しますか？"
+  "configurationMessage": "新しい設定を適用しますか？",
+  "@@locale": "ja"
 }

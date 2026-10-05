@@ -35,5 +35,6 @@
   "stopAction": "Arrêter le service",
   "sosAction": "Envoyer un SOS",
   "disclosureMessage": "Cette application collecte des données de localisation et d'activité en arrière-plan et les envoie au serveur configuré.",
-  "configurationMessage": "Appliquer la nouvelle configuration ?"
+  "configurationMessage": "Appliquer la nouvelle configuration ?",
+  "@@locale": "fr"
 }

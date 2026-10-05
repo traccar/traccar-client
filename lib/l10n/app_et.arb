@@ -35,5 +35,6 @@
   "stopAction": "Peata teenus",
   "sosAction": "Saada SOS",
   "disclosureMessage": "See rakendus kogub taustal asukoha- ja aktiivsusandmeid ning saadab need seadistatud serverisse.",
-  "configurationMessage": "Kas rakendada uued seaded?"
+  "configurationMessage": "Kas rakendada uued seaded?",
+  "@@locale": "et"
 }

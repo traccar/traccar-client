@@ -35,5 +35,6 @@
   "stopAction": "Apturēt pakalpojumu",
   "sosAction": "Nosūtīt SOS",
   "disclosureMessage": "Šī lietotne fonā apkopo atrašanās vietas un aktivitāšu datus un nosūta tos uz konfigurēto serveri.",
-  "configurationMessage": "Lietot jauno konfigurāciju?"
+  "configurationMessage": "Lietot jauno konfigurāciju?",
+  "@@locale": "lv"
 }

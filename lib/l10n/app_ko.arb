@@ -35,5 +35,6 @@
   "stopAction": "서비스 중지",
   "sosAction": "SOS 전송",
   "disclosureMessage": "이 앱은 백그라운드에서 위치 및 활동 데이터를 수집하여 설정된 서버로 전송합니다.",
-  "configurationMessage": "새 설정을 적용하시겠습니까?"
+  "configurationMessage": "새 설정을 적용하시겠습니까?",
+  "@@locale": "ko"
 }

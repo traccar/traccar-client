@@ -35,5 +35,6 @@
   "stopAction": "Hentikan layanan",
   "sosAction": "Kirim SOS",
   "disclosureMessage": "Aplikasi ini mengumpulkan data lokasi dan aktivitas di latar belakang dan mengirimkannya ke server yang dikonfigurasi.",
-  "configurationMessage": "Terapkan konfigurasi baru?"
+  "configurationMessage": "Terapkan konfigurasi baru?",
+  "@@locale": "id"
 }

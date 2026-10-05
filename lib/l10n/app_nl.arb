@@ -35,5 +35,6 @@
   "stopAction": "Service stoppen",
   "sosAction": "SOS verzenden",
   "disclosureMessage": "Deze app verzamelt locatie- en activiteitsgegevens op de achtergrond en verzendt deze naar de ingestelde server.",
-  "configurationMessage": "Nieuwe configuratie toepassen?"
+  "configurationMessage": "Nieuwe configuratie toepassen?",
+  "@@locale": "nl"
 }

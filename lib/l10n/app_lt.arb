@@ -35,5 +35,6 @@
   "stopAction": "Sustabdyti tarnybą",
   "sosAction": "Siųsti SOS",
   "disclosureMessage": "Ši programėlė fone renka buvimo vietos ir aktyvumo duomenis ir siunčia juos į nustatytą serverį.",
-  "configurationMessage": "Taikyti naujus nustatymus?"
+  "configurationMessage": "Taikyti naujus nustatymus?",
+  "@@locale": "lt"
 }

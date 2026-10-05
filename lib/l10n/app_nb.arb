@@ -35,5 +35,6 @@
   "stopAction": "Stopp tjeneste",
   "sosAction": "Send SOS",
   "disclosureMessage": "Denne appen samler inn posisjons- og aktivitetsdata i bakgrunnen og sender dem til den konfigurerte serveren.",
-  "configurationMessage": "Ta i bruk ny konfigurasjon?"
+  "configurationMessage": "Ta i bruk ny konfigurasjon?",
+  "@@locale": "nb"
 }

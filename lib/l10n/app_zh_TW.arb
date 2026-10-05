@@ -35,5 +35,6 @@
   "stopAction": "停止服務",
   "sosAction": "傳送 SOS 求救訊號",
   "disclosureMessage": "此應用程式會在背景收集位置和活動資料，並傳送至設定的伺服器。",
-  "configurationMessage": "套用新設定？"
+  "configurationMessage": "套用新設定？",
+  "@@locale": "zh_TW"
 }

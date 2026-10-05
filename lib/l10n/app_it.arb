@@ -35,5 +35,6 @@
   "stopAction": "Arresta servizio",
   "sosAction": "Invia SOS",
   "disclosureMessage": "Questa app raccoglie dati sulla posizione e sull'attività in background e li invia al server configurato.",
-  "configurationMessage": "Applicare la nuova configurazione?"
+  "configurationMessage": "Applicare la nuova configurazione?",
+  "@@locale": "it"
 }

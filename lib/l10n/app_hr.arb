@@ -35,5 +35,6 @@
   "stopAction": "Zaustavi servis",
   "sosAction": "Pošalji SOS",
   "disclosureMessage": "Ova aplikacija prikuplja podatke o lokaciji i aktivnosti u pozadini te ih šalje na postavljeni poslužitelj.",
-  "configurationMessage": "Primijeniti novu konfiguraciju?"
+  "configurationMessage": "Primijeniti novu konfiguraciju?",
+  "@@locale": "hr"
 }

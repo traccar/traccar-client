@@ -35,5 +35,6 @@
   "stopAction": "Atura el servei",
   "sosAction": "Envia SOS",
   "disclosureMessage": "Aquesta aplicació recull dades d’ubicació i d’activitat en segon pla i les envia al servidor configurat.",
-  "configurationMessage": "Vols aplicar la nova configuració?"
+  "configurationMessage": "Vols aplicar la nova configuració?",
+  "@@locale": "ca"
 }

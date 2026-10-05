@@ -35,5 +35,6 @@
   "stopAction": "Zastavit službu",
   "sosAction": "Odeslat SOS",
   "disclosureMessage": "Tato aplikace shromažďuje údaje o poloze a aktivitě na pozadí a odesílá je na nastavený server.",
-  "configurationMessage": "Použít novou konfiguraci?"
+  "configurationMessage": "Použít novou konfiguraci?",
+  "@@locale": "cs"
 }
