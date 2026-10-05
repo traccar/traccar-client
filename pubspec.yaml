@@ -18,14 +18,14 @@ dependencies:
   firebase_messaging: ">=16.2.2 <16.4.2"
   firebase_analytics: ^12.4.1
   firebase_crashlytics: ">=5.2.2 <5.2.5"
-  quick_actions: ^1.1.0
-  rate_my_app: ^2.4.1
-  shared_preferences_android: ^2.4.23
-  mobile_scanner: ^7.4.0
-  flutter_secure_storage: ^11.0.0
+  quick_actions: ^1.1.1
+  rate_my_app: ^2.4.2
+  shared_preferences_android: ^2.4.28
+  mobile_scanner: ^7.4.2
+  flutter_secure_storage: ^11.2.0
   app_links: ^7.0.0
   app_settings: ^9.0.0
-  share_plus: ^13.3.0
+  share_plus: ^13.3.1
   managed_configurations: ^1.2.0
 
 dev_dependencies:
