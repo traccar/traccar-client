@@ -16,12 +16,16 @@ class PushService {
     await FirebaseMessaging.instance.requestPermission();
     FirebaseMessaging.onBackgroundMessage(pushServiceBackgroundHandler);
     FirebaseMessaging.onMessage.listen(_onMessage);
+    // Traccar servers require FCM tokens; onRegistered emits Firebase Installation IDs.
+    // ignore: deprecated_member_use
     FirebaseMessaging.instance.onTokenRefresh.listen(_uploadToken);
     unawaited(_uploadInitialToken());
   }
 
   static Future<void> _uploadInitialToken() async {
     try {
+      // Keep FCM tokens for compatibility with existing Traccar servers.
+      // ignore: deprecated_member_use
       await _uploadToken(await FirebaseMessaging.instance.getToken());
     } catch (error) {
       developer.log('Failed to get notification token', error: error);
