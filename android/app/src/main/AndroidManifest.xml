@@ -44,6 +44,9 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data
+            android:name="firebase_messaging_installation_id_enabled"
+            android:value="true" />
         <!-- flutter_background_geolocation license -->
         <meta-data
             android:name="com.transistorsoft.locationmanager.license"
