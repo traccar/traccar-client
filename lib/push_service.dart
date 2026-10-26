@@ -3,7 +3,6 @@ import 'dart:developer' as developer;
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
 import 'package:traccar_client/password_service.dart';
@@ -30,7 +29,7 @@ class PushService {
 
   static Future<void> _onMessage(RemoteMessage message) async {
     final command = message.data['command'];
-    FirebaseCrashlytics.instance.log('push_command: $command');
+    developer.log('push_command: $command');
     try {
       switch (command) {
         case 'positionSingle':
@@ -68,6 +67,6 @@ Future<void> pushServiceBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   await Preferences.init();
   await GeolocationService.tracker.init(Preferences.buildConfig());
-  FirebaseCrashlytics.instance.log('push_background_handler');
+  developer.log('push_background_handler');
   await PushService._onMessage(message);
 }
