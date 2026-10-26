@@ -20,7 +20,7 @@ dependencies:
   firebase_crashlytics: ^6.0.0
   quick_actions: ^1.1.1
   rate_my_app: ^2.4.2
-  shared_preferences_android: 2.4.28
+  shared_preferences_android: 2.5.3
   mobile_scanner: ^7.4.2
   flutter_secure_storage: ^11.2.0
   app_links: ^7.0.0
