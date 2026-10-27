@@ -66,6 +66,11 @@ class _MainAppState extends State<MainApp> {
   }
 
   Future<void> _handleUri(Uri uri) async {
+    final context = navigatorKey.currentState?.overlay?.context;
+    if (Preferences.instance.getString(Preferences.password) != null) {
+      if (context == null || !context.mounted) return;
+      if (!await PasswordService.authenticate(context) || !context.mounted) return;
+    }
     if (uri.host == 'action') {
       try {
         switch (uri.pathSegments.firstOrNull) {
@@ -79,8 +84,7 @@ class _MainAppState extends State<MainApp> {
       }
       return;
     }
-    final context = navigatorKey.currentContext;
-    if (context == null) return;
+    if (context == null || !context.mounted) return;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(

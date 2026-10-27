@@ -1,12 +1,19 @@
 import AppIntents
 import TraccarClientSDK
 
+private func checkPassword() throws {
+    guard UserDefaults.standard.string(forKey: "password") == nil else {
+        throw NSError(domain: "TraccarClient", code: 1, userInfo: [NSLocalizedDescriptionKey: "Use app to change tracking"])
+    }
+}
+
 @available(iOS 16.0, *)
 struct StartTrackingIntent: AppIntent {
     static var title: LocalizedStringResource = "Start Tracking"
     static var description = IntentDescription("Start continuous location tracking")
 
     func perform() async throws -> some IntentResult {
+        try checkPassword()
         try await TrackerKt.sharedTracker()?.start()
         return .result()
     }
@@ -18,6 +25,7 @@ struct StopTrackingIntent: AppIntent {
     static var description = IntentDescription("Stop continuous location tracking")
 
     func perform() async throws -> some IntentResult {
+        try checkPassword()
         try await TrackerKt.sharedTracker()?.stop()
         return .result()
     }

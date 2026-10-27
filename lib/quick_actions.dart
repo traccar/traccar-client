@@ -6,6 +6,7 @@ import 'package:quick_actions/quick_actions.dart';
 
 import 'geolocation_service.dart';
 import 'l10n/app_localizations.dart';
+import 'password_service.dart';
 
 class QuickActionsInitializer extends StatefulWidget {
   const QuickActionsInitializer({super.key});
@@ -22,6 +23,10 @@ class _QuickActionsInitializerState extends State<QuickActionsInitializer> {
     super.initState();
     quickActions.initialize((shortcutType) async {
       developer.log('quick_action: $shortcutType');
+      if (shortcutType == 'start' || shortcutType == 'stop') {
+        await WidgetsBinding.instance.endOfFrame;
+        if (!mounted || !await PasswordService.authenticate(context) || !mounted) return;
+      }
       try {
         switch (shortcutType) {
           case 'start':
