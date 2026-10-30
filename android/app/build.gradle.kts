@@ -52,7 +52,6 @@ android {
             if (keystorePropertiesFile.exists()) {
                 signingConfig = signingConfigs.getByName("release")
             }
-            isShrinkResources = false
         }
     }
 
