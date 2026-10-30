@@ -115,7 +115,7 @@ jobs:
           packageName: org.traccar.client
           releaseFiles: flutter-apk/app-release.apk
           mappingFile: mapping/release/mapping.txt
-          track: production
+          tracks: production
           status: completed
 
   build-ios:
